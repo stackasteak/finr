@@ -14,15 +14,14 @@ body {
 
 input[type="range"] {
   width: 70%;
-  float: left;
+  display: inline-block;
 }
 
 span {
  position: relative;
- float: left; 
  bottom: 5px;
 }
 
 button {
-  float: left;
+  display: inline-block;
 }
