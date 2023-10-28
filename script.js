@@ -1,6 +1,6 @@
 const canvas = document.querySelector('.myCanvas');
 const width = canvas.width = window.innerWidth;
-const height = canvas.height = window.innerHeight-85;
+const height = canvas.height = window.innerHeight-115;
 const ctx = canvas.getContext('2d');
 
 ctx.fillStyle = 'rgb(0,0,0)';
