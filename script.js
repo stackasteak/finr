@@ -4,7 +4,7 @@ const height = canvas.height = window.innerHeight-85;
 const ctx = canvas.getContext('2d');
 
 ctx.fillStyle = 'rgb(0,0,0)';
-ctx.fillRect(0,0,width,height)
+ctx.fillRect(0,0,width,height);
 
 
 const xPicker = document.querySelector('.rangex');
@@ -44,3 +44,8 @@ canvas.addEventListener('touchstart', (e) => {
 );
 
 canvas.addEventListener('touchend', () => pressed = false);
+
+clearBtn.addEventListener('click', () => {
+  ctx.fillStyle = 'rgb(0,0,0)';
+  ctx.fillRect(0,0,width,height);
+});
