@@ -3,19 +3,30 @@ const width = canvas.width = window.innerWidth;
 const height = canvas.height = window.innerWidth;
 const ctx = canvas.getContext('2d');
 
-ctx.fillStyle = 'rgb(0,0,0)';
-ctx.fillRect(0,0,width,height);
-
-
-const xPicker = document.querySelector('.rangex');
-const yPicker = document.querySelector('.rangey');
+const sizePicker = document.querySelector('.bsize');
 const outputx = document.querySelector('.outputx');
 const outputy = document.querySelector('.outputy');
 const backBtn = document.querySelector('.backBtn');
 const forwBtn = document.querySelector('.forwBtn');
 const clearBtn = document.querySelector('.clearBtn');
 
+let xsize;
+let ysize;
+
+
+function redraw(){
+  ctx.fillStyle = 'rgb(0,0,0)';
+  ctx.fillRect(0,0,width,height);
+}
+
+function setSizeRedraw(){
+  if(sizePicker.
+  xsize
+}
 // update sizepicker output value
+
+//document.getElementbyId("bsize").onchange = redraw;
+sizePicker.onchange = redraw;
 
 xPicker.addEventListener('input', () => outputx.textContent = xPicker.value);
 
