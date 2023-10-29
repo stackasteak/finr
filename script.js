@@ -3,9 +3,7 @@ const width = canvas.width = window.innerWidth;
 const height = canvas.height = window.innerWidth;
 const ctx = canvas.getContext('2d');
 
-const sizePicker = document.querySelector('.bsize');
-const outputx = document.querySelector('.outputx');
-const outputy = document.querySelector('.outputy');
+const sizePicker = document.getElementById('bsize');
 const backBtn = document.querySelector('.backBtn');
 const forwBtn = document.querySelector('.forwBtn');
 const clearBtn = document.querySelector('.clearBtn');
@@ -20,8 +18,18 @@ function redraw(){
 }
 
 function setSizeRedraw(){
-  if(sizePicker.
-  xsize
+  if(sizePicker.value =="6x7"){
+    xsize = 7;
+    ysize = 6;
+  }
+  if(sizePicker.value =="8x8"){
+    xsize = 8;
+    ysize = 8;
+  }
+  if(sizePicker.value =="9x9"){
+    xsize = 9;
+    ysize = 9;
+  }
 }
 // update sizepicker output value
 
