@@ -8,8 +8,12 @@ const backBtn = document.querySelector('.backBtn');
 const forwBtn = document.querySelector('.forwBtn');
 const clearBtn = document.querySelector('.clearBtn');
 
-let xsize=9;
-let ysize=9;
+const boardstate = {
+  xsize: 9,
+  ysize: 9,
+  history: [],
+  nextys: []
+};
 
 function degToRad(degrees) {
   return degrees * Math.PI / 180;
