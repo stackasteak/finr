@@ -28,14 +28,14 @@ function redraw(){
   }
   else{
     stonesize = width/ysize;
-    xoffset = (width-stonesize*xsize)/2;
+    xoffset = (width-stonesize*xsize)*0.5;
   }
 
   for(let ii=0; ii<xsize; ii++){
     for(let jj=0; jj<ysize; jj++){
       ctx.fillStyle = "rgb(0, 0, 0)";
       ctx.beginPath();
-      ctx.arc(xoffset+(ii+0.5)*stonesize,(jj+0.5)*stonesize , 0.5*stonesize, degToRad(0), degToRad(360), false);
+      ctx.arc(xoffset+(ii+0.5)*stonesize,(jj+0.5)*stonesize , 0.5*stonesize-2, degToRad(0), degToRad(360), false);
       ctx.fill();
     }
   }
