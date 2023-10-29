@@ -23,7 +23,7 @@ function redraw(){
 
   let stonesize;
   let xoffset=0;
-  if(xsize>ysize){
+  if(xsize>=ysize){
     stonesize = width/xsize;
   }
   else{
