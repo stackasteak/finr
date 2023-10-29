@@ -1,6 +1,6 @@
 const canvas = document.querySelector('.myCanvas');
 const width = canvas.width = window.innerWidth;
-const height = canvas.height = window.innerWidth+200;
+const height = canvas.height = window.innerWidth+30;
 const ctx = canvas.getContext('2d');
 
 const sizePicker = document.getElementById('bsize');
