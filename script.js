@@ -93,6 +93,5 @@ canvas.addEventListener('touchstart', (e) => {
 canvas.addEventListener('touchend', () => pressed = false);
 
 clearBtn.addEventListener('click', () => {
-  ctx.fillStyle = 'rgb(0,0,0)';
-  ctx.fillRect(0,0,width,height);
+  redraw();
 });
