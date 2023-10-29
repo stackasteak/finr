@@ -16,12 +16,13 @@ function degToRad(degrees) {
 };
 
 function redraw(){
-  ctx.fillStyle = 'rgb(0,0,1)';
+  ctx.fillStyle = 'rgb(0,0,255)';
   ctx.fillRect(0,0,width,height);
+
+  
 
   let stonesize;
   let xoffset=0;
-  let previewbarheight=50;
   if(xsize>ysize){
     stonesize = width/xsize;
   }
@@ -32,12 +33,15 @@ function redraw(){
 
   for(let ii=0; ii<xsize; ii++){
     for(let jj=0; jj<ysize; jj++){
+      ctx.fillStyle = "rgb(0, 0, 0)";
       ctx.beginPath();
       ctx.arc(xoffset+(ii+0.5)*stonesize,(jj+0.5)*stonesize , 0.5*stonesize, degToRad(0), degToRad(360), false);
       ctx.fill();
     }
   }
-    
+
+  ctx.fillStyle = 'rgb(0,0,0)'; 
+  ctx.fillRect(0, stonesize*ysize, width, height);
 }
 
 function setSize(){
