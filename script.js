@@ -8,16 +8,39 @@ const backBtn = document.querySelector('.backBtn');
 const forwBtn = document.querySelector('.forwBtn');
 const clearBtn = document.querySelector('.clearBtn');
 
-let xsize;
-let ysize;
+let xsize=9;
+let ysize=9;
 
+function degToRad(degrees) {
+  return degrees * Math.PI / 180;
+};
 
 function redraw(){
-  ctx.fillStyle = 'rgb(0,0,0)';
+  ctx.fillStyle = 'rgb(0,0,1)';
   ctx.fillRect(0,0,width,height);
+
+  let stonesize;
+  let xoffset=0;
+  let previewbarheight=50;
+  if(xsize>ysize){
+    stonesize = width/xsize;
+  }
+  else{
+    stonesize = width/ysize;
+    xoffset = (width-stonesize*xszie)/2;
+  }
+
+  for(let ii=0; ii<xsize; ii++){
+    for(let jj=0; jj<ysize; jj++){
+      ctx.beginPath();
+      ctx.arc(xoffset+(ii+0.5)*stonesize,(jj+0.5)*stonesize , 0.5*stonesize, degToRad(0), degToRad(360), false);
+      ctx.fill();
+    }
+  }
+    
 }
 
-function setSizeRedraw(){
+function setSize(){
   if(sizePicker.value =="6x7"){
     xsize = 7;
     ysize = 6;
@@ -30,15 +53,16 @@ function setSizeRedraw(){
     xsize = 9;
     ysize = 9;
   }
+  if(sizePicker.value =="10x10"){
+    xsize = 10;
+    ysize = 10;
+  }
 }
 // update sizepicker output value
 
 //document.getElementbyId("bsize").onchange = redraw;
-sizePicker.onchange = redraw;
+sizePicker.onchange = ( () => {setSize(); redraw();} );
 
-xPicker.addEventListener('input', () => outputx.textContent = xPicker.value);
-
-yPicker.addEventListener('input', () => outputy.textContent = yPicker.value);
 
 // store mouse pointer coordinates, and whether the button is pressed
 let curX;
