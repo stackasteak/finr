@@ -28,7 +28,7 @@ function redraw(){
   }
   else{
     stonesize = width/ysize;
-    xoffset = (width-stonesize*xszie)/2;
+    xoffset = (width-stonesize*xsize)/2;
   }
 
   for(let ii=0; ii<xsize; ii++){
