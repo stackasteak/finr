@@ -72,18 +72,24 @@ function setSize(){
   }
 }
 
-function drawhighlight(){
-  let iselect;
+function iselect(x){
+  let ans=boardstate.xsize;
   for(let ii=0; ii<boardstate.xsize; ii++){
-    if(curX < xoffset+(ii+1)*stonesize){
+    if(x < xoffset+(ii+1)*stonesize){
       iselect = ii;
       break;
     }
   }
+  return ans;
+}
+
+function drawhighlight(){
+  let ii1 = iselect(curX);
+
   for(let jj=boardstate.nextys[iselect]; jj<boardstate.ysize; jj++){
     ctx.fillStyle = "rgb(0, 0, 0)";
     ctx.beginPath();
-    ctx.arc(xoffset+(iselect+0.5)*stonesize,(jj+0.5)*stonesize , 0.5*stonesize-2, degToRad(0), degToRad(360), false);
+    ctx.arc(xoffset+(ii1+0.5)*stonesize,(jj+0.5)*stonesize , 0.5*stonesize-2, degToRad(0), degToRad(360), false);
     ctx.fill();
   }
 }
