@@ -21,8 +21,35 @@ const boardstate = {
   xsize: 9,
   ysize: 9,
   history: [],
-  nextys: []
+  nextys: [],
+  movenum: 0
 };
+
+function setSize(){
+  if(sizePicker.value =="6x7"){
+    boardstate.xsize = 7;
+    boardstate.ysize = 6;
+  }
+  if(sizePicker.value =="8x8"){
+    boardstate.xsize = 8;
+    boardstate.ysize = 8;
+  }
+  if(sizePicker.value =="9x9"){
+    boardstate.xsize = 9;
+    boardstate.ysize = 9;
+  }
+  if(sizePicker.value =="10x10"){
+    boardstate.xsize = 10;
+    boardstate.ysize = 10;
+  }
+}
+
+function resetBoard(){
+  boardstate.history =[];
+  boardstate.movenum =0;
+  boardstate.nextys = new Array(boardstate.xsize);
+  boardstate.nextys.fill(0);
+}
 
 function degToRad(degrees) {
   return degrees * Math.PI / 180;
@@ -53,24 +80,6 @@ function redraw(){
   ctx.fillRect(0, stonesize*boardstate.ysize, width, height);
 }
 
-function setSize(){
-  if(sizePicker.value =="6x7"){
-    boardstate.xsize = 7;
-    boardstate.ysize = 6;
-  }
-  if(sizePicker.value =="8x8"){
-    boardstate.xsize = 8;
-    boardstate.ysize = 8;
-  }
-  if(sizePicker.value =="9x9"){
-    boardstate.xsize = 9;
-    boardstate.ysize = 9;
-  }
-  if(sizePicker.value =="10x10"){
-    boardstate.xsize = 10;
-    boardstate.ysize = 10;
-  }
-}
 
 function iselect(x){
   let ans=boardstate.xsize;
@@ -99,7 +108,7 @@ function undrawhighlight(){}
 
 // update sizepicker output value
 
-sizePicker.onchange = ( () => {setSize(); redraw();} );
+sizePicker.onchange = ( () => {setSize(); resetBoard(); redraw();} );
 
 
 // update mouse pointer coordinates
@@ -128,5 +137,6 @@ canvas.addEventListener('touchend', (e) => {
 });
 
 clearBtn.addEventListener('click', () => {
+  resetBoard();
   redraw();
 });
