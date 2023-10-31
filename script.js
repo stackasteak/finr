@@ -85,7 +85,7 @@ function iselect(x){
   let ans=boardstate.xsize;
   for(let ii=0; ii<boardstate.xsize; ii++){
     if(x < xoffset+(ii+1)*stonesize){
-      iselect = ii;
+      ans = ii;
       break;
     }
   }
