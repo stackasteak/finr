@@ -55,20 +55,20 @@ function redraw(){
 
 function setSize(){
   if(sizePicker.value =="6x7"){
-    xboardstate.size = 7;
-    yboardstate.size = 6;
+    boardstate.xsize = 7;
+    boardstate.ysize = 6;
   }
   if(sizePicker.value =="8x8"){
-    xboardstate.size = 8;
-    yboardstate.size = 8;
+    boardstate.xsize = 8;
+    boardstate.ysize = 8;
   }
   if(sizePicker.value =="9x9"){
-    xboardstate.size = 9;
-    yboardstate.size = 9;
+    boardstate.xsize = 9;
+    boardstate.ysize = 9;
   }
   if(sizePicker.value =="10x10"){
-    xboardstate.size = 10;
-    yboardstate.size = 10;
+    boardstate.xsize = 10;
+    boardstate.ysize = 10;
   }
 }
 
@@ -94,7 +94,7 @@ function drawhighlight(){
   }
 }
 
-function undrawhighlight()
+function undrawhighlight(){}
 
 
 // update sizepicker output value
