@@ -103,7 +103,16 @@ function drawhighlight(){
   }
 }
 
-function undrawhighlight(){}
+function undrawhighlight(){
+  let ii1 = iselect(curX);
+
+  for(let jj=boardstate.nextys[iselect]; jj<boardstate.ysize; jj++){
+    ctx.fillStyle = "rgb(0, 0, 0)";
+    ctx.beginPath();
+    ctx.arc(xoffset+(ii1+0.5)*stonesize,(jj+0.5)*stonesize , 0.5*stonesize-2, degToRad(0), degToRad(360), false);
+    ctx.fill();
+  }
+}
 
 
 // update sizepicker output value
@@ -133,6 +142,7 @@ canvas.addEventListener('touchend', (e) => {
   pressed = false;
   curX = (window.Event) ? e.pageX : e.touches[0].clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
   curY = (window.Event) ? e.pageY : e.touches[0].clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
+  undrawhighlight();
   drawmove();
 });
 
