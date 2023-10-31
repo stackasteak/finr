@@ -95,7 +95,7 @@ function iselect(x){
 function drawhighlight(){
   let ii1 = iselect(curX);
 
-  for(let jj=boardstate.nextys[iselect]; jj<boardstate.ysize; jj++){
+  for(let jj=boardstate.nextys[ii1]; jj<boardstate.ysize; jj++){
     ctx.fillStyle = "rgb(100, 100, 100)";
     ctx.beginPath();
     ctx.arc(xoffset+(ii1+0.5)*stonesize,(jj+0.5)*stonesize , 0.5*stonesize-2, degToRad(0), degToRad(360), false);
