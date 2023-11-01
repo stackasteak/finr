@@ -126,7 +126,7 @@ function undrawhighlight(ii1){
 function drawmove(ii){
   let colo;
   if (boardstate.movenum %2==0){
-    colo = "rgb(0, 255, 255)";
+    colo = "rgb(255, 234, 128)";
   }
   else {
     colo = "rgb(255, 0,0)";
