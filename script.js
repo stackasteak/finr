@@ -51,6 +51,14 @@ function resetBoard(){
   boardstate.nextys.fill(0);
 }
 
+function updateBoard(ii){
+  if(boardstate.nextys[ii]<boardstate.ysize){
+  boardstate.history.push(ii);
+  boardstate.movenum = boardstate.movenum + 1;
+  boardstate.nextys[ii] = boardstate.nextys[ii] +1;
+  }
+}
+
 function degToRad(degrees) {
   return degrees * Math.PI / 180;
 };
@@ -107,14 +115,20 @@ function undrawhighlight(){
   let ii1 = iselect(curX);
 
   for(let jj=boardstate.nextys[ii1]; jj<boardstate.ysize; jj++){
-    ctx.fillStyle = "rgb(200, 0, 0)";
+    ctx.fillStyle = "rgb(0, 0, 0)";
     ctx.beginPath();
     ctx.arc(xoffset+(ii1+0.5)*stonesize,(jj+0.5)*stonesize , 0.5*stonesize-2, degToRad(0), degToRad(360), false);
     ctx.fill();
   }
 }
 
-function drawmove(){}
+function drawmove(ii){
+  let colo;
+  ctx.fillStyle = "rgb(0, 0, 0)";
+    ctx.beginPath();
+    ctx.arc(xoffset+(ii1+0.5)*stonesize,(jj+0.5)*stonesize , 0.5*stonesize-2, degToRad(0), degToRad(360), false);
+    ctx.fill();
+}
 
 // update sizepicker output value
 
