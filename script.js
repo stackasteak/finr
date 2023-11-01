@@ -64,7 +64,7 @@ function degToRad(degrees) {
 };
 
 function redraw(){
-  ctx.fillStyle = 'rgb(0,0,255)';
+  ctx.fillStyle = 'rgb(25,140,255)';
   ctx.fillRect(0,0,width,height);
 
   if(boardstate.xsize>=boardstate.ysize){
