@@ -104,20 +104,21 @@ function drawhighlight(){
   let ii1 = iselect(curX);
 
   for(let jj=boardstate.nextys[ii1]; jj<boardstate.ysize; jj++){
+    let jj2=boardstate.ysize-1-jj;
     ctx.fillStyle = "rgb(100, 100, 100)";
     ctx.beginPath();
-    ctx.arc(xoffset+(ii1+0.5)*stonesize,(jj+0.5)*stonesize , 0.5*stonesize-2, degToRad(0), degToRad(360), false);
+    ctx.arc(xoffset+(ii1+0.5)*stonesize,(jj2+0.5)*stonesize , 0.5*stonesize-2, degToRad(0), degToRad(360), false);
     ctx.fill();
   }
 }
 
-function undrawhighlight(){
-  let ii1 = iselect(curX);
+function undrawhighlight(ii1){
 
   for(let jj=boardstate.nextys[ii1]; jj<boardstate.ysize; jj++){
+    let jj2=boardstate.ysize-1-jj;
     ctx.fillStyle = "rgb(0, 0, 0)";
     ctx.beginPath();
-    ctx.arc(xoffset+(ii1+0.5)*stonesize,(jj+0.5)*stonesize , 0.5*stonesize-2, degToRad(0), degToRad(360), false);
+    ctx.arc(xoffset+(ii1+0.5)*stonesize,(jj2+0.5)*stonesize , 0.5*stonesize-2, degToRad(0), degToRad(360), false);
     ctx.fill();
   }
 }
@@ -132,10 +133,13 @@ function drawmove(ii){
   }
 
   jj=boardstate.nextys[ii];
+  if(jj<boardstate.ysize){
+    let jj2=boardstate.ysize-1-jj;
   ctx.fillStyle = colo;
   ctx.beginPath();
-    ctx.arc(xoffset+(ii+0.5)*stonesize,(jj+0.5)*stonesize , 0.5*stonesize-2, degToRad(0), degToRad(360), false);
+    ctx.arc(xoffset+(ii+0.5)*stonesize,(jj2+0.5)*stonesize , 0.5*stonesize-2, degToRad(0), degToRad(360), false);
   ctx.fill();
+  }
 }
 
 // update sizepicker output value
@@ -167,8 +171,11 @@ canvas.addEventListener('touchend', (e) => {
   let curY0=curY;
   curX = (window.Event) ? e.pageX : e.touches[0].clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
   curY = (window.Event) ? e.pageY : e.touches[0].clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
-  undrawhighlight();
-  drawmove(iselect(curX));
+  let ii0 = iselect(curX0);
+  let ii = iselect(curX);
+  undrawhighlight(ii0);
+  drawmove(ii);
+  updateBoard(ii);
 });
 
 clearBtn.addEventListener('click', () => {
