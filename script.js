@@ -163,10 +163,12 @@ canvas.addEventListener('touchstart', (e) => {
 
 canvas.addEventListener('touchend', (e) => {
   pressed = false;
+  let curX0=curX;
+  let curY0=curY;
   curX = (window.Event) ? e.pageX : e.touches[0].clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
   curY = (window.Event) ? e.pageY : e.touches[0].clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
   undrawhighlight();
-  drawmove();
+  drawmove(iselect(curX));
 });
 
 clearBtn.addEventListener('click', () => {
