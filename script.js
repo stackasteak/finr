@@ -53,10 +53,36 @@ function resetBoard(){
 
 function updateBoard(ii){
   if(boardstate.nextys[ii]<boardstate.ysize){
-  boardstate.history.push(ii);
-  boardstate.movenum = boardstate.movenum + 1;
-  boardstate.nextys[ii] = boardstate.nextys[ii] +1;
+    if(boardstate.history.length == boardstate.movenum){
+      boardstate.history.push(ii);
+      boardstate.movenum = boardstate.movenum + 1;
+      boardstate.nextys[ii] = boardstate.nextys[ii] +1;
+    }
+    else{
+
   }
+}
+
+function backBoard(){
+  let err = -1;
+  if(boardstate.movenum>0){
+    let prevx = boardstate.history[boardstate.movenum-1];
+    boardstate.nextys[prevx] = boardstate.nextys[prevx]-1;
+    boardstate.movenum = boardstate.movenum - 1;
+    return prevx;
+  }
+  return err;
+}
+
+function forwBoard(){
+  let err = -1;
+  if(boardstate.movenum < boardstate.history.length){
+    let nextx = boardstate.history[boardstate.movenum];
+    boardstate.nextys[nextx] = boardstate.nextys[nextx]+1;
+    boardstate.movenum = boardstate.movenum + 1;
+    return nextx;
+  }
+  return err;
 }
 
 function degToRad(degrees) {
@@ -132,13 +158,30 @@ function drawmove(ii){
     colo = "rgb(255, 0,0)";
   }
 
-  jj=boardstate.nextys[ii];
-  if(jj<boardstate.ysize){
-    let jj2=boardstate.ysize-1-jj;
-  ctx.fillStyle = colo;
-  ctx.beginPath();
-    ctx.arc(xoffset+(ii+0.5)*stonesize,(jj2+0.5)*stonesize , 0.5*stonesize-2, degToRad(0), degToRad(360), false);
-  ctx.fill();
+  if(ii>-1 && ii<boardstate.xsize){
+    jj=boardstate.nextys[ii];
+    if(jj<boardstate.ysize && jj > -1){
+      let jj2=boardstate.ysize-1-jj;
+      ctx.fillStyle = colo;
+      ctx.beginPath();
+      ctx.arc(xoffset+(ii+0.5)*stonesize,(jj2+0.5)*stonesize , 0.5*stonesize-2, degToRad(0), degToRad(360), false);
+      ctx.fill();
+    }
+  }
+}
+
+function undrawmove(ii){
+  let colo = "rgb(0, 0,0)";
+
+  if(ii>-1 && ii<boardstate.xsize){
+    jj=boardstate.nextys[ii];
+    if(jj<boardstate.ysize && jj > -1){
+      let jj2=boardstate.ysize-1-jj;
+      ctx.fillStyle = colo;
+      ctx.beginPath();
+      ctx.arc(xoffset+(ii+0.5)*stonesize,(jj2+0.5)*stonesize , 0.5*stonesize-2, degToRad(0), degToRad(360), false);
+      ctx.fill();
+    }
   }
 }
 
@@ -181,4 +224,14 @@ canvas.addEventListener('touchend', (e) => {
 clearBtn.addEventListener('click', () => {
   resetBoard();
   redraw();
+});
+
+backBtn.addEventListener('click', () => {
+  let ii = backBoard();
+  undrawmove(ii);
+});
+
+forwBtn.addEventListener('click', () => {
+  let ii = forwBoard();
+  drawmove(ii);
 });
