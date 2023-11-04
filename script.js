@@ -232,6 +232,7 @@ backBtn.addEventListener('click', () => {
 });
 
 forwBtn.addEventListener('click', () => {
-  let ii = forwBoard();
+  let ii = boardstate.history[boardstate.movenum];
   drawmove(ii);
+  forwBoard();
 });
