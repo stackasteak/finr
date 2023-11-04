@@ -53,13 +53,13 @@ function resetBoard(){
 
 function updateBoard(ii){
   if(boardstate.nextys[ii]<boardstate.ysize){
-    if(boardstate.history.length == boardstate.movenum){
-      boardstate.history.push(ii);
-      boardstate.movenum = boardstate.movenum + 1;
-      boardstate.nextys[ii] = boardstate.nextys[ii] +1;
+    if(boardstate.history.length > boardstate.movenum){
+      boardstate.history = boardstate.history.slice(0, boardstate.movenum);
     }
-    else{
-
+    boardstate.history.push(ii);
+    boardstate.movenum = boardstate.movenum + 1;
+    boardstate.nextys[ii] = boardstate.nextys[ii] +1;
+  
   }
 }
 
