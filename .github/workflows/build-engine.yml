@@ -5,4 +5,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: mymindstorm/setup-emsdk@v12
-  
+      - run: emcc -embind -o engine.js engine/engine.cpp
