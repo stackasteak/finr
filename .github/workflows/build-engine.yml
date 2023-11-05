@@ -1,7 +1,6 @@
-name: build-engine
 on: [push] 
 jobs: 
-  build-emsdk:
+  build-engine-job:
     runs-on: ubuntu-latest
     steps:
       - uses: mymindstorm/setup-emsdk@v12
@@ -9,3 +8,12 @@ jobs:
       - name: run emcc  
         working-directory: ./engine
         run: emcc -embind -o engine.js engine.cpp
+      - name: commit and push
+        working-directory: ./engine
+        run: |
+          git config user.email "auto@auto.com"
+          git config user.name autoauto
+          git remote set-url origin https://github.com/stackasteak/finr
+          git add -A
+          git commit -m "auto report"
+          git push
