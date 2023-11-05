@@ -7,4 +7,4 @@ jobs:
       - uses: mymindstorm/setup-emsdk@v12
       - name: run emcc  
         working-directory: ./engine
-      - run: emcc -embind -o engine.js engine/engine.cpp
+        run: emcc -embind -o engine.js engine/engine.cpp
