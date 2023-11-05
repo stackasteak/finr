@@ -1,0 +1,8 @@
+name: build-engine
+on: [push] 
+jobs: 
+  build-emsdk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: mymindstorm/setup-emsdk@v12
+  

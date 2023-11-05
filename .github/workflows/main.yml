@@ -1,6 +1,0 @@
-name: build-engine
-on: [push] 
-jobs: 
-  build-emsdk:
-    uses: mymindstorm/setup-emsdk@v12
-  
