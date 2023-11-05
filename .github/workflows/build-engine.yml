@@ -13,7 +13,8 @@ jobs:
         run: |
           git config user.email "auto@auto.com"
           git config user.name autoauto
-          git remote set-url origin https://github.com/stackasteak/finr
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           git add -A
           git commit -m "auto report"
           git push
+        
