@@ -5,6 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: mymindstorm/setup-emsdk@v12
+      - uses: actions:checkout@v2
       - name: run emcc  
         working-directory: ./engine
         run: emcc -embind -o engine.js engine/engine.cpp
