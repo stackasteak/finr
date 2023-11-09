@@ -85,6 +85,16 @@ function forwBoard(){
   return err;
 }
 
+//interface
+
+function readHistory(h){
+  let re = "/;[ry]\[(\d+)\]/g";
+  let m = [...h.matchAll(re)];
+  return m.map((mm) => Number(mm[1]));
+}
+
+//drawing 
+
 function degToRad(degrees) {
   return degrees * Math.PI / 180;
 };
