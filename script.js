@@ -7,6 +7,8 @@ const sizePicker = document.getElementById('bsize');
 const backBtn = document.querySelector('.backBtn');
 const forwBtn = document.querySelector('.forwBtn');
 const clearBtn = document.querySelector('.clearBtn');
+const pastehistBox = document.getElementById('pastehistBox');
+const pastehistBtn = document.getElementById('pastehistButton');
 
 //drawing variables
 let stonesize;
