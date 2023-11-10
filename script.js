@@ -253,9 +253,9 @@ forwBtn.addEventListener('click', () => {
 pastehistBtn.addEventListener('click', () => {
   resetBoard();
   redraw();
-  hh = readHistory(pastehistBox.value);
-  for (let kk=0; kk<hh.length; kk++){
-    drawmove(hh[kk]);
-    updateBoard(hh[kk]);
-  }
+  //hh = readHistory(pastehistBox.value);
+  //for (let kk=0; kk<hh.length; kk++){
+  //  drawmove(hh[kk]);
+  //  updateBoard(hh[kk]);
+  //}
 });
