@@ -253,6 +253,7 @@ forwBtn.addEventListener('click', () => {
 pastehistBtn.addEventListener('click', () => {
   resetBoard();
   redraw();
+  alert(pastehistBox.value);
   //hh = readHistory(pastehistBox.value);
   //for (let kk=0; kk<hh.length; kk++){
   //  drawmove(hh[kk]);
