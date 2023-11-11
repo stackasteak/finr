@@ -91,7 +91,7 @@ function forwBoard(){
 
 function readHistory(h){
   //let re = "/;[ry]\[(\d+)\]/g";
-  let re = /.*(\d+).*/g
+  let re = /[^\d]*(\d+)[^\d]*/g
   let m = [...h.matchAll(re)];
   return m.map((mm) => Number(mm[1]));
 }
