@@ -255,7 +255,7 @@ pastehistBtn.addEventListener('click', () => {
   redraw();
   hh = readHistory(pastehistBox.value);
   for (let kk=0; kk<hh.length; kk++){
-    drawmove(hh[kk]);
-    updateBoard(hh[kk]);
+    drawmove(hh[kk]-1);
+    updateBoard(hh[kk]-1);
   }
 });
