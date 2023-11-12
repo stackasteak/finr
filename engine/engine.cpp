@@ -7,6 +7,10 @@ using namespace emscripten;
 struct engineState{
   std::vector<float> p;
 
+  engineState(int n){
+    p.resize(n,0.0);
+  }
+
 };
 
 EMSCRIPTEN_BINDINGS(my_class_example) {
