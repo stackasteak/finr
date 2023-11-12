@@ -4,6 +4,11 @@
 
 using namespace emscripten;
 
+struct engineState{
+  std::vector<float> p;
+
+};
+
 EMSCRIPTEN_BINDINGS(my_class_example) {
   class_<MyClass>("MyClass")
     .constructor<int, std::string>()
