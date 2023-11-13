@@ -11,7 +11,7 @@ struct engineState{
     p.resize(n,0.0);
   }
 
-  getP(int ii){
+  float getP(int ii){
     return p[ii];
   }
 
