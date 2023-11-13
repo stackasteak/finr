@@ -260,3 +260,6 @@ pastehistBtn.addEventListener('click', () => {
     updateBoard(hh[kk]-1);
   }
 });
+
+const engineWorker = new Worker("engine_worker.js");
+
