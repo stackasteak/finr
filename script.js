@@ -9,6 +9,7 @@ const forwBtn = document.querySelector('.forwBtn');
 const clearBtn = document.querySelector('.clearBtn');
 const pastehistBox = document.getElementById('pastehistBox');
 const pastehistBtn = document.getElementById('pastehistButton');
+const startBtn = document.getElementById('startBtn');
 
 //drawing variables
 let stonesize;
