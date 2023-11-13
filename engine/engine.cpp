@@ -11,23 +11,20 @@ struct engineState{
     p.resize(n,0.0);
   }
 
+  getP(int ii){
+    return p[ii];
+  }
+
 };
-
-EMSCRIPTEN_BINDINGS(my_class_example) {
-  class_<MyClass>("MyClass")
-    .constructor<int, std::string>()
-    .function("incrementX", &MyClass::incrementX)
-    .property("x", &MyClass::getX, &MyClass::setX)
-    .property("x_readonly", &MyClass::getX)
-    .class_function("getStringFromInstance", &MyClass::getStringFromInstance)
-    ;
-}
-
 
 
 EMSCRIPTEN_BINDINGS(engine_module) {
 
+  class_<engineState>("engineState")
+    .constructor<int>()
+    .function("getP", &engineState::getP);
+    
   // register bindings for std::vector<int> and std::map<int, std::string>.
-  register_vector<float>("vector<float>");
+  //register_vector<float>("vector<float>");
 
 }
