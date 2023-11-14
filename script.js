@@ -270,7 +270,7 @@ startBtn.addEventListener('click', () => {
       {msg:"start",
        bs: boardstate});
     engineState.running =true;
-    startBtn.value = "stop";
+    startBtn.textContent = "stop";
   }
   else{
     engineWorker.postmessage(
