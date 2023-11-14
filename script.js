@@ -262,7 +262,13 @@ pastehistBtn.addEventListener('click', () => {
 });
 
 const engineWorker = new Worker("engine_worker.js");
+const engineState = {running: false};
 
 startBtn.addEventListener('click', () => {
-  engineWorker.postmessage([boardstate.xsize,boardstate.ysize]);
+  if(!engineState.running){
+    engineWorker.postmessage(
+      {msg:"start",
+       bs: boardstate});
+    engineState.running =true;
+  }
 };
