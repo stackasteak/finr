@@ -266,15 +266,15 @@ const engineState = {running: false};
 
 startBtn.addEventListener('click', () => {
   if(!engineState.running){
-    engineWorker.postmessage(
-      {msg:"start",
-       bs: boardstate});
+    //engineWorker.postmessage(
+    //  {msg:"start",
+    //   bs: boardstate});
     engineState.running =true;
     startBtn.textContent = "stop";
   }
   else{
-    engineWorker.postmessage(
-      {msg:"stop"});
+    //engineWorker.postmessage(
+    //  {msg:"stop"});
     engineState.running =false;
     startBtn.textContent = "start";
   }
