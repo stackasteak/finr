@@ -263,3 +263,6 @@ pastehistBtn.addEventListener('click', () => {
 
 const engineWorker = new Worker("engine_worker.js");
 
+startBtn.addEventListener('click', () => {
+  engineWorker.postmessage([boardstate.xsize,boardstate.ysize]);
+};
