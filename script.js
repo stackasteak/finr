@@ -276,6 +276,6 @@ startBtn.addEventListener('click', () => {
     engineWorker.postmessage(
       {msg:"stop"});
     engineState.running =false;
-    startBtn.value = "start";
+    startBtn.textContent = "start";
   }
 });
