@@ -1,4 +1,4 @@
-
+/*
 importScripts("engine/engine.js");
 
 var estate;
@@ -19,18 +19,19 @@ function doBatch(){
   postMessage(p);
   timeoutID = setTimeout(doBatch,2000);
 }
+*/
 
 onmessage = (e) => {
   if (e.data.msg == "start"){
     //estate.resize(e.data.bs.xsize,e.data.bs.ysize);
-    estate = new Module.engineState(9,9);
-    estate.resize0();
+    //estate = new Module.engineState(9,9);
+    //estate.resize0();
     //doBatch();
     postMessage([9]);
   }
 
   if (e.data.msg == "stop"){
-    clearTimeout(timeoutID);
+    //clearTimeout(timeoutID);
   }
   //postMessage([9]);
 };
