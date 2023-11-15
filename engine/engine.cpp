@@ -21,6 +21,8 @@ public:
     p.resize(nx_,0.0);
   }
 
+  void resize0(){}
+
   void batch(){
     for(int ii=0; ii<nx; ii++){
       p[ii]= std::rand();
@@ -42,6 +44,7 @@ EMSCRIPTEN_BINDINGS(engine_module) {
 
   class_<engineState>("engineState")
     .constructor<int,int>()
+    .function("resize0", &engineState::resize0)
     .function("batch", &engineState::batch)
     .function("getNX", &engineState::getNX)
     .function("getNY", &engineState::getNY)
