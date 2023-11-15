@@ -40,9 +40,9 @@ EMSCRIPTEN_BINDINGS(engine_module) {
 
   class_<engineState>("engineState")
     .constructor<int,int>()
-    .function("batch", engineState::batch)
-    .function("getNX", engineState::getNX)
-    .function("getNY", engineState::getNY)
+    .function("batch", &engineState::batch)
+    .function("getNX", &engineState::getNX)
+    .function("getNY", &engineState::getNY)
     .function("resize", &engineState::resize)
     .function("getP", &engineState::getP);
     
