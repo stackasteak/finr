@@ -201,6 +201,7 @@ function undrawmove(ii){
 
 function drawP(p){
   ctx.fillStyle = "rgb(255,255,255)";
+  alert(p[0]);
   for(let ii=0; ii<boardstate.xsize; ii++){
     let jj=boardstate.nextys[ii];
     if (jj<boardstate.ysize){
