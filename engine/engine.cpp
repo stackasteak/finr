@@ -23,6 +23,10 @@ struct engineState{
     return p[ii];
   }
 
+  int getNX(){return nx;}
+
+  int getNY(){return ny;}
+
 };
 
 
@@ -30,6 +34,8 @@ EMSCRIPTEN_BINDINGS(engine_module) {
 
   class_<engineState>("engineState")
     .constructor<int,int>()
+    .function("getNX", engineState::getNX)
+    .function("getNY", engineState::getNY)
     .function("resize", &engineState::resize)
     .function("getP", &engineState::getP);
     
