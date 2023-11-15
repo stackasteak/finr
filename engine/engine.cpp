@@ -19,6 +19,9 @@ struct engineState{
     p.resize(nx_,0.0);
   }
 
+  void batch(){
+    for(int ii=0; ii<nx; ii++)
+
   float getP(int ii){
     return p[ii];
   }
