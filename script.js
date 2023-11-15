@@ -272,7 +272,7 @@ pastehistBtn.addEventListener('click', () => {
 });
 
 const engineWorker = new Worker("engine_worker.js");
-const enginerun = false;
+var enginerun = false;
 
 startBtn.addEventListener('click', () => {
   if(!enginerun){
