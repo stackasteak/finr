@@ -22,7 +22,7 @@ function doBatch(){
 
 onmessage = (e) => {
   if (e.data.msg == "start"){
-    estate.resize(e.data.bs.xsize,e.data.bs.ysize);
+    //estate.resize(e.data.bs.xsize,e.data.bs.ysize);
     //doBatch();
     postMessage([9]);
   }
