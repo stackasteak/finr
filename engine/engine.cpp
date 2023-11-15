@@ -13,6 +13,12 @@ struct engineState{
     p.resize(nx_,0.0);
   }
 
+  void resize(int nx_, int ny_) {
+    nx =nx_;
+    ny=ny_;
+    p.resize(nx_,0.0);
+  }
+
   float getP(int ii){
     return p[ii];
   }
@@ -24,6 +30,7 @@ EMSCRIPTEN_BINDINGS(engine_module) {
 
   class_<engineState>("engineState")
     .constructor<int,int>()
+    .function("resize", &engineState::resize)
     .function("getP", &engineState::getP);
     
   // register bindings for std::vector<int> and std::map<int, std::string>.
