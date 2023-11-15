@@ -20,7 +20,10 @@ struct engineState{
   }
 
   void batch(){
-    for(int ii=0; ii<nx; ii++)
+    for(int ii=0; ii<nx; ii++){
+      p[ii]= std::rand();
+    }
+  }
 
   float getP(int ii){
     return p[ii];
@@ -37,6 +40,7 @@ EMSCRIPTEN_BINDINGS(engine_module) {
 
   class_<engineState>("engineState")
     .constructor<int,int>()
+    .function("batch", engineState::batch)
     .function("getNX", engineState::getNX)
     .function("getNY", engineState::getNY)
     .function("resize", &engineState::resize)
