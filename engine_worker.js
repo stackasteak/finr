@@ -14,15 +14,15 @@ function doBatch(){
 }
 
 onmessage = (e) => {
-  if (e.data.msg == "start"){
-    estate.resize(e.data.bs.xsize,e.data.bs.ysize);
-    doBatch();
-  }
+  //if (e.data.msg == "start"){
+  //  estate.resize(e.data.bs.xsize,e.data.bs.ysize);
+  //  doBatch();
+  //}
 
-  if (e.data.msg == "stop"){
-    clearTimeout(timeoutID);
-  }
-    
+  //if (e.data.msg == "stop"){
+  //  clearTimeout(timeoutID);
+  //}
+  postMessage([9]);
 };
 
 
