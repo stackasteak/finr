@@ -8,7 +8,7 @@ var Module = {
     estate = new Module.engineState(9,9);
   }
 };
-/*
+
 var timeoutID;
 function doBatch(){
   estate.batch();
@@ -19,7 +19,7 @@ function doBatch(){
   postMessage(p);
   timeoutID = setTimeout(doBatch,2000);
 }
-*/
+
 onmessage = (e) => {
   //if (e.data.msg == "start"){
   //  estate.resize(e.data.bs.xsize,e.data.bs.ysize);
