@@ -6,9 +6,11 @@ using namespace emscripten;
 
 struct engineState{
   std::vector<float> p;
+  int nx;
+  int ny;
 
-  engineState(int n){
-    p.resize(n,0.0);
+  engineState(int nx_, int ny_) : nx(nx_), ny(ny_){
+    p.resize(nx_,0.0);
   }
 
   float getP(int ii){
