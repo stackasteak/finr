@@ -1,7 +1,7 @@
 
 importScripts("engine/engine.js");
 
-//var estate = new Module.engineState(9,9); 
+var estate = new Module.engineState(9,9); 
 /*
 var timeoutID;
 function doBatch(){
