@@ -1,7 +1,13 @@
 
 importScripts("engine/engine.js");
 
-var estate = new Module.engineState(9,9); 
+var estate;
+
+var Module = {
+  onRuntimeInitialized: function() {
+    estate = new Module.engineState(9,9);
+  }
+};
 /*
 var timeoutID;
 function doBatch(){
