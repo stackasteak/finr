@@ -23,7 +23,7 @@ struct engineState{
 EMSCRIPTEN_BINDINGS(engine_module) {
 
   class_<engineState>("engineState")
-    .constructor<int>()
+    .constructor<int,int>()
     .function("getP", &engineState::getP);
     
   // register bindings for std::vector<int> and std::map<int, std::string>.
