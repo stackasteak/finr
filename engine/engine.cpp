@@ -4,10 +4,12 @@
 
 using namespace emscripten;
 
-struct engineState{
+class engineState{
   std::vector<float> p;
   int nx;
   int ny;
+
+public: 
 
   engineState(int nx_, int ny_) : nx(nx_), ny(ny_){
     p.resize(nx_,0.0);
