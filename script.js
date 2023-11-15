@@ -273,6 +273,7 @@ pastehistBtn.addEventListener('click', () => {
   }
 });
 
+/*
 const engineWorker = new Worker("engine_worker.js");
 var enginerun = false;
 
@@ -296,7 +297,7 @@ engineWorker.onmessage =  (e) => {
   alert("message received");
   //drawP(e.data)
 };
-
+*/
 
 
 
