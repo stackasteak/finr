@@ -199,6 +199,16 @@ function undrawmove(ii){
   }
 }
 
+function drawP(p){
+  for(let ii=0; ii<boardstate.xsize; ii++){
+    let jj=boardstate.nextys[ii];
+    if (jj<boardstate.ysize){
+      let jj2=boardstate.ysize-1-jj;
+      ctx.fillText(p[ii].toFixed(0).tostring(), xoffset+ii*stonesize, (jj2)*stonesize, stonesize);
+    }
+  }
+}
+
 // update sizepicker output value
 
 sizePicker.onchange = ( () => {setSize(); resetBoard(); redraw();} );
@@ -262,22 +272,24 @@ pastehistBtn.addEventListener('click', () => {
 });
 
 const engineWorker = new Worker("engine_worker.js");
-const engineState = {running: false};
+const enginerun = false;
 
 startBtn.addEventListener('click', () => {
-  if(!engineState.running){
+  if(!enginerun){
     engineWorker.postMessage(
       {msg:"start",
        bs: boardstate});
-    engineState.running =true;
+    enginerun =true;
     startBtn.textContent = "stop";
   }
   else{
     engineWorker.postMessage(
       {msg:"stop"});
-    engineState.running =false;
+    enginerun =false;
     startBtn.textContent = "start";
   }
 });
+
+engineWorker.onmessage =  (e) => {drawP(e.data)};
 
 
