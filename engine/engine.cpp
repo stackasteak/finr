@@ -19,42 +19,29 @@ extern "C" {
 
 EMSCRIPTEN_KEEPALIVE
 void resize(int nx_, int ny_) {
-    nx =nx_;
-    ny=ny_;
-    p.resize(nx_,0.0);
+  es.nx =nx_;
+  es.ny=ny_;
+  es.p.resize(nx_,0.0);
+}
+
+EMSCRIPTEN_KEEPALIVE
+void batch(){
+  for(int ii=0; ii<nx; ii++){
+    es.p[ii]= std::rand();
   }
+}
 
-  void resize0(){}
+EMSCRIPTEN_KEEPALIVE
+float getP(int ii){
+  return es.p[ii];
+}
 
-  void batch(){
-    for(int ii=0; ii<nx; ii++){
-      p[ii]= std::rand();
-    }
-  }
+EMSCRIPTEN_KEEPALIVE  
+int getNX(){return es.nx;}
 
-  float getP(int ii){
-    return p[ii];
-  }
-
-  int getNX(){return nx;}
-
-  int getNY(){return ny;}
-
-};
-
-
-EMSCRIPTEN_BINDINGS(engine_module) {
-
-  class_<engineState>("engineState")
-    .constructor<int,int>()
-    .function("resize0", &engineState::resize0)
-    .function("batch", &engineState::batch)
-    .function("getNX", &engineState::getNX)
-    .function("getNY", &engineState::getNY)
-    .function("resize", &engineState::resize)
-    .function("getP", &engineState::getP);
-    
-  // register bindings for std::vector<int> and std::map<int, std::string>.
-  //register_vector<float>("vector<float>");
+EMSCRIPTEN_KEEPALIVE
+int getNY(){return es.ny;}
 
 }
+
+
