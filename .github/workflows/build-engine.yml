@@ -7,7 +7,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: run emcc  
         working-directory: ./engine
-        run: emcc -lembind -s NO_EXIT_RUNTIME=1 -o engine.js engine.cpp
+        run: emcc  engine.cpp -o engine.wasm
       - name: commit and push
         working-directory: ./engine
         run: |
