@@ -1,21 +1,24 @@
-#include <emscripten/bind.h>
+#include <emscripten.h>
 #include "Game.h"
 #include <vector>
 
-using namespace emscripten;
 
-class engineState{
+struct engineState{
   std::vector<float> p;
   int nx;
   int ny;
-
-public: 
-
   engineState(int nx_, int ny_) : nx(nx_), ny(ny_){
     p.resize(nx_,0.0);
   }
 
-  void resize(int nx_, int ny_) {
+};
+
+engineState es(9,9);
+
+extern "C" {
+
+EMSCRIPTEN_KEEPALIVE
+void resize(int nx_, int ny_) {
     nx =nx_;
     ny=ny_;
     p.resize(nx_,0.0);
