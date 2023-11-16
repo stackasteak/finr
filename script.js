@@ -294,11 +294,13 @@ startBtn.addEventListener('click', () => {
 });
 
 engineWorker.onmessage =  (e) => {
-  var estate = new Module.engineState(9,9);
   alert("message received");
   //drawP(e.data)
 };
 
+WebAssembly.compileStreaming(fetch("engine/engine.wasm")).then((mod) =>
+  {worker.postMessage({msg:"wasm",m:mod});}
+);
 
 
 
