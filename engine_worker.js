@@ -1,13 +1,5 @@
-/*
-importScripts("engine/engine.js");
 
 var estate;
-
-var Module = {
-  onRuntimeInitialized: function() {
-    estate = new Module.engineState(9,9);
-  }
-};
 
 var timeoutID;
 function doBatch(){
@@ -19,7 +11,7 @@ function doBatch(){
   postMessage(p);
   timeoutID = setTimeout(doBatch,2000);
 }
-*/
+
 
 onmessage = (e) => {
   if (e.data.msg == "start"){
@@ -33,7 +25,15 @@ onmessage = (e) => {
   if (e.data.msg == "stop"){
     //clearTimeout(timeoutID);
   }
-  //postMessage([9]);
+
+  if (e.data.msg =="wasm"){
+    const mod = e.data.m;
+
+    WebAssembly.instantiate(mod).then((instance) => {
+      instance.exports.exported_func();
+    });
+    postMessage([9]);
+  }
 };
 
 
