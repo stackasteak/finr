@@ -26,7 +26,7 @@ void resize(int nx_, int ny_) {
 
 EMSCRIPTEN_KEEPALIVE
 void batch(){
-  for(int ii=0; ii<nx; ii++){
+  for(int ii=0; ii<es.nx; ii++){
     es.p[ii]= std::rand();
   }
 }
