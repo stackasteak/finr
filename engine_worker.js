@@ -1,12 +1,13 @@
 
-var estate;
+var einstance;
 
 var timeoutID;
+
 function doBatch(){
-  estate.batch();
+  einstance.exports.batch();
   let p =[];
-  for( let ii=0; ii<estate.getNX(); ii++){
-    p.push(estate.getP(ii));
+  for( let ii=0; ii<einstance.exports.getNX(); ii++){
+    p.push(einstance.exports.getP(ii));
   }
   postMessage(p);
   timeoutID = setTimeout(doBatch,2000);
@@ -30,7 +31,7 @@ onmessage = (e) => {
     const mod = e.data.m;
 
     WebAssembly.instantiate(mod).then((instance) => {
-      instance.exports.exported_func();
+      einstance = instance;
     });
     postMessage([9]);
   }
