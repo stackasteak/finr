@@ -1,3 +1,4 @@
+var mymod;
 var estate;
 var timeoutID;
 function doBatch(){
@@ -13,7 +14,8 @@ function doBatch(){
 
 onmessage = (e) => {
   if (e.data.msg == "init"){
-    estate=e.data.es;
+    mymod = e.data.m;
+    estate = new mymod.engineState(9,9);
     postMessage([estate.getP(0),0,0,0,0,0,0,0,0]);
   }
   else if (e.data.msg == "start"){
