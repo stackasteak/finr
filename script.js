@@ -276,6 +276,7 @@ pastehistBtn.addEventListener('click', () => {
 
 const engineWorker = new Worker("engine_worker.js");
 var enginerun = false;
+var estate = new Module.engineState(9,9);
 
 startBtn.addEventListener('click', () => {
   if(!enginerun){
@@ -294,7 +295,7 @@ startBtn.addEventListener('click', () => {
 });
 
 engineWorker.onmessage =  (e) => {
-  var estate = new Module.engineState(9,9);
+  
   
   alert(estate.getP(0));
   //drawP(e.data)
