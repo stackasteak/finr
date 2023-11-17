@@ -295,7 +295,8 @@ startBtn.addEventListener('click', () => {
 
 engineWorker.onmessage =  (e) => {
   var estate = new Module.engineState(9,9);
-  alert("message received");
+  
+  alert(estate.getP(0));
   //drawP(e.data)
 };
 
