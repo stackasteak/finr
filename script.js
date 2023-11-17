@@ -15,7 +15,7 @@ const startBtn = document.getElementById('startBtn');
 const engineWorker = new Worker("engine_worker.js");
 var enginerun = false;
 var engineinit =false;
-var estate = new Module.engineState(9,9);
+
 
 
 //drawing variables
@@ -307,7 +307,7 @@ startBtn.addEventListener('click', () => {
 });
 
 engineWorker.onmessage =  (e) => {
-
+  var estate = new Module.engineState(9,9);
   alert(estate.getP(0));
   //drawP(e.data)
 };
