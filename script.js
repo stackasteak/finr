@@ -284,11 +284,11 @@ pastehistBtn.addEventListener('click', () => {
 
 startBtn.addEventListener('click', () => {
   if(!enginerun && !engineinit){
-    var estate = new Module.engineState(9,9); 
+    //var estate = new Module.engineState(9,9); 
     engineWorker.postMessage(
       {msg:"init",
        bs: boardstate,
-       es: estate});
+       m: Module});
     enginerun =true; 
     engineinit=true;
     startBtn.textContent = "stop";
