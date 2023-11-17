@@ -14,7 +14,7 @@ function doBatch(){
 onmessage = (e) => {
   if (e.data.msg == "init"){
     estate=e.data.es;
-    postMessage([0,0,0,0,0,0,0,0,0]);
+    postMessage([estate.getP(0),0,0,0,0,0,0,0,0]);
   }
   else if (e.data.msg == "start"){
     //estate.resize(e.data.bs.xsize,e.data.bs.ysize);
