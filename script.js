@@ -11,6 +11,13 @@ const pastehistBox = document.getElementById('pastehistBox');
 const pastehistBtn = document.getElementById('pastehistButton');
 const startBtn = document.getElementById('startBtn');
 
+//engine variables
+const engineWorker = new Worker("engine_worker.js");
+var enginerun = false;
+var engineinit =false;
+var estate = new Module.engineState(9,9);
+
+
 //drawing variables
 let stonesize;
 let xoffset=0;
@@ -274,12 +281,16 @@ pastehistBtn.addEventListener('click', () => {
 });
 
 
-const engineWorker = new Worker("engine_worker.js");
-var enginerun = false;
-var estate = new Module.engineState(9,9);
 
 startBtn.addEventListener('click', () => {
-  if(!enginerun){
+  if(!enginerun && !engineinit){
+    engineWorker.postMessage(
+      {msg:"init",
+       bs: boardstate,
+       es: estate});
+    enginerun =true; 
+  }
+  else if(!enginerun){ 
     engineWorker.postMessage(
       {msg:"start",
        bs: boardstate});
@@ -295,8 +306,7 @@ startBtn.addEventListener('click', () => {
 });
 
 engineWorker.onmessage =  (e) => {
-  
-  
+
   alert(estate.getP(0));
   //drawP(e.data)
 };
