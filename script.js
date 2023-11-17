@@ -294,7 +294,7 @@ startBtn.addEventListener('click', () => {
 });
 
 engineWorker.onmessage =  (e) => {
-  alert("message received");
+  alert(e.data[0]);
   //drawP(e.data)
 };
 
