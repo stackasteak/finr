@@ -291,6 +291,7 @@ startBtn.addEventListener('click', () => {
        es: estate});
     enginerun =true; 
     engineinit=true;
+    startBtn.textContent = "stop";
   }
   else if(!enginerun){ 
     engineWorker.postMessage(
