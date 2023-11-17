@@ -289,6 +289,7 @@ startBtn.addEventListener('click', () => {
        bs: boardstate,
        es: estate});
     enginerun =true; 
+    engineinit=true;
   }
   else if(!enginerun){ 
     engineWorker.postMessage(
