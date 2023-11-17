@@ -299,7 +299,7 @@ engineWorker.onmessage =  (e) => {
 };
 
 WebAssembly.compileStreaming(fetch("engine/engine.wasm")).then((mod) =>
-  {worker.postMessage({msg:"wasm",m:mod});}
+  {engineWorker.postMessage({msg:"wasm",m:mod});}
 );
 
 
