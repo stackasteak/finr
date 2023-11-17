@@ -20,7 +20,7 @@ onmessage = (e) => {
     //estate = new Module.engineState(9,9);
     //estate.resize0();
     //doBatch();
-    postMessage([9]);
+    postMessage([8]);
   }
 
   if (e.data.msg == "stop"){
