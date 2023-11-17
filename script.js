@@ -284,6 +284,7 @@ pastehistBtn.addEventListener('click', () => {
 
 startBtn.addEventListener('click', () => {
   if(!enginerun && !engineinit){
+    var estate = new Module.engineState(9,9); 
     engineWorker.postMessage(
       {msg:"init",
        bs: boardstate,
@@ -307,8 +308,8 @@ startBtn.addEventListener('click', () => {
 });
 
 engineWorker.onmessage =  (e) => {
-  var estate = new Module.engineState(9,9);
-  alert(estate.getP(0));
+  
+  alert(e.data[0]);
   //drawP(e.data)
 };
 
