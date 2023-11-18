@@ -7,7 +7,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: run emcc  
         working-directory: ./
-        run: emcc -o engine.html engine.cpp
+        run: emcc engine.cpp -o index.html --shell-file index_template.html
       - name: commit and push
         working-directory: ./
         run: |
