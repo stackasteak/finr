@@ -2,7 +2,7 @@
 #include "Game.h"
 #include <vector>
 
-using namespace emscripten;
+//using namespace emscripten;
 
 class engineState{
   std::vector<float> p;
