@@ -330,6 +330,8 @@ engineWorker.onmessage =  (e) => {
 
 EM_JS(void, initCanvas, (), {
   let ctx = Module.canvas.getContext('2d');
+  let width = window.innerWidth;
+  let height = window.innerHeight+30;
   ctx.fillStyle = 'rgb(25,140,255)';
   ctx.fillRect(0,0,width,height);
 
