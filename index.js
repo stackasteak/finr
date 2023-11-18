@@ -987,7 +987,7 @@ function dbg(text) {
 // end include: runtime_debug.js
 // === Body ===
 
-function initCanvas() { let ctx = Module.canvas.getContext('2d'); ctx.fillStyle = 'rgb(25,140,255)'; ctx.fillRect(0,0,width,height); }
+function initCanvas() { let ctx = Module.canvas.getContext('2d'); let width = window.innerWidth; let height = window.innerHeight+30; ctx.fillStyle = 'rgb(25,140,255)'; ctx.fillRect(0,0,width,height); }
 
 
 // end include: preamble.js
@@ -1219,7 +1219,7 @@ var stackRestore = createExportWrapper('stackRestore');
 var stackAlloc = createExportWrapper('stackAlloc');
 var _emscripten_stack_get_current = () => (_emscripten_stack_get_current = wasmExports['emscripten_stack_get_current'])();
 var ___start_em_js = Module['___start_em_js'] = 65536;
-var ___stop_em_js = Module['___stop_em_js'] = 65655;
+var ___stop_em_js = Module['___stop_em_js'] = 65722;
 
 // include: postamble.js
 // === Auto-generated postamble setup entry stuff ===
