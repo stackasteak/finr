@@ -6,10 +6,10 @@ jobs:
       - uses: mymindstorm/setup-emsdk@v12
       - uses: actions/checkout@v2
       - name: run emcc  
-        working-directory: ./engine
-        run: emcc -lembind -s NO_EXIT_RUNTIME=1 -o engine.js engine.cpp
+        working-directory: ./
+        run: emcc -o engine.html engine.cpp
       - name: commit and push
-        working-directory: ./engine
+        working-directory: ./
         run: |
           git config user.email "auto@auto.com"
           git config user.name autoauto
