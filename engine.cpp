@@ -1,4 +1,4 @@
-#include <emscripten/bind.h>
+#include <emscripten.h>
 #include "Game.h"
 #include <vector>
 
@@ -39,19 +39,7 @@ public:
 
 };
 
-
-EMSCRIPTEN_BINDINGS(engine_module) {
-
-  class_<engineState>("engineState")
-    .constructor<int,int>()
-    .function("resize0", &engineState::resize0)
-    .function("batch", &engineState::batch)
-    .function("getNX", &engineState::getNX)
-    .function("getNY", &engineState::getNY)
-    .function("resize", &engineState::resize)
-    .function("getP", &engineState::getP);
-    
-  // register bindings for std::vector<int> and std::map<int, std::string>.
-  //register_vector<float>("vector<float>");
-
+int main (){
+  return 0;
 }
+
