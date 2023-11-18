@@ -24,16 +24,24 @@
       <button id="forwBtn"> > </button>
       <button id="clearBtn"> clear </button>
       <input type="text" id="pastehistBox"  value="" />
-      <button id="pastehistButton" > load</button>
+      <button id="pastehistBtn" > load</button>
       <button id="startBtn" > start </button>
     </div>
 
     <script type='text/javascript'>
-        var Module = {
-            canvas: (function() { return document.getElementById('canvas'); })()
+      var Module = {
+        canvas: (function() { return document.getElementById('canvas'); })() ,
+        bsize: (function() { return document.getElementById('bsize'); })() ,
+        backBtn: (function() { return document.getElementById('backBtn'); })() ,
+        forwBtn: (function() { return document.getElementById('forwBtn'); })() ,
+        clearBtn: (function() { return document.getElementById('clearBtn'); })() ,
+        pastehistBtn: (function() { return document.getElementById('pastehistBtn'); })() ,
+        startBtn: (function() { return document.getElementById('startBtn'); })()
+          
         };
     </script>
 
+    {{{ SCRIPT }}}
     
   </body>
 </html>
