@@ -987,6 +987,9 @@ function dbg(text) {
 // end include: runtime_debug.js
 // === Body ===
 
+function initCanvas() { let ctx = Module.canvas.getContext('2d'); ctx.fillStyle = 'rgb(25,140,255)'; ctx.fillRect(0,0,width,height); }
+
+
 // end include: preamble.js
 
   /** @constructor */
@@ -1199,7 +1202,8 @@ function checkIncomingModuleAPI() {
   ignoredModuleProp('fetchSettings');
 }
 var wasmImports = {
-  
+  /** @export */
+  initCanvas: initCanvas
 };
 var wasmExports = createWasm();
 var ___wasm_call_ctors = createExportWrapper('__wasm_call_ctors');
@@ -1214,7 +1218,8 @@ var stackSave = createExportWrapper('stackSave');
 var stackRestore = createExportWrapper('stackRestore');
 var stackAlloc = createExportWrapper('stackAlloc');
 var _emscripten_stack_get_current = () => (_emscripten_stack_get_current = wasmExports['emscripten_stack_get_current'])();
-
+var ___start_em_js = Module['___start_em_js'] = 65536;
+var ___stop_em_js = Module['___stop_em_js'] = 65655;
 
 // include: postamble.js
 // === Auto-generated postamble setup entry stuff ===
