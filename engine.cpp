@@ -370,6 +370,8 @@ EM_JS(void, drawmove, (float xpos, float ypos, float ss, int pl), {
     colo = "rgb(255, 0,0)";
   }
 
+  alert(xpos/ss);
+
   ctx.fillStyle = colo;
   ctx.beginPath();
   ctx.arc(xpos, ypos , 0.5*ss-2, 0.0, 6.283, false);
