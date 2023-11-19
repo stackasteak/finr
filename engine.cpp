@@ -369,7 +369,8 @@ EM_JS(void, drawmove, (float xpos, float ypos, float ss, int pl), {
   else {
     colo = "rgb(255, 0,0)";
   }
-
+  alert(xpos);
+  alert(ss);
   alert(xpos/ss);
 
   ctx.fillStyle = colo;
