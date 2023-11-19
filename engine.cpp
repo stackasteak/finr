@@ -336,6 +336,7 @@ EM_JS(void, initCanvas, (int nx, int ny), {
   ctx.fillRect(0,0,width,height);
 
   let stonesize;
+  let xoffset =0
   if(nx>=ny){
     stonesize = width/nx;
   }
@@ -348,7 +349,7 @@ EM_JS(void, initCanvas, (int nx, int ny), {
     for(let jj=0; jj<ny; jj++){
       ctx.fillStyle = "rgb(0, 0, 0)";
       ctx.beginPath();
-      ctx.arc(xoffset+(ii+0.5)*stonesize,(jj+0.5)*stonesize , 0.5*stonesize-2, 0.0, 6.2830, false);
+      ctx.arc((ii+0.5)*stonesize,(jj+0.5)*stonesize , 0.5*stonesize-2, 0.0, 6.2830, false);
       ctx.fill();
     }
   }
