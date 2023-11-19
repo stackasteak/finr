@@ -360,7 +360,16 @@ EM_JS(void, initCanvas, (int nx, int ny), {
 
 });
 
-
+int iselect(float x, int nx){
+  int ans=nx;
+  for(int ii=0; ii<nx; ii++){
+    if(x < (ii+1)*stonesize){
+      ans = ii;
+      break;
+    }
+  }
+  return ans;
+}
 
 class engineState{
   std::vector<float> p;
