@@ -377,6 +377,18 @@ struct drawingState{
   }
 };
 
+EM_BOOL touchend_callback(
+    int eventType,
+    const EmscriptenTouchEvent *event,
+    void *userData
+) {
+    
+    event->canvasX
+      
+    
+    return 0;
+}
+
 class engineState{
   std::vector<float> p;
   int nx;
@@ -414,11 +426,11 @@ public:
 
 int main (){
 
-  emscripten_set_touchstart_callback(
+  emscripten_set_touchend_callback(
         EMSCRIPTEN_EVENT_TARGET_CANVAS,
         NULL,
         1,
-        touchstart_callback
+        touchend_callback
     );
 
   float ss = redraw(9,9);
