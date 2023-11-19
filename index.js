@@ -987,7 +987,7 @@ function dbg(text) {
 // end include: runtime_debug.js
 // === Body ===
 
-function initCanvas(nx,ny) { let ctx = Module.canvas.getContext('2d'); let width = Module.canvas.width = window.innerWidth; let height = Module.canvas.height = window.innerWidth+30; ctx.fillStyle = 'rgb(25,140,255)'; ctx.fillRect(0,0,width,height); let stonesize; if(nx>=ny){ stonesize = width/nx; } else{ stonesize = width/ny; xoffset = (width-stonesize*nx)*0.5; } for(let ii=0; ii<nx; ii++){ for(let jj=0; jj<ny; jj++){ ctx.fillStyle = "rgb(0, 0, 0)"; ctx.beginPath(); ctx.arc(xoffset+(ii+0.5)*stonesize,(jj+0.5)*stonesize , 0.5*stonesize-2, 0.0, 6.2830, false); ctx.fill(); } } ctx.fillStyle = 'rgb(0,0,0)'; ctx.fillRect(0, stonesize*ny, width, height); }
+function initCanvas(nx,ny) { let ctx = Module.canvas.getContext('2d'); let width = Module.canvas.width = window.innerWidth; let height = Module.canvas.height = window.innerWidth+30; ctx.fillStyle = 'rgb(25,140,255)'; ctx.fillRect(0,0,width,height); let stonesize; let xoffset =0 if(nx>=ny){ stonesize = width/nx; } else{ stonesize = width/ny; xoffset = (width-stonesize*nx)*0.5; } for(let ii=0; ii<nx; ii++){ for(let jj=0; jj<ny; jj++){ ctx.fillStyle = "rgb(0, 0, 0)"; ctx.beginPath(); ctx.arc((ii+0.5)*stonesize,(jj+0.5)*stonesize , 0.5*stonesize-2, 0.0, 6.2830, false); ctx.fill(); } } ctx.fillStyle = 'rgb(0,0,0)'; ctx.fillRect(0, stonesize*ny, width, height); }
 
 
 // end include: preamble.js
@@ -1219,7 +1219,7 @@ var stackRestore = createExportWrapper('stackRestore');
 var stackAlloc = createExportWrapper('stackAlloc');
 var _emscripten_stack_get_current = () => (_emscripten_stack_get_current = wasmExports['emscripten_stack_get_current'])();
 var ___start_em_js = Module['___start_em_js'] = 65536;
-var ___stop_em_js = Module['___stop_em_js'] = 66188;
+var ___stop_em_js = Module['___stop_em_js'] = 66195;
 
 // include: postamble.js
 // === Auto-generated postamble setup entry stuff ===
