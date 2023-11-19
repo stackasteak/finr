@@ -328,7 +328,7 @@ engineWorker.onmessage =  (e) => {
 
   */
 
-EM_JS(void, initCanvas, (int nx, int ny), {
+EM_JS(float, initCanvas, (int nx, int ny), {
   let ctx = Module.canvas.getContext('2d');
   let width = Module.canvas.width = window.innerWidth;
   let height = Module.canvas.height = window.innerWidth+30;
@@ -357,7 +357,7 @@ EM_JS(void, initCanvas, (int nx, int ny), {
   ctx.fillStyle = 'rgb(0,0,0)'; 
   ctx.fillRect(0, stonesize*ny, width, height);
 
-
+  return stonesize;
 });
 
 int iselect(float x, int nx){
