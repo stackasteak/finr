@@ -370,7 +370,6 @@ EM_JS(void, drawmove, (float xpos, float ypos, flost ss, int pl), {
     colo = "rgb(255, 0,0)";
   }
 
-
   ctx.fillStyle = colo;
   ctx.beginPath();
   ctx.arc(xpos, ypos , 0.5*ss-2, 0.0, 6.283, false);
@@ -427,8 +426,8 @@ EM_BOOL touchend_callback(
     int pl = (userData->movenum)%2;
     if (jj< userData->ny){
       let jj2= userData.ny-1-jj;
-      let xpos=xoffset+(ii+0.5)*userData->stonesize;
-      let ypos =(jj2+0.5)*userData->stonesize
+      let xpos=(ii+0.5)*userData->stonesize;
+      let ypos =(jj2+0.5)*userData->stonesize;
       drawmove(xpos,ypos,userData->stonesize,pl);
       userData->update(ii);
     }
