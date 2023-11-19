@@ -1,4 +1,5 @@
 #include <emscripten.h>
+#include <emscripten/html5.h>
 #include "Game.h"
 #include <vector>
 
