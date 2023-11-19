@@ -382,9 +382,9 @@ EM_BOOL touchend_callback(
     const EmscriptenTouchEvent *event,
     void *userData
 ) {
-    
-    event->canvasX
-      
+    int ii = userData->iselect(event->canvasX);
+    drawmove(ii);
+    userData->update(ii)
     
     return 0;
 }
@@ -426,15 +426,20 @@ public:
 
 int main (){
 
-  emscripten_set_touchend_callback(
-        EMSCRIPTEN_EVENT_TARGET_CANVAS,
-        NULL,
-        1,
-        touchend_callback
-    );
+  
 
   float ss = redraw(9,9);
   drawingState draw(ss);
+  
+  emscripten_set_touchend_callback(
+        EMSCRIPTEN_EVENT_TARGET_CANVAS,
+        &draw,
+        1,
+        touchend_callback
+    );
+  
+  
+  
   return 0;
 }
 
