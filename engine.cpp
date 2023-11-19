@@ -390,7 +390,7 @@ struct drawingState{
     nextys.resize(nx,0);
   };
 
-  int iselect(float x, int nx){
+  int iselect(float x){
     int ans=nx;
     for(int ii=0; ii<nx; ii++){
       if(x < (ii+1)*stonesize){
