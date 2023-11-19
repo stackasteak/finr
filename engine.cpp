@@ -376,7 +376,7 @@ EM_JS(void, drawmove, (float xpos, float ypos, flost ss, int pl), {
   ctx.arc(xpos, ypos , 0.5*ss-2, 0.0, 6.283, false);
   ctx.fill();
 
-}
+});
 
 struct drawingState{
   float stonesize;
