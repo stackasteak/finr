@@ -361,7 +361,7 @@ EM_JS(float, redraw, (int nx, int ny), {
   return stonesize;
 });
 
-EM_JS(void, drawmove, (float xpos, float ypos, flost ss, int pl), {
+EM_JS(void, drawmove, (float xpos, float ypos, float ss, int pl), {
   let colo;
   if (pl==0){
     colo = "rgb(255, 234, 128)";
@@ -421,11 +421,11 @@ EM_BOOL touchend_callback(
     void *ud
 ) {
     drawingState* userData = static_cast<drawingState*>(ud);
-    int ii = userData->iselect(event->canvasX);
+    int ii = userData->iselect(event->touches[0].canvasX);
     int jj = userData->nextys[ii];
     int pl = (userData->movenum)%2;
     if (jj< userData->ny){
-      int jj2= userData.ny-1-jj;
+      int jj2= userData->ny-1-jj;
       float xpos=(ii+0.5)*userData->stonesize;
       float ypos =(jj2+0.5)*userData->stonesize;
       drawmove(xpos,ypos,userData->stonesize,pl);
