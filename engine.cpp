@@ -360,7 +360,7 @@ EM_JS(float, redraw, (int nx, int ny), {
   return stonesize;
 });
 
-class drawingState{
+struct drawingState{
   float stonesize;
   drawingState(float ss) : stonesize(ss) {};
 
