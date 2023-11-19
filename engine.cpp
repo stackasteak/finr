@@ -412,6 +412,14 @@ public:
 };
 
 int main (){
+
+  emscripten_set_touchstart_callback(
+        EMSCRIPTEN_EVENT_TARGET_WINDOW,
+        NULL,
+        1,
+        touchstart_callback
+    );
+
   float ss = redraw(9,9);
   drawingState draw(ss);
   return 0;
