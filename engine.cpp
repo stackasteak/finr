@@ -361,7 +361,7 @@ EM_JS(float, redraw, (int nx, int ny), {
   return stonesize;
 });
 
-EM_JS(void, drawmove, (int ii, int jj, int pl), {
+EM_JS(void, drawmove, (float xpos, float ypos, flost ss, int pl), {
   let colo;
   if (pl==0){
     colo = "rgb(255, 234, 128)";
@@ -369,11 +369,11 @@ EM_JS(void, drawmove, (int ii, int jj, int pl), {
   else {
     colo = "rgb(255, 0,0)";
   }
-//wip
-  let jj2=boardstate.ysize-1-jj;
+
+
   ctx.fillStyle = colo;
   ctx.beginPath();
-  ctx.arc(xoffset+(ii+0.5)*stonesize,(jj2+0.5)*stonesize , 0.5*stonesize-2, degToRad(0), degToRad(360), false);
+  ctx.arc(xpos, ypos , 0.5*ss-2, 0.0, 6.283, false);
   ctx.fill();
 
 }
@@ -425,7 +425,10 @@ EM_BOOL touchend_callback(
     int jj = userData->nextys[ii];
     int pl = (userData->movenum)%2;
     if (jj< userData->ny){
-      drawmove(ii,jj,pl);
+      let jj2= userData.ny-1-jj;
+      let xpos=xoffset+(ii+0.5)*userData->stonesize;
+      let ypos =(jj2+0.5)*userData->stonesize
+      drawmove(xpos,ypos,userData->stonesize,pl);
       userData->update(ii);
     }
     
