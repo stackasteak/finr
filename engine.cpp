@@ -328,7 +328,7 @@ engineWorker.onmessage =  (e) => {
 
   */
 
-EM_JS(float, initCanvas, (int nx, int ny), {
+EM_JS(float, redraw, (int nx, int ny), {
   let ctx = Module.canvas.getContext('2d');
   let width = Module.canvas.width = window.innerWidth;
   let height = Module.canvas.height = window.innerWidth+30;
@@ -360,9 +360,9 @@ EM_JS(float, initCanvas, (int nx, int ny), {
   return stonesize;
 });
 
-class Drawing{
+class drawingState{
   float stonesize;
-  Drawing(float ss) : stonesize(ss) {};
+  drawingState(float ss) : stonesize(ss) {};
 
   int iselect(float x, int nx){
     int ans=nx;
@@ -412,7 +412,8 @@ public:
 };
 
 int main (){
-  initCanvas(9,9);
+  float ss = redraw(9,9);
+  drawingState draw(ss);
   return 0;
 }
 
