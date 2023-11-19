@@ -361,14 +361,35 @@ EM_JS(float, redraw, (int nx, int ny), {
   return stonesize;
 });
 
+EM_JS(void, drawmove, (int ii, int jj, int pl), {
+  let colo;
+  if (pl==0){
+    colo = "rgb(255, 234, 128)";
+  }
+  else {
+    colo = "rgb(255, 0,0)";
+  }
+//wip
+  let jj2=boardstate.ysize-1-jj;
+  ctx.fillStyle = colo;
+  ctx.beginPath();
+  ctx.arc(xoffset+(ii+0.5)*stonesize,(jj2+0.5)*stonesize , 0.5*stonesize-2, degToRad(0), degToRad(360), false);
+  ctx.fill();
+
+}
+
 struct drawingState{
   float stonesize;
   int nx;
   int ny;
   std::vector<int> nextys;
   std::vector<int> history;
+  int movenum;
 
-  drawingState(int nx_, int ny_, float ss) : nx(nx_), ny(ny_), stonesize(ss) {};
+  drawingState(int nx_, int ny_, float ss) : nx(nx_), ny(ny_), stonesize(ss) {
+    movenum =0;
+    nextys.resize(nx,0);
+  };
 
   int iselect(float x, int nx){
     int ans=nx;
@@ -380,6 +401,19 @@ struct drawingState{
     }
    return ans;
   }
+
+  void update(int ii){
+    if(nextys[ii]<ny){
+      if(history.size() > movenum){
+        history.resize(movenum);
+      }
+      history.push_back(ii);
+      movenum = movenum + 1;
+      nextys[ii] = nextys[ii] +1;
+  
+    }
+  }
+
 };
 
 EM_BOOL touchend_callback(
@@ -388,8 +422,12 @@ EM_BOOL touchend_callback(
     void *userData
 ) {
     int ii = userData->iselect(event->canvasX);
-    drawmove(ii);
-    userData->update(ii)
+    int jj = userData->nextys[ii];
+    int pl = (userData->movenum)%2;
+    if (jj< userData->ny){
+      drawmove(ii,jj,pl);
+      userData->update(ii);
+    }
     
     return 0;
 }
@@ -431,10 +469,11 @@ public:
 
 int main (){
 
-  
+  int nx=9;
+  int ny=9;
 
-  float ss = redraw(9,9);
-  drawingState draw(ss);
+  float ss = redraw(nx,ny);
+  drawingState draw(nx,ny,ss);
   
   emscripten_set_touchend_callback(
         EMSCRIPTEN_EVENT_TARGET_CANVAS,
