@@ -419,8 +419,9 @@ struct drawingState{
 EM_BOOL touchend_callback(
     int eventType,
     const EmscriptenTouchEvent *event,
-    void *userData
+    void *ud
 ) {
+    drawingState* userData = static_cast<drawingState*>(ud);
     int ii = userData->iselect(event->canvasX);
     int jj = userData->nextys[ii];
     int pl = (userData->movenum)%2;
