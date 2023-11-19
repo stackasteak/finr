@@ -336,7 +336,7 @@ EM_JS(void, initCanvas, (int nx, int ny), {
   ctx.fillRect(0,0,width,height);
 
   let stonesize;
-  let xoffset =0
+  let xoffset =0;
   if(nx>=ny){
     stonesize = width/nx;
   }
