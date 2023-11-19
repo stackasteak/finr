@@ -479,7 +479,7 @@ int main (){
   drawingState draw(nx,ny,ss);
   
   emscripten_set_touchend_callback(
-        EMSCRIPTEN_EVENT_TARGET_CANVAS,
+        #canvas,
         &draw,
         1,
         touchend_callback
