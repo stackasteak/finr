@@ -363,7 +363,10 @@ EM_JS(float, redraw, (int nx, int ny), {
 
 struct drawingState{
   float stonesize;
-  drawingState(float ss) : stonesize(ss) {};
+  int nx;
+  int ny;
+
+  drawingState(int nx_, int ny_, float ss) : nx(nx_), ny(ny_), stonesize(ss) {};
 
   int iselect(float x, int nx){
     int ans=nx;
