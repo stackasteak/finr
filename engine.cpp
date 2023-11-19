@@ -365,6 +365,8 @@ struct drawingState{
   float stonesize;
   int nx;
   int ny;
+  std::vector<int> nextys;
+  std::vector<int> history;
 
   drawingState(int nx_, int ny_, float ss) : nx(nx_), ny(ny_), stonesize(ss) {};
 
