@@ -415,7 +415,7 @@ public:
 int main (){
 
   emscripten_set_touchstart_callback(
-        EMSCRIPTEN_EVENT_TARGET_WINDOW,
+        EMSCRIPTEN_EVENT_TARGET_CANVAS,
         NULL,
         1,
         touchstart_callback
