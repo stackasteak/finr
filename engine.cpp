@@ -423,7 +423,7 @@ EM_BOOL touchend_callback(
     const EmscriptenTouchEvent *event,
     void *ud
 ) {
-    drawingState* userData = reinterpret_cast<drawingState*>(ud);
+    drawingState* userData = static_cast<drawingState*>(ud);
     int ii = userData->iselect(event->touches[0].canvasX);
     int jj = userData->nextys[ii];
     int pl = (userData->movenum)%2;
@@ -483,7 +483,7 @@ int main (){
   
   emscripten_set_touchend_callback(
         "canvas",
-        &draw,
+        static_cast<void*>(&draw),
         1,
         touchend_callback
     );
