@@ -485,7 +485,7 @@ int main (){
   float ss = redraw(nx,ny);
   drawingState drawstate(nx,ny,ss);
 
-  myalert(drawstate.stonesize);
+  alert_float(drawstate.stonesize);
   
   emscripten_set_touchend_callback(
         "canvas",
