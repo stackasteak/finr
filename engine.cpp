@@ -329,6 +329,10 @@ engineWorker.onmessage =  (e) => {
 
   */
 
+EM_JS(void, alert_float, (float x), {
+  alert(x);
+});
+
 EM_JS(float, redraw, (int nx, int ny), {
   let ctx = Module.canvas.getContext('2d');
   let width = Module.canvas.width = window.innerWidth;
@@ -479,11 +483,13 @@ int main (){
   int ny=9;
 
   float ss = redraw(nx,ny);
-  drawingState draw(nx,ny,ss);
+  drawingState drawstate(nx,ny,ss);
+
+  myalert(drawstate.stonesize);
   
   emscripten_set_touchend_callback(
         "canvas",
-        static_cast<void*>(&draw),
+        static_cast<void*>(&drawstate),
         1,
         touchend_callback
     );
