@@ -333,6 +333,10 @@ EM_JS(void, alert_float, (float x), {
   alert(x);
 });
 
+EM_JS(void, alert_int, (int x), {
+  alert(x);
+});
+
 EM_JS(float, redraw, (int nx, int ny), {
   let ctx = Module.canvas.getContext('2d');
   let width = Module.canvas.width = window.innerWidth;
@@ -429,6 +433,7 @@ EM_BOOL touchend_callback(
 ) {
     drawingState* userData = static_cast<drawingState*>(ud);
     int ii = userData->iselect(event->touches[0].canvasX);
+    alert_int(ii);
     int jj = userData->nextys[ii];
     int pl = (userData->movenum)%2;
     if (jj< userData->ny){
