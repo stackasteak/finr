@@ -2,6 +2,7 @@
 #include <emscripten/html5.h>
 #include "Game.h"
 #include <vector>
+#include <format>
 
 //using namespace emscripten;
 
@@ -334,6 +335,10 @@ EM_JS(void, alert_float, (float x), {
 });
 
 EM_JS(void, alert_int, (int x), {
+  alert(x);
+});
+
+EM_JS(void, alert_str, (std::string x), {
   alert(x);
 });
 
