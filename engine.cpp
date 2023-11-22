@@ -2,7 +2,7 @@
 #include <emscripten/html5.h>
 #include "Game.h"
 #include <vector>
-#include <format>
+
 
 //using namespace emscripten;
 
@@ -453,8 +453,8 @@ EM_BOOL touchend_callback(
       int jj2= userData->ny-1-jj;
       float xpos=(ii+0.5)*userData->stonesize;
       float ypos =(jj2+0.5)*userData->stonesize;
-      alert_int(ii);
-      alert_int(jj2);
+      //alert_int(ii);
+      //alert_int(jj2);
       drawmove(xpos,ypos,userData->stonesize,pl);
       userData->update(ii);
     }
