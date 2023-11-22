@@ -396,6 +396,11 @@ struct drawingState{
   std::vector<int> history;
   int movenum;
 
+  drawingState(int nx_, int ny_) : nx(nx_), ny(ny_) {
+    movenum =0;
+    nextys.resize(nx,0);
+  };
+
   drawingState(int nx_, int ny_, float ss) : nx(nx_), ny(ny_), stonesize(ss) {
     movenum =0;
     nextys.resize(nx,0);
@@ -425,6 +430,8 @@ struct drawingState{
   }
 
 };
+
+drawingState ds(9,9);
 
 EM_BOOL touchend_callback(
     int eventType,
@@ -489,13 +496,14 @@ int main (){
   int ny=9;
 
   float ss = redraw(nx,ny);
-  drawingState drawstate(nx,ny,ss);
+  //drawingState drawstate(nx,ny,ss);
 
-  alert_float(drawstate.stonesize);
+  ds.stonesize=ss;
+  alert_float(ds.stonesize);
   
   emscripten_set_touchend_callback(
         "canvas",
-        static_cast<void*>(&drawstate),
+        static_cast<void*>(&ds),
         1,
         touchend_callback
     );
