@@ -1620,8 +1620,6 @@ var wasmImports = {
   /** @export */
   alert_float: alert_float,
   /** @export */
-  alert_int: alert_int,
-  /** @export */
   drawmove: drawmove,
   /** @export */
   emscripten_memcpy_js: _emscripten_memcpy_js,
