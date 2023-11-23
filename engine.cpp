@@ -383,9 +383,6 @@ EM_JS(void, drawmove, (float xpos, float ypos, float ss, int pl), {
   else {
     colo = "rgb(255, 0,0)";
   }
-  //alert(xpos);
-  //alert(ss);
-  //alert(xpos/ss);
 
   ctx.fillStyle = colo;
   ctx.beginPath();
@@ -446,7 +443,6 @@ EM_BOOL touchend_callback(
 ) {
     drawingState* userData = static_cast<drawingState*>(ud);
     int ii = userData->iselect(event->touches[0].clientX);
-    //alert_float( event->touches[0].clientX);
     
   
     int jj = userData->nextys[ii];
@@ -457,8 +453,7 @@ EM_BOOL touchend_callback(
       int jj2= userData->ny-1-jj;
       float xpos=(ii+0.5)*userData->stonesize;
       float ypos =(jj2+0.5)*userData->stonesize;
-      alert_float(xpos);
-      alert_float(ypos);
+      
       drawmove(xpos,ypos,userData->stonesize,pl);
       userData->update(ii);
     }
