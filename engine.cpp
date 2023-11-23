@@ -391,6 +391,18 @@ EM_JS(void, drawmove, (float xpos, float ypos, float ss, int pl), {
 
 });
 
+EM_JS(void, undrawmove, (float xpos, float ypos, float ss), {
+  let ctx = Module.canvas.getContext('2d');
+  let colo = "rgb(0,0,0)";
+
+  ctx.fillStyle = colo;
+  ctx.beginPath();
+  ctx.arc(xpos, ypos , 0.5*ss-2, 0.0, 6.283, false);
+  ctx.fill();
+
+});
+
+
 struct drawingState{
   float stonesize;
   int nx;
