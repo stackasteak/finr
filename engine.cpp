@@ -473,6 +473,16 @@ EM_BOOL touchend_callback(
     return 0;
 }
 
+EM_BOOL clear_callback(
+    int eventType,
+    const EmscriptenTouchEvent *event,
+    void *ud) {
+  drawingState* ds1 = static_cast<drawingState*>(ud);
+  redraw(ds1.nx,ds1.ny);
+  return 0;
+}
+
+
 class engineState{
   std::vector<float> p;
   int nx;
@@ -524,6 +534,13 @@ int main (){
         static_cast<void*>(&ds),
         1,
         touchend_callback
+    );
+
+  emscripten_set_touchend_callback(
+        "clearBtn",
+        static_cast<void*>(&ds),
+        1,
+        clear_callback
     );
   
   
