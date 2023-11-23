@@ -479,7 +479,7 @@ EM_BOOL clear_callback(
     void *ud) {
   drawingState* ds1 = static_cast<drawingState*>(ud);
   redraw(ds1->nx,ds1->ny);
-  return 0;
+  return true;
 }
 
 
