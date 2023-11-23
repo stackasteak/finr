@@ -1697,7 +1697,8 @@ var wasmImports = {
 };
 var wasmExports = createWasm();
 var ___wasm_call_ctors = createExportWrapper('__wasm_call_ctors');
-var _main = Module['_main'] = createExportWrapper('main');
+var _onClear = Module['_onClear'] = createExportWrapper('onClear');
+var _main = createExportWrapper('main');
 var ___errno_location = createExportWrapper('__errno_location');
 var _fflush = Module['_fflush'] = createExportWrapper('fflush');
 var _malloc = createExportWrapper('malloc');
