@@ -446,7 +446,8 @@ EM_BOOL touchend_callback(
     drawingState* userData = static_cast<drawingState*>(ud);
     int ii = userData->iselect(event->touches[0].clientX);
     //alert_float( event->touches[0].clientX);
-    
+    alert_float(ii);
+  
     int jj = userData->nextys[ii];
     int pl = (userData->movenum)%2;
     if (jj< userData->ny){
