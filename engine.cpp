@@ -450,14 +450,14 @@ EM_BOOL touchend_callback(
   
     int jj = userData->nextys[ii];
     int pl = (userData->movenum)%2;
-    alert_float(jj);
-    alert_float(pl);
+    
+    
     if (jj< userData->ny){
       int jj2= userData->ny-1-jj;
       float xpos=(ii+0.5)*userData->stonesize;
       float ypos =(jj2+0.5)*userData->stonesize;
-      //alert_int(ii);
-      //alert_int(jj2);
+      alert_float(xpos);
+      alert_float(ypos);
       drawmove(xpos,ypos,userData->stonesize,pl);
       userData->update(ii);
     }
