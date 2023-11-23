@@ -451,6 +451,27 @@ struct drawingState{
     history.resize(0);
   }
 
+  int back(){
+    if(movenum>0){
+      int prevx = history[movenum-1];
+      nextys[prevx] = nextys[prevx]-1;
+      movenum = movenum - 1;
+    return prevx;
+    }
+    return -1;
+  }
+
+  int forw(){
+    if(movenum < history.size()){
+      int nextx = history[movenum];
+      nextys[nextx] = nextys[nextx]+1;
+      movenum = movenum + 1;
+      return nextx;
+    }
+    return -1;
+  }
+ 
+
 };
 
 drawingState ds(9,9);
