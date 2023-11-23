@@ -475,11 +475,11 @@ EM_BOOL touchend_callback(
 
 EM_BOOL clear_callback(
     int eventType,
-    const EmscriptenTouchEvent *event,
+    const EmscriptenMouseEvent *event,
     void *ud) {
   drawingState* ds1 = static_cast<drawingState*>(ud);
   redraw(ds1->nx,ds1->ny);
-  return true;
+  return EM_TRUE;
 }
 
 
