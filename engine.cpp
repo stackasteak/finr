@@ -478,7 +478,7 @@ EM_BOOL clear_callback(
     const EmscriptenTouchEvent *event,
     void *ud) {
   drawingState* ds1 = static_cast<drawingState*>(ud);
-  redraw(ds1.nx,ds1.ny);
+  redraw(ds1->nx,ds1->ny);
   return 0;
 }
 
