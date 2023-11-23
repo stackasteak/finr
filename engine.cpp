@@ -375,6 +375,7 @@ EM_JS(float, redraw, (int nx, int ny), {
 });
 
 EM_JS(void, drawmove, (float xpos, float ypos, float ss, int pl), {
+  let ctx = Module.canvas.getContext('2d');
   let colo;
   if (pl==0){
     colo = "rgb(255, 234, 128)";
