@@ -444,6 +444,13 @@ struct drawingState{
     }
   }
 
+  void reset(){
+    movenum =0;
+    nextys.resize(nx,0);
+    std::fill(nextys.begin(), nextys.end(), 0);
+    history.resize(0);
+  }
+
 };
 
 drawingState ds(9,9);
@@ -522,7 +529,8 @@ public:
 extern "C"{
 
 void onClear(){
-  red
+  redraw(ds.nx,ds.ny);
+  ds.reset();
 }
 }
 
