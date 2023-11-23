@@ -519,6 +519,13 @@ public:
 
 };
 
+extern "C"{
+
+void onClear(){
+  red
+}
+}
+
 int main (){
 
   int nx=9;
