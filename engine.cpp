@@ -470,7 +470,7 @@ EM_BOOL touchend_callback(
       userData->update(ii);
     }
     
-    return 0;
+    return EM_TRUE;
 }
 
 EM_BOOL clear_callback(
@@ -478,6 +478,7 @@ EM_BOOL clear_callback(
     const EmscriptenMouseEvent *event,
     void *ud) {
   drawingState* ds1 = static_cast<drawingState*>(ud);
+  alert_str("in clear");
   redraw(ds1->nx,ds1->ny);
   return EM_TRUE;
 }
@@ -527,7 +528,7 @@ int main (){
   //drawingState drawstate(nx,ny,ss);
 
   ds.stonesize=ss;
-  alert_float(ds.stonesize);
+  //alert_float(ds.stonesize);
   
   emscripten_set_touchend_callback(
         "canvas",
