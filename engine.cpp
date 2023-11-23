@@ -478,7 +478,7 @@ EM_BOOL clear_callback(
     const EmscriptenMouseEvent *event,
     void *ud) {
   drawingState* ds1 = static_cast<drawingState*>(ud);
-  alert_str("in clear");
+  alert_float(999);
   redraw(ds1->nx,ds1->ny);
   return EM_TRUE;
 }
