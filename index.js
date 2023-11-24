@@ -1632,6 +1632,8 @@ var wasmImports = {
   /** @export */
   fd_write: _fd_write,
   /** @export */
+  loadhiststep: loadhiststep,
+  /** @export */
   redraw: redraw,
   /** @export */
   undrawmove: undrawmove
@@ -1641,6 +1643,7 @@ var ___wasm_call_ctors = createExportWrapper('__wasm_call_ctors');
 var _onClear = Module['_onClear'] = createExportWrapper('onClear');
 var _onBack = Module['_onBack'] = createExportWrapper('onBack');
 var _onForw = Module['_onForw'] = createExportWrapper('onForw');
+var _onLoad = Module['_onLoad'] = createExportWrapper('onLoad');
 var _main = createExportWrapper('main');
 var ___errno_location = createExportWrapper('__errno_location');
 var _fflush = Module['_fflush'] = createExportWrapper('fflush');
