@@ -992,7 +992,7 @@ function alert_float(x) { alert(x); }
 function redraw(nx,ny) { let ctx = Module.canvas.getContext('2d'); let width = Module.canvas.width = window.innerWidth; let height = Module.canvas.height = window.innerWidth+30; ctx.fillStyle = 'rgb(25,140,255)'; ctx.fillRect(0,0,width,height); let stonesize; let xoffset =0; if(nx>=ny){ stonesize = width/nx; } else{ stonesize = width/ny; xoffset = (width-stonesize*nx)*0.5; } for(let ii=0; ii<nx; ii++){ for(let jj=0; jj<ny; jj++){ ctx.fillStyle = "rgb(0, 0, 0)"; ctx.beginPath(); ctx.arc((ii+0.5)*stonesize,(jj+0.5)*stonesize , 0.5*stonesize-2, 0.0, 6.2830, false); ctx.fill(); } } ctx.fillStyle = 'rgb(0,0,0)'; ctx.fillRect(0, stonesize*ny, width, height); return stonesize; }
 function drawmove(xpos,ypos,ss,pl) { let ctx = Module.canvas.getContext('2d'); let colo; if (pl==0){ colo = "rgb(255, 234, 128)"; } else { colo = "rgb(255, 0,0)"; } ctx.fillStyle = colo; ctx.beginPath(); ctx.arc(xpos, ypos , 0.5*ss-2, 0.0, 6.283, false); ctx.fill(); }
 function undrawmove(xpos,ypos,ss) { let ctx = Module.canvas.getContext('2d'); let colo = "rgb(0,0,0)"; ctx.fillStyle = colo; ctx.beginPath(); ctx.arc(xpos, ypos , 0.5*ss-2, 0.0, 6.283, false); ctx.fill(); }
-function loadhiststep(nx,ny,n) { let re = new RegExp("[^\d]*(\d+)[^\d]*","g") ; let h = Module.pastehistBox.value; let m = [...h.matchAll(re)]; let moves = m.map((mm) => Number(mm[1])); alert(moves); if(n<moves.length){ return moves[n]; } else{ return -1; } }
+function loadhiststep(nx,ny,n) { let re = new RegExp("[^\d]*(\d+)[^\d]*","g") ; let h = Module.pastehistBox.value; let m = [...h.matchAll(re)]; let moves = m.map((mm) => Number(mm[1])); alert(moves.length); if(n<moves.length){ return moves[n]; } else{ return -1; } }
 
 
 // end include: preamble.js
@@ -1659,7 +1659,7 @@ var _emscripten_stack_get_current = () => (_emscripten_stack_get_current = wasmE
 var ___cxa_is_pointer_type = createExportWrapper('__cxa_is_pointer_type');
 var dynCall_jiji = Module['dynCall_jiji'] = createExportWrapper('dynCall_jiji');
 var ___start_em_js = Module['___start_em_js'] = 66356;
-var ___stop_em_js = Module['___stop_em_js'] = 67808;
+var ___stop_em_js = Module['___stop_em_js'] = 67815;
 
 // include: postamble.js
 // === Auto-generated postamble setup entry stuff ===
