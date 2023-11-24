@@ -326,7 +326,7 @@ EM_JS(int, loadhiststep, (int nx, int ny, int n), {
   
   let m = [...h.matchAll(re)];
   let moves = m.map((mm) => Number(mm[1]));
-  alert(moves.length);
+  m.map(mm => alert(mm[1]));
   if(n<moves.length){
     return moves[n];
   }
