@@ -320,11 +320,12 @@ EM_JS(void, undrawmove, (float xpos, float ypos, float ss), {
 
 });
 
-EM_JS(int, loadhiststep, (int nx, int ny), {
+EM_JS(int, loadhiststep, (int nx, int ny, int n), {
   let re = /[^\d]*(\d+)[^\d]*/g ;
   let h = Module.pastehistBox.value;
   let m = [...h.matchAll(re)];
   let moves = m.map((mm) => Number(mm[1]));
+  return moves[n];
 });
 
 
@@ -424,16 +425,6 @@ EM_BOOL touchend_callback(
     }
     
     return EM_TRUE;
-}
-
-EM_BOOL clear_callback(
-    int eventType,
-    const EmscriptenMouseEvent *event,
-    void *ud) {
-  drawingState* ds1 = static_cast<drawingState*>(ud);
-  alert_float(999);
-  redraw(ds1->nx,ds1->ny);
-  return EM_TRUE;
 }
 
 
