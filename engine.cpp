@@ -64,46 +64,6 @@ function setSize(){
   }
 }
 
-function resetBoard(){
-  boardstate.history =[];
-  boardstate.movenum =0;
-  boardstate.nextys = new Array(boardstate.xsize);
-  boardstate.nextys.fill(0);
-}
-
-function updateBoard(ii){
-  if(boardstate.nextys[ii]<boardstate.ysize){
-    if(boardstate.history.length > boardstate.movenum){
-      boardstate.history = boardstate.history.slice(0, boardstate.movenum);
-    }
-    boardstate.history.push(ii);
-    boardstate.movenum = boardstate.movenum + 1;
-    boardstate.nextys[ii] = boardstate.nextys[ii] +1;
-  
-  }
-}
-
-function backBoard(){
-  let err = -1;
-  if(boardstate.movenum>0){
-    let prevx = boardstate.history[boardstate.movenum-1];
-    boardstate.nextys[prevx] = boardstate.nextys[prevx]-1;
-    boardstate.movenum = boardstate.movenum - 1;
-    return prevx;
-  }
-  return err;
-}
-
-function forwBoard(){
-  let err = -1;
-  if(boardstate.movenum < boardstate.history.length){
-    let nextx = boardstate.history[boardstate.movenum];
-    boardstate.nextys[nextx] = boardstate.nextys[nextx]+1;
-    boardstate.movenum = boardstate.movenum + 1;
-    return nextx;
-  }
-  return err;
-}
 
 //interface
 
@@ -180,41 +140,6 @@ function undrawhighlight(ii1){
   }
 }
 
-function drawmove(ii){
-  let colo;
-  if (boardstate.movenum %2==0){
-    colo = "rgb(255, 234, 128)";
-  }
-  else {
-    colo = "rgb(255, 0,0)";
-  }
-
-  if(ii>-1 && ii<boardstate.xsize){
-    jj=boardstate.nextys[ii];
-    if(jj<boardstate.ysize && jj > -1){
-      let jj2=boardstate.ysize-1-jj;
-      ctx.fillStyle = colo;
-      ctx.beginPath();
-      ctx.arc(xoffset+(ii+0.5)*stonesize,(jj2+0.5)*stonesize , 0.5*stonesize-2, degToRad(0), degToRad(360), false);
-      ctx.fill();
-    }
-  }
-}
-
-function undrawmove(ii){
-  let colo = "rgb(0, 0,0)";
-
-  if(ii>-1 && ii<boardstate.xsize){
-    jj=boardstate.nextys[ii];
-    if(jj<boardstate.ysize && jj > -1){
-      let jj2=boardstate.ysize-1-jj;
-      ctx.fillStyle = colo;
-      ctx.beginPath();
-      ctx.arc(xoffset+(ii+0.5)*stonesize,(jj2+0.5)*stonesize , 0.5*stonesize-2, degToRad(0), degToRad(360), false);
-      ctx.fill();
-    }
-  }
-}
 
 function drawP(p){
   ctx.fillStyle = "rgb(255,255,255)";
@@ -334,13 +259,6 @@ EM_JS(void, alert_float, (float x), {
   alert(x);
 });
 
-EM_JS(void, alert_int, (int x), {
-  alert(x);
-});
-
-EM_JS(void, alert_str, (std::string x), {
-  alert(x);
-});
 
 EM_JS(float, redraw, (int nx, int ny), {
   let ctx = Module.canvas.getContext('2d');
