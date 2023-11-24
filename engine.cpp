@@ -325,7 +325,12 @@ EM_JS(int, loadhiststep, (int nx, int ny, int n), {
   let h = Module.pastehistBox.value;
   let m = [...h.matchAll(re)];
   let moves = m.map((mm) => Number(mm[1]));
-  return moves[n];
+  if(n<moves.length){
+    return moves[n];
+  }
+  else{
+    return -1;
+  }
 });
 
 
@@ -494,6 +499,30 @@ void onForw(){
       drawmove(xpos,ypos, ds.stonesize,pl);
     }
     ds.forw();
+  }
+}
+
+void onLoad(){
+  redraw(ds.nx,ds.ny);
+  ds.reset();
+  
+  int res = -1;
+  int n =0;
+  while(true){
+    res = loadhiststep(ds.nx,ds.ny, n);
+    if (res <0){
+      break;
+    }
+    int jj = ds.nextys[res];
+    if(jj<ds.ny && jj > -1){
+      int jj2=ds.ny-1-jj;
+      float xpos=(res+0.5)*ds.stonesize;
+      float ypos =(jj2+0.5)*ds.stonesize;
+      int pl = (ds.movenum)%2;  
+      drawmove(xpos,ypos, ds.stonesize,pl);
+    }
+    ds.forw();
+    n++;
   }
 }
 
