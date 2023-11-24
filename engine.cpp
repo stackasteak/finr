@@ -553,8 +553,35 @@ void onClear(){
   redraw(ds.nx,ds.ny);
   ds.reset();
 }
+
+void onBack(){
+  int ii = ds.back();
+  int jj = ds.nextys[ii];
+  if(jj<ds.ny && jj > -1){
+    int jj2=ds.ysize-1-jj;
+    float xpos=(ii+0.5)*ds.stonesize;
+    float ypos =(jj2+0.5)*ds.stonesize;
+      
+    undrawmove(xpos,ypos, ds.stonesize);
+  }
 }
 
+void onForw(){
+  if (ds.history.size>ds.movenum){
+    int ii = ds.history[ds.movenum];
+    int jj = ds.nextys[ii];
+    if(jj<ds.ny && jj > -1){
+      int jj2=ds.ysize-1-jj;
+      float xpos=(ii+0.5)*ds.stonesize;
+      float ypos =(jj2+0.5)*ds.stonesize;
+      int pl = (ds.movenum)%2;  
+      drawmove(xpos,ypos, ds.stonesize,pl);
+    }
+    ds.forw();
+  }
+}
+
+}
 int main (){
 
   int nx=9;
