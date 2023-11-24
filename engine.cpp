@@ -516,13 +516,6 @@ int main (){
         touchend_callback
     );
 
-  emscripten_set_click_callback(
-        "clearBtn",
-        static_cast<void*>(&ds),
-        1,
-        clear_callback
-    );
-  
   
   
   return 0;
