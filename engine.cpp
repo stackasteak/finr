@@ -402,6 +402,12 @@ EM_JS(void, undrawmove, (float xpos, float ypos, float ss), {
 
 });
 
+EM_JS(int, loadhiststep, (int nx, int ny), {
+  let re = /[^\d]*(\d+)[^\d]* /g
+  let m = [...h.matchAll(re)];
+  return m.map((mm) => Number(mm[1]));
+});
+
 
 struct drawingState{
   float stonesize;
