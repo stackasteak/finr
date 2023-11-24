@@ -321,7 +321,7 @@ EM_JS(void, undrawmove, (float xpos, float ypos, float ss), {
 });
 
 EM_JS(int, loadhiststep, (int nx, int ny, int n), {
-  let re = new RegExp("[^\d]*(\d+)[^\d]*","g") ;
+  const re = new RegExp("[^\d]*(\d+)[^\d]*","g") ;
   let h = Module.pastehistBox.value;
   
   let m = [...h.matchAll(re)];
