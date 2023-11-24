@@ -992,7 +992,7 @@ function alert_float(x) { alert(x); }
 function redraw(nx,ny) { let ctx = Module.canvas.getContext('2d'); let width = Module.canvas.width = window.innerWidth; let height = Module.canvas.height = window.innerWidth+30; ctx.fillStyle = 'rgb(25,140,255)'; ctx.fillRect(0,0,width,height); let stonesize; let xoffset =0; if(nx>=ny){ stonesize = width/nx; } else{ stonesize = width/ny; xoffset = (width-stonesize*nx)*0.5; } for(let ii=0; ii<nx; ii++){ for(let jj=0; jj<ny; jj++){ ctx.fillStyle = "rgb(0, 0, 0)"; ctx.beginPath(); ctx.arc((ii+0.5)*stonesize,(jj+0.5)*stonesize , 0.5*stonesize-2, 0.0, 6.2830, false); ctx.fill(); } } ctx.fillStyle = 'rgb(0,0,0)'; ctx.fillRect(0, stonesize*ny, width, height); return stonesize; }
 function drawmove(xpos,ypos,ss,pl) { let ctx = Module.canvas.getContext('2d'); let colo; if (pl==0){ colo = "rgb(255, 234, 128)"; } else { colo = "rgb(255, 0,0)"; } ctx.fillStyle = colo; ctx.beginPath(); ctx.arc(xpos, ypos , 0.5*ss-2, 0.0, 6.283, false); ctx.fill(); }
 function undrawmove(xpos,ypos,ss) { let ctx = Module.canvas.getContext('2d'); let colo = "rgb(0,0,0)"; ctx.fillStyle = colo; ctx.beginPath(); ctx.arc(xpos, ypos , 0.5*ss-2, 0.0, 6.283, false); ctx.fill(); }
-function loadhiststep(nx,ny) { let re = /[^d]*(d+)[^d]*/g ; let h = Module.pastehistBox.value; let m = [...h.matchAll(re)]; let moves = m.map((mm) => Number(mm[1])); }
+function loadhiststep(nx,ny,n) { let re = /[^d]*(d+)[^d]*/g ; let h = Module.pastehistBox.value; let m = [...h.matchAll(re)]; let moves = m.map((mm) => Number(mm[1])); return moves[n]; }
 
 
 // end include: preamble.js
@@ -1313,37 +1313,6 @@ function loadhiststep(nx,ny) { let re = /[^d]*(d+)[^d]*/g ; let h = Module.paste
       },
   };
   
-  
-  var specialHTMLTargets = [0, typeof document != 'undefined' ? document : 0, typeof window != 'undefined' ? window : 0];
-  var getBoundingClientRect = (e) => specialHTMLTargets.indexOf(e) < 0 ? e.getBoundingClientRect() : {'left':0,'top':0};
-  
-  var fillMouseEventData = (eventStruct, e, target) => {
-      assert(eventStruct % 4 == 0);
-      HEAPF64[((eventStruct)>>3)] = e.timeStamp;
-      var idx = ((eventStruct)>>2);
-      HEAP32[idx + 2] = e.screenX;
-      HEAP32[idx + 3] = e.screenY;
-      HEAP32[idx + 4] = e.clientX;
-      HEAP32[idx + 5] = e.clientY;
-      HEAP32[idx + 6] = e.ctrlKey;
-      HEAP32[idx + 7] = e.shiftKey;
-      HEAP32[idx + 8] = e.altKey;
-      HEAP32[idx + 9] = e.metaKey;
-      HEAP16[idx*2 + 20] = e.button;
-      HEAP16[idx*2 + 21] = e.buttons;
-  
-      HEAP32[idx + 11] = e["movementX"]
-        ;
-  
-      HEAP32[idx + 12] = e["movementY"]
-        ;
-  
-      var rect = getBoundingClientRect(target);
-      HEAP32[idx + 13] = e.clientX - rect.left;
-      HEAP32[idx + 14] = e.clientY - rect.top;
-  
-    };
-  
   var UTF8Decoder = typeof TextDecoder != 'undefined' ? new TextDecoder('utf8') : undefined;
   
     /**
@@ -1425,11 +1394,14 @@ function loadhiststep(nx,ny) { let re = /[^d]*(d+)[^d]*/g ; let h = Module.paste
       return cString > 2 ? UTF8ToString(cString) : cString;
     };
   
+  var specialHTMLTargets = [0, typeof document != 'undefined' ? document : 0, typeof window != 'undefined' ? window : 0];
   var findEventTarget = (target) => {
       target = maybeCStringToJsString(target);
       var domElement = specialHTMLTargets[target] || (typeof document != 'undefined' ? document.querySelector(target) : undefined);
       return domElement;
     };
+  
+  var getBoundingClientRect = (e) => specialHTMLTargets.indexOf(e) < 0 ? e.getBoundingClientRect() : {'left':0,'top':0};
   
   
   var wasmTableMirror = [];
@@ -1444,34 +1416,6 @@ function loadhiststep(nx,ny) { let re = /[^d]*(d+)[^d]*/g ; let h = Module.paste
       assert(wasmTable.get(funcPtr) == func, "JavaScript-side Wasm function table mirror is out of date!");
       return func;
     };
-  var registerMouseEventCallback = (target, userData, useCapture, callbackfunc, eventTypeId, eventTypeString, targetThread) => {
-      if (!JSEvents.mouseEvent) JSEvents.mouseEvent = _malloc(72);
-      target = findEventTarget(target);
-  
-      var mouseEventHandlerFunc = (e = event) => {
-        // TODO: Make this access thread safe, or this could update live while app is reading it.
-        fillMouseEventData(JSEvents.mouseEvent, e, target);
-  
-        if (getWasmTableEntry(callbackfunc)(eventTypeId, JSEvents.mouseEvent, userData)) e.preventDefault();
-      };
-  
-      var eventHandler = {
-        target,
-        allowsDeferredCalls: eventTypeString != 'mousemove' && eventTypeString != 'mouseenter' && eventTypeString != 'mouseleave', // Mouse move events do not allow fullscreen/pointer lock requests to be handled in them!
-        eventTypeString,
-        callbackfunc,
-        handlerFunc: mouseEventHandlerFunc,
-        useCapture
-      };
-      return JSEvents.registerOrRemoveHandler(eventHandler);
-    };
-  var _emscripten_set_click_callback_on_thread = (target, userData, useCapture, callbackfunc, targetThread) =>
-      registerMouseEventCallback(target, userData, useCapture, callbackfunc, 4, "click", targetThread);
-
-  
-  
-  
-  
   var registerTouchEventCallback = (target, userData, useCapture, callbackfunc, eventTypeId, eventTypeString, targetThread) => {
       if (!JSEvents.touchEvent) JSEvents.touchEvent = _malloc(1696);
   
@@ -1674,15 +1618,11 @@ var wasmImports = {
   /** @export */
   abort: _abort,
   /** @export */
-  alert_float: alert_float,
-  /** @export */
   drawmove: drawmove,
   /** @export */
   emscripten_memcpy_js: _emscripten_memcpy_js,
   /** @export */
   emscripten_resize_heap: _emscripten_resize_heap,
-  /** @export */
-  emscripten_set_click_callback_on_thread: _emscripten_set_click_callback_on_thread,
   /** @export */
   emscripten_set_touchend_callback_on_thread: _emscripten_set_touchend_callback_on_thread,
   /** @export */
@@ -1715,8 +1655,8 @@ var stackAlloc = createExportWrapper('stackAlloc');
 var _emscripten_stack_get_current = () => (_emscripten_stack_get_current = wasmExports['emscripten_stack_get_current'])();
 var ___cxa_is_pointer_type = createExportWrapper('__cxa_is_pointer_type');
 var dynCall_jiji = Module['dynCall_jiji'] = createExportWrapper('dynCall_jiji');
-var ___start_em_js = Module['___start_em_js'] = 66364;
-var ___stop_em_js = Module['___stop_em_js'] = 67719;
+var ___start_em_js = Module['___start_em_js'] = 66356;
+var ___stop_em_js = Module['___stop_em_js'] = 67735;
 
 // include: postamble.js
 // === Auto-generated postamble setup entry stuff ===
@@ -1809,6 +1749,8 @@ var missingLibrarySymbols = [
   'writeArrayToMemory',
   'registerKeyEventCallback',
   'findCanvasEventTarget',
+  'fillMouseEventData',
+  'registerMouseEventCallback',
   'registerWheelEventCallback',
   'registerUiEventCallback',
   'registerFocusEventCallback',
@@ -1969,8 +1911,6 @@ var unexportedSymbols = [
   'maybeCStringToJsString',
   'findEventTarget',
   'getBoundingClientRect',
-  'fillMouseEventData',
-  'registerMouseEventCallback',
   'currentFullscreenStrategy',
   'restoreOldWindowedStyle',
   'registerTouchEventCallback',
