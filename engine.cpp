@@ -558,7 +558,7 @@ void onBack(){
   int ii = ds.back();
   int jj = ds.nextys[ii];
   if(jj<ds.ny && jj > -1){
-    int jj2=ds.ysize-1-jj;
+    int jj2=ds.ny-1-jj;
     float xpos=(ii+0.5)*ds.stonesize;
     float ypos =(jj2+0.5)*ds.stonesize;
       
@@ -567,11 +567,11 @@ void onBack(){
 }
 
 void onForw(){
-  if (ds.history.size>ds.movenum){
+  if (ds.history.size()>ds.movenum){
     int ii = ds.history[ds.movenum];
     int jj = ds.nextys[ii];
     if(jj<ds.ny && jj > -1){
-      int jj2=ds.ysize-1-jj;
+      int jj2=ds.ny-1-jj;
       float xpos=(ii+0.5)*ds.stonesize;
       float ypos =(jj2+0.5)*ds.stonesize;
       int pl = (ds.movenum)%2;  
