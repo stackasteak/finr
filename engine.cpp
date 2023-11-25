@@ -328,7 +328,7 @@ EM_JS(int, loadhiststep, (int nx, int ny, int n), {
   let moves = m.map((mm) => Number(mm[1]));
   //m.map(mm => alert(mm[1]));
   if(n<moves.length){
-    return moves[n];
+    return moves[n]-1;
   }
   else{
     return -1;
@@ -509,8 +509,7 @@ void onLoad(){
   ds.reset();
   
   int res = -1;
-  int n =0;
-  while(true){
+  for(int n =0; n<ds.nx * ds.ny;n++){
     res = loadhiststep(ds.nx,ds.ny, n);
     if (res <0){
       break;
@@ -524,8 +523,6 @@ void onLoad(){
       drawmove(xpos,ypos, ds.stonesize,pl);
       ds.update(res);
     }
-    
-    n++;
   }
 }
 
