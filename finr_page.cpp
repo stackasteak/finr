@@ -256,6 +256,8 @@ engineWorker.onmessage =  (e) => {
 
   */
 
+// javascript functions
+
 EM_JS(void, alert_float, (float x), {
   alert(x);
 });
@@ -336,6 +338,7 @@ EM_JS(int, loadhiststep, (int nx, int ny, int n), {
   }
 });
 
+//global state variables
 
 struct drawingState{
   float stonesize;
@@ -410,30 +413,6 @@ struct drawingState{
 
 drawingState ds(9,9);
 
-EM_BOOL touchend_callback(
-    int eventType,
-    const EmscriptenTouchEvent *event,
-    void *ud
-) {
-    drawingState* userData = static_cast<drawingState*>(ud);
-    int ii = userData->iselect(event->touches[0].clientX);
-    
-  
-    int jj = userData->nextys[ii];
-    int pl = (userData->movenum)%2;
-    
-    
-    if (jj< userData->ny){
-      int jj2= userData->ny-1-jj;
-      float xpos=(ii+0.5)*userData->stonesize;
-      float ypos =(jj2+0.5)*userData->stonesize;
-      
-      drawmove(xpos,ypos,userData->stonesize,pl);
-      userData->update(ii);
-    }
-    
-    return EM_TRUE;
-}
 
 
 class engineState{
@@ -470,6 +449,34 @@ public:
   int getNY(){return ny;}
 
 };
+
+
+//event handling
+
+EM_BOOL touchend_callback(
+    int eventType,
+    const EmscriptenTouchEvent *event,
+    void *ud
+) {
+    drawingState* userData = static_cast<drawingState*>(ud);
+    int ii = userData->iselect(event->touches[0].clientX);
+    
+  
+    int jj = userData->nextys[ii];
+    int pl = (userData->movenum)%2;
+    
+    
+    if (jj< userData->ny){
+      int jj2= userData->ny-1-jj;
+      float xpos=(ii+0.5)*userData->stonesize;
+      float ypos =(jj2+0.5)*userData->stonesize;
+      
+      drawmove(xpos,ypos,userData->stonesize,pl);
+      userData->update(ii);
+    }
+    
+    return EM_TRUE;
+}
 
 extern "C"{
 
