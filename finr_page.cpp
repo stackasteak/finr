@@ -2,6 +2,7 @@
 #include <emscripten/html5.h>
 #include "Game.h"
 #include <vector>
+#include <pthread.h>
 
 
 //using namespace emscripten;
