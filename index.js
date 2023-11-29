@@ -993,7 +993,7 @@ function redraw(nx,ny) { let ctx = Module.canvas.getContext('2d'); let width = M
 function drawmove(xpos,ypos,ss,pl) { let ctx = Module.canvas.getContext('2d'); let colo; if (pl==0){ colo = "rgb(255, 234, 128)"; } else { colo = "rgb(255, 0,0)"; } ctx.fillStyle = colo; ctx.beginPath(); ctx.arc(xpos, ypos , 0.5*ss-2, 0.0, 6.283, false); ctx.fill(); }
 function undrawmove(xpos,ypos,ss) { let ctx = Module.canvas.getContext('2d'); let colo = "rgb(0,0,0)"; ctx.fillStyle = colo; ctx.beginPath(); ctx.arc(xpos, ypos , 0.5*ss-2, 0.0, 6.283, false); ctx.fill(); }
 function loadhiststep(nx,ny,n) { const re = new RegExp('[^0123456789]*([0123456789]+)',"g") ; let h = Module.pastehistBox.value; let m = [...h.matchAll(re)]; let moves = m.map((mm) => Number(mm[1])); if(n<moves.length){ return moves[n]-1; } else{ return -1; } }
-function draw1p(ii,ss,p) { let ctx = Module.canvas.getContext('2d'); let colo = "rgb(255,255,255)"; ctx.fillStyle = colo; ctx.fillText((p*100).toFixed(1).toString(), xpos, ypos); }
+function draw1p(ii,ss,p) { let ctx = Module.canvas.getContext('2d'); let width = Module.canvas.width; let colo = "rgb(255,255,255)"; let ypos = width; let xpos = ii*ss; ctx.fillStyle = colo; ctx.fillText((p*100).toFixed(1).toString(), xpos, ypos, ss); }
 
 
 // end include: preamble.js
@@ -1619,6 +1619,8 @@ var wasmImports = {
   /** @export */
   abort: _abort,
   /** @export */
+  draw1p: draw1p,
+  /** @export */
   drawmove: drawmove,
   /** @export */
   emscripten_memcpy_js: _emscripten_memcpy_js,
@@ -1660,7 +1662,7 @@ var _emscripten_stack_get_current = () => (_emscripten_stack_get_current = wasmE
 var ___cxa_is_pointer_type = createExportWrapper('__cxa_is_pointer_type');
 var dynCall_jiji = Module['dynCall_jiji'] = createExportWrapper('dynCall_jiji');
 var ___start_em_js = Module['___start_em_js'] = 66356;
-var ___stop_em_js = Module['___stop_em_js'] = 67997;
+var ___stop_em_js = Module['___stop_em_js'] = 68070;
 
 // include: postamble.js
 // === Auto-generated postamble setup entry stuff ===
