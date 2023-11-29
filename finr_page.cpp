@@ -345,7 +345,7 @@ EM_JS(void, draw1p, (int ii, float ss, float p), {
   let ypos = height;
   let xpos = ii*ss;
 
-  ctx.font = "30px Arial"
+  ctx.font = "30px Arial";
   ctx.fillStyle = colo;
   ctx.fillText((p*100).toFixed(0).toString(), xpos, ypos, ss);
 });
@@ -451,23 +451,16 @@ public:
     p.resize(nx_,0.0);
   }
 
-  void resize0(){}
-
   void batch(){
     for(int ii=0; ii<nx; ii++){
       p[ii]= std::rand();
     }
   }
 
-  float getP(int ii){
-    return p[ii];
-  }
-
-  int getNX(){return nx;}
-
-  int getNY(){return ny;}
 
 };
+
+engineState es(9,9);
 
 
 //event handling
@@ -554,16 +547,16 @@ void onLoad(){
 }
 
 }
+
+
 int main (){
 
   int nx=9;
   int ny=9;
 
   float ss = redraw(nx,ny);
-  //drawingState drawstate(nx,ny,ss);
 
   ds.stonesize=ss;
-  //alert_float(ds.stonesize);
   
   emscripten_set_touchend_callback(
         "canvas",
