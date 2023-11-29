@@ -340,13 +340,14 @@ EM_JS(int, loadhiststep, (int nx, int ny, int n), {
 
 EM_JS(void, draw1p, (int ii, float ss, float p), {
   let ctx = Module.canvas.getContext('2d');
-  let width = Module.canvas.width;
+  let height = Module.canvas.height;
   let colo = "rgb(255,255,255)";
-  let ypos = width;
+  let ypos = height;
   let xpos = ii*ss;
 
+  ctx.font = "30 px Lucida"
   ctx.fillStyle = colo;
-  ctx.fillText((p*100).toFixed(1).toString(), xpos, ypos, ss);
+  ctx.fillText((p*100).toFixed(0).toString(), xpos, ypos, ss);
 });
 
 void drawps(std::vector<float> ps, float ss);
