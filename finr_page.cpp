@@ -338,6 +338,14 @@ EM_JS(int, loadhiststep, (int nx, int ny, int n), {
   }
 });
 
+EM_JS(void, draw1p, (float xpos, float ypos, float p), {
+  let ctx = Module.canvas.getContext('2d');
+  let colo = "rgb(255,255,255)";
+
+  ctx.fillStyle = colo;
+  ctx.fillText((p*100).toFixed(1).toString(), xpos, ypos);
+});
+
 //global state variables
 
 struct drawingState{
