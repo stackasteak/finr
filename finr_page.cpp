@@ -338,7 +338,7 @@ EM_JS(int, loadhiststep, (int nx, int ny, int n), {
   }
 });
 
-EM_JS(void, draw1p, (float xpos, float ypos, float p), {
+EM_JS(void, draw1p, (int ii, float ss, float p), {
   let ctx = Module.canvas.getContext('2d');
   let colo = "rgb(255,255,255)";
 
@@ -346,6 +346,7 @@ EM_JS(void, draw1p, (float xpos, float ypos, float p), {
   ctx.fillText((p*100).toFixed(1).toString(), xpos, ypos);
 });
 
+void drawps(std::vector<float> ps, float ss);
 //global state variables
 
 struct drawingState{
