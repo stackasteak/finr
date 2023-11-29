@@ -81,42 +81,6 @@ function degToRad(degrees) {
   return degrees * Math.PI / 180;
 };
 
-function redraw(){
-  ctx.fillStyle = 'rgb(25,140,255)';
-  ctx.fillRect(0,0,width,height);
-
-  if(boardstate.xsize>=boardstate.ysize){
-    stonesize = width/boardstate.xsize;
-  }
-  else{
-    stonesize = width/boardstate.ysize;
-    xoffset = (width-stonesize*boardstate.xsize)*0.5;
-  }
-
-  for(let ii=0; ii<boardstate.xsize; ii++){
-    for(let jj=0; jj<boardstate.ysize; jj++){
-      ctx.fillStyle = "rgb(0, 0, 0)";
-      ctx.beginPath();
-      ctx.arc(xoffset+(ii+0.5)*stonesize,(jj+0.5)*stonesize , 0.5*stonesize-2, degToRad(0), degToRad(360), false);
-      ctx.fill();
-    }
-  }
-
-  ctx.fillStyle = 'rgb(0,0,0)'; 
-  ctx.fillRect(0, stonesize*boardstate.ysize, width, height);
-}
-
-
-function iselect(x){
-  let ans=boardstate.xsize;
-  for(let ii=0; ii<boardstate.xsize; ii++){
-    if(x < xoffset+(ii+1)*stonesize){
-      ans = ii;
-      break;
-    }
-  }
-  return ans;
-}
 
 function drawhighlight(){
   let ii1 = iselect(curX);
@@ -141,18 +105,6 @@ function undrawhighlight(ii1){
   }
 }
 
-
-function drawP(p){
-  ctx.fillStyle = "rgb(255,255,255)";
-  alert(p[0]);
-  for(let ii=0; ii<boardstate.xsize; ii++){
-    let jj=boardstate.nextys[ii];
-    if (jj<boardstate.ysize){
-      let jj2=boardstate.ysize-1-jj;
-      ctx.fillText(p[ii].toFixed(0).tostring(), xoffset+ii*stonesize, (jj2)*stonesize, stonesize);
-    }
-  }
-}
 
 // update sizepicker output value
 
@@ -195,16 +147,6 @@ clearBtn.addEventListener('click', () => {
   redraw();
 });
 
-backBtn.addEventListener('click', () => {
-  let ii = backBoard();
-  undrawmove(ii);
-});
-
-forwBtn.addEventListener('click', () => {
-  let ii = boardstate.history[boardstate.movenum];
-  drawmove(ii);
-  forwBoard();
-});
 
 pastehistBtn.addEventListener('click', () => {
   resetBoard();
@@ -249,9 +191,6 @@ engineWorker.onmessage =  (e) => {
   alert(e.data[0]);
   //drawP(e.data)
 };
-
-
-
 
 
   */
@@ -355,6 +294,15 @@ void drawps(std::vector<float> ps, float ss){
     draw1p(ii,ss,ps[ii]);
   }
 }
+
+EM_JS(void, redrawpbar, (), {
+  let ctx = Module.canvas.getContext('2d');
+  let width = Module.canvas.width;
+  let height = Module.canvas.height;
+  
+  ctx.fillStyle = 'rgb(0,0,0)'; 
+  ctx.fillRect(0, width, width, height);
+});
 
 
 //global state variables
