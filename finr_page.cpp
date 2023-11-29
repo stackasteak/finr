@@ -511,8 +511,7 @@ int main (){
         touchend_callback
     );
 
-  //draw1p(0,ss,0.5432);
-
+  //emscripten_set_main_loop_arg(drawps, 1
   drawps(es.p,ss);
   
   return 0;
