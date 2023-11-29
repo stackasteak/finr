@@ -342,8 +342,8 @@ EM_JS(void, draw1p, (int ii, float ss, float p), {
   let ctx = Module.canvas.getContext('2d');
   let height = Module.canvas.height;
   let colo = "rgb(255,255,255)";
-  let ypos = height;
-  let xpos = ii*ss;
+  let ypos = height+2;
+  let xpos = ii*ss+2;
 
   ctx.font = "30px Arial";
   ctx.fillStyle = colo;
@@ -563,9 +563,9 @@ int main (){
         touchend_callback
     );
 
-  draw1p(0,ss,0.5432);
+  //draw1p(0,ss,0.5432);
 
-  //drawps(es.p,ss);
+  drawps(es.p,ss);
   
   return 0;
 }
