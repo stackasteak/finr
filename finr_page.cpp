@@ -345,12 +345,18 @@ EM_JS(void, draw1p, (int ii, float ss, float p), {
   let ypos = height;
   let xpos = ii*ss;
 
-  ctx.font = "30 px Lucida"
+  ctx.font = "30px Arial"
   ctx.fillStyle = colo;
   ctx.fillText((p*100).toFixed(0).toString(), xpos, ypos, ss);
 });
 
-void drawps(std::vector<float> ps, float ss);
+void drawps(std::vector<float> ps, float ss){
+  for(int ii=0; ii<ps.size(); ii++){
+    draw1p(ii,ss,ps[ii]);
+  }
+}
+
+
 //global state variables
 
 struct drawingState{
