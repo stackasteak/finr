@@ -340,10 +340,13 @@ EM_JS(int, loadhiststep, (int nx, int ny, int n), {
 
 EM_JS(void, draw1p, (int ii, float ss, float p), {
   let ctx = Module.canvas.getContext('2d');
+  let width = Module.canvas.width;
   let colo = "rgb(255,255,255)";
+  let ypos = width;
+  let xpos = ii*ss;
 
   ctx.fillStyle = colo;
-  ctx.fillText((p*100).toFixed(1).toString(), xpos, ypos);
+  ctx.fillText((p*100).toFixed(1).toString(), xpos, ypos, ss);
 });
 
 void drawps(std::vector<float> ps, float ss);
@@ -562,7 +565,7 @@ int main (){
         touchend_callback
     );
 
-  
+  draw1p(0,ss,0.5432);
   
   return 0;
 }
