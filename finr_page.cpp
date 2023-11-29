@@ -434,12 +434,10 @@ drawingState ds(9,9);
 
 
 
-class engineState{
+struct engineState{
   std::vector<float> p;
   int nx;
   int ny;
-
-public: 
 
   engineState(int nx_, int ny_) : nx(nx_), ny(ny_){
     p.resize(nx_,0.0);
@@ -566,6 +564,8 @@ int main (){
     );
 
   draw1p(0,ss,0.5432);
+
+  //drawps(es.p,ss);
   
   return 0;
 }
