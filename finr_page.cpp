@@ -417,7 +417,7 @@ allState as(&ds,&es);
 //event handling and callbacks 
 
 void drawps(void * as1 ){
-  allstate * as2 = static_cast<allState*>(as1);
+  allState * as2 = static_cast<allState*>(as1);
   std::vector<float> ps = as1->esp->ps;
   float ss = as1->dsp->stonesize;
   for(int ii=0; ii<ps.size(); ii++){
