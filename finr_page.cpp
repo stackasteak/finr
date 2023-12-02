@@ -408,6 +408,15 @@ struct engineState{
 
 engineState es(9,9);
 
+struct allState{
+  drawingState * dsp;
+  engineState * esp;
+
+  allState(drawingState * ds_, engineState * es_) : dsp(ds_), esp(es_) {};
+};
+
+allState as(&ds,&es);
+
 
 //event handling
 
@@ -511,8 +520,9 @@ int main (){
         touchend_callback
     );
 
-  //emscripten_set_main_loop_arg(drawps, 1
-  drawps(es.p,ss);
+  emscripten_set_main_loop_arg(drawps, static_cast<void*>(&as), 1, false);
+  
+  //drawps(es.p,ss);
   
   return 0;
 }
