@@ -303,6 +303,8 @@ EM_JS(void, redrawpbar, (), {
 
 //global state variables
 
+pthread_mutex_t mutexas;
+
 struct drawingState{
   float stonesize;
   int nx;
@@ -418,7 +420,12 @@ allState as(&ds,&es);
 
 void drawps(void * as1 ){
   allState * as2 = static_cast<allState*>(as1);
-  std::vector<float> ps = as2->esp->p;
+  
+pthread_mutex_lock(mutexas); 
+  
+std::vector<float> ps = as2->esp->p;
+
+  prhread_mutex_unlock(mutexas);
   float ss = as2->dsp->stonesize;
   for(int ii=0; ii<ps.size(); ii++){
     draw1p(ii,ss,ps[ii]);
