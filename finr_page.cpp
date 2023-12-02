@@ -421,11 +421,11 @@ allState as(&ds,&es);
 void drawps(void * as1 ){
   allState * as2 = static_cast<allState*>(as1);
   
-pthread_mutex_lock(mutexas); 
+pthread_mutex_lock(&mutexas); 
   
 std::vector<float> ps = as2->esp->p;
 
-  prhread_mutex_unlock(mutexas);
+  prhread_mutex_unlock(&mutexas);
   float ss = as2->dsp->stonesize;
   for(int ii=0; ii<ps.size(); ii++){
     draw1p(ii,ss,ps[ii]);
