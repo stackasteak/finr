@@ -289,11 +289,7 @@ EM_JS(void, draw1p, (int ii, float ss, float p), {
   ctx.fillText((p*100).toFixed(0).toString(), xpos, ypos, ss);
 });
 
-void drawps(std::vector<float> ps, float ss){
-  for(int ii=0; ii<ps.size(); ii++){
-    draw1p(ii,ss,ps[ii]);
-  }
-}
+
 
 EM_JS(void, redrawpbar, (), {
   let ctx = Module.canvas.getContext('2d');
@@ -418,7 +414,16 @@ struct allState{
 allState as(&ds,&es);
 
 
-//event handling
+//event handling and callbacks 
+
+void drawps(void * as1 ){
+  allstate * as2 = static_cast<allState*>(as1);
+  std::vector<float> ps = as1->esp->ps;
+  float ss = as1->dsp->stonesize;
+  for(int ii=0; ii<ps.size(); ii++){
+    draw1p(ii,ss,ps[ii]);
+  }
+}
 
 EM_BOOL touchend_callback(
     int eventType,
