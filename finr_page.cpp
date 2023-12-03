@@ -348,7 +348,7 @@ void mainloop(void * as0){
       es1->p[ii]= 1; //(std::rand()%100)/100.0;
     }
   }
-  //redrawpbar();
+  redrawpbar();
   drawps(as0);
 }
 
