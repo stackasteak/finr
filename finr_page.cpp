@@ -107,8 +107,8 @@ EM_JS(void, draw1p, (int ii, float ss, float p), {
 
 EM_JS(void, redrawpbar, (), {
   let ctx = Module.canvas.getContext('2d');
-  let width = Module.canvas.width;
-  let height = Module.canvas.height;
+  let width = window.innerWidth;
+  let height = window.innerWidth+30;
   
   ctx.fillStyle = 'rgb(0,0,0)'; 
   ctx.fillRect(0, width, width, height);
