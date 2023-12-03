@@ -531,7 +531,9 @@ void onStart(){
   }
   else{
     es.running=true;
+    alert_float(2);
     pthread_create(&enginethread, NULL, startEngine, static_cast<void*>(&es));
+    alert_float(3);
   }
 }
 
