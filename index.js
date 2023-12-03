@@ -2480,8 +2480,6 @@ var wasmImports = {
   /** @export */
   redraw: redraw,
   /** @export */
-  redrawpbar: redrawpbar,
-  /** @export */
   undrawmove: undrawmove
 };
 var wasmExports = createWasm();
