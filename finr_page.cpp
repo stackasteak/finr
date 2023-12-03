@@ -345,7 +345,7 @@ void mainloop(void * as0){
 
   if(es1->running){
     for(int ii=0; ii < es1->nx; ii++){
-      es1->p[ii]= 1;//std::rand();
+      es1->p[ii]= (std::rand()%100)/100.0;
     }
   }
   redrawpbar();
