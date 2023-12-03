@@ -7,7 +7,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: run emcc  
         working-directory: ./
-        run: emcc finr_page.cpp -o index.html --shell-file index_template.html -std=c++20 -sEXPORTED_FUNCTIONS="['_onClear','_onBack','_onForw','_onLoad','_onStart']" -lpthread
+        run: emcc finr_page.cpp -o index.html --shell-file index_template.html -std=c++20 -sEXPORTED_FUNCTIONS="['_onClear','_onBack','_onForw','_onLoad','_onStart']" -sWASM_WORKERS
       - name: commit and push
         working-directory: ./
         run: |
