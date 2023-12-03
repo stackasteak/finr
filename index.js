@@ -2488,6 +2488,7 @@ var _onClear = Module['_onClear'] = createExportWrapper('onClear');
 var _onBack = Module['_onBack'] = createExportWrapper('onBack');
 var _onForw = Module['_onForw'] = createExportWrapper('onForw');
 var _onLoad = Module['_onLoad'] = createExportWrapper('onLoad');
+var _onStart = Module['_onStart'] = createExportWrapper('onStart');
 var _main = createExportWrapper('main');
 var ___errno_location = createExportWrapper('__errno_location');
 var _fflush = Module['_fflush'] = createExportWrapper('fflush');
