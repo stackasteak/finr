@@ -303,7 +303,8 @@ EM_JS(void, redrawpbar, (), {
 
 //global state variables
 
-pthread_mutex_t mutexas =PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutexas;
+pthread_mutex_init(&mutexas,NULL);
 
 struct drawingState{
   float stonesize;
