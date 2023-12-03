@@ -417,7 +417,7 @@ pthread_t enginethread;
 
 //engine
 
-void startEngine(void * es0){
+void *startEngine(void * es0){
   engineState * es1 = static_cast<engineState*>(es0);
   pthread_mutex_lock(&mutexas);
   for(int ii=0; ii < es1->nx; ii++){
@@ -527,7 +527,7 @@ void onLoad(){
 void onStart(){
   if (es.running){
     es.running=false;
-    pthread_cancel(&enginethread);
+    pthread_cancel(enginethread);
   }
   else{
     es.running=true;
