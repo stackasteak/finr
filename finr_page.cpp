@@ -527,11 +527,11 @@ void onLoad(){
 void onStart(){
   if (es.running){
     es.running=false;
-    pthread_cancel(enginethread);
+    pthread_cancel(&enginethread);
   }
   else{
     es.running=true;
-    pthread_create(enginethread, NULL, startEngine, static_cast<void*>(&es));
+    pthread_create(&enginethread, NULL, startEngine, static_cast<void*>(&es));
   }
 }
 
