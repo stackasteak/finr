@@ -418,21 +418,12 @@ allState as(&ds,&es);
 
 //engine
 
-void *startEngine(void * es0){
-  engineState * es1 = static_cast<engineState*>(es0);
 
-  for(int ii=0; ii < es1->nx; ii++){
-    es1->p[ii]= 1;//std::rand();
-  }
-  alert_float(es1->p[0]);
-  alert_float(es.p[0]);
-  
-}
 
 //event handling and callbacks 
 
-void drawps(void * as1 ){
-  allState * as2 = static_cast<allState*>(as1);
+void drawps(void * as0 ){
+  allState * as2 = static_cast<allState*>(as0);
     
   std::vector<float> ps = as2->esp->p;
 
@@ -534,6 +525,20 @@ void onStart(){
 
 }
 
+//main loop
+void *mainloop(void * as0){
+  allState * as1 = static_cast<allState*>(as0);
+  engineState * es1 = as1->esp;
+
+  if(es1->running){
+    for(int ii=0; ii < es1->nx; ii++){
+      es1->p[ii]= 1;//std::rand();
+    }
+  }
+
+  drawps(as0);
+}
+
 
 int main (){
 
@@ -553,7 +558,6 @@ int main (){
 
   emscripten_set_main_loop_arg(drawps, static_cast<void*>(&as), 1, false);
   
-  //drawps(es.p,ss);
   
   return 0;
 }
