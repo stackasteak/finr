@@ -420,11 +420,11 @@ pthread_t enginethread;
 
 void *startEngine(void * es0){
   engineState * es1 = static_cast<engineState*>(es0);
-  pthread_mutex_lock(&mutexas);
+  //pthread_mutex_lock(&mutexas);
   for(int ii=0; ii < es1->nx; ii++){
     es1->p[ii]= 1;//std::rand();
   }
-  pthread_mutex_unlock(&mutexas);
+  //pthread_mutex_unlock(&mutexas);
   
 }
 
