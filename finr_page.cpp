@@ -526,7 +526,7 @@ void onStart(){
 }
 
 //main loop
-void *mainloop(void * as0){
+void mainloop(void * as0){
   allState * as1 = static_cast<allState*>(as0);
   engineState * es1 = as1->esp;
 
