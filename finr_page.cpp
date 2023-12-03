@@ -384,9 +384,11 @@ struct engineState{
   std::vector<float> p;
   int nx;
   int ny;
+  bool running;
 
   engineState(int nx_, int ny_) : nx(nx_), ny(ny_){
     p.resize(nx_,0.0);
+    running = false;
   }
 
   void resize(int nx_, int ny_) {
@@ -415,6 +417,11 @@ struct allState{
 
 allState as(&ds,&es);
 
+pthread_t enginethread;
+
+//engine
+
+void startEngine(){};
 
 //event handling and callbacks 
 
@@ -510,6 +517,17 @@ void onLoad(){
       drawmove(xpos,ypos, ds.stonesize,pl);
       ds.update(res);
     }
+  }
+}
+
+void onStart(){
+  if (es.running){
+    es.running=false;
+    pthread_cancel(enginethread);
+  }
+  else{
+    es.running=true;
+    pthread_create(enginethread);
   }
 }
 
