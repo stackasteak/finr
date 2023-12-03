@@ -2,7 +2,7 @@
 #include <emscripten/html5.h>
 #include "Game.h"
 #include <vector>
-#include <emscripten/wasm_worker.h>
+//#include <emscripten/wasm_worker.h>
 #include <stdio.h>
 
 
