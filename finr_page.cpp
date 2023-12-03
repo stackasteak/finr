@@ -397,11 +397,7 @@ struct engineState{
     p.resize(nx_,0.0);
   }
 
-  void batch(){
-    for(int ii=0; ii<nx; ii++){
-      p[ii]= std::rand();
-    }
-  }
+  
 
 
 };
@@ -421,7 +417,15 @@ pthread_t enginethread;
 
 //engine
 
-void startEngine(){};
+void startEngine(void * es0){
+  engineState * es1 = static_cast<engineState*>(es0);
+  pthread_mutex_lock(&mutexas);
+  for(int ii=0; ii < es1->nx; ii++){
+    es1->p[ii]= std::rand();
+  }
+  pthread_mutex_unlock(&mutexas);
+  
+}
 
 //event handling and callbacks 
 
@@ -527,7 +531,7 @@ void onStart(){
   }
   else{
     es.running=true;
-    pthread_create(enginethread);
+    pthread_create(enginethread, NULL, startEngine, static_cast<void*>(es));
   }
 }
 
