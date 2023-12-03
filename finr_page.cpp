@@ -304,7 +304,7 @@ EM_JS(void, redrawpbar, (), {
 //global state variables
 
 pthread_mutex_t mutexas;
-pthread_mutex_init(&mutexas,NULL);
+
 
 struct drawingState{
   float stonesize;
@@ -549,6 +549,8 @@ int main (){
   float ss = redraw(nx,ny);
 
   ds.stonesize=ss;
+
+  pthread_mutex_init(&mutexas,NULL);
   
   emscripten_set_touchend_callback(
         "canvas",
