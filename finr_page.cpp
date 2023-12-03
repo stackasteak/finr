@@ -556,7 +556,7 @@ int main (){
         touchend_callback
     );
 
-  emscripten_set_main_loop_arg(drawps, static_cast<void*>(&as), 1, false);
+  emscripten_set_main_loop_arg(mainloop, static_cast<void*>(&as), 1, false);
   
   
   return 0;
