@@ -2,7 +2,8 @@
 #include <emscripten/html5.h>
 #include "Game.h"
 #include <vector>
-#include <pthread.h>
+#include <emscripten/wasm_worker.h>
+#include <stdio.h>
 
 
 //using namespace emscripten;
@@ -303,7 +304,7 @@ EM_JS(void, redrawpbar, (), {
 
 //global state variables
 
-pthread_mutex_t mutexas;
+//pthread_mutex_t mutexas;
 
 
 struct drawingState{
@@ -414,7 +415,15 @@ struct allState{
 
 allState as(&ds,&es);
 
-pthread_t enginethread;
+//pthread_t enginethread;
+
+//webworkers
+
+void run_in_worker()
+{
+  printf("Hello from Wasm Worker!\n");
+}
+
 
 //engine
 
@@ -435,11 +444,11 @@ void *startEngine(void * es0){
 void drawps(void * as1 ){
   allState * as2 = static_cast<allState*>(as1);
   
-pthread_mutex_lock(&mutexas); 
+//pthread_mutex_lock(&mutexas); 
   
 std::vector<float> ps = as2->esp->p;
 
-  pthread_mutex_unlock(&mutexas);
+  //pthread_mutex_unlock(&mutexas);
   float ss = as2->dsp->stonesize;
   for(int ii=0; ii<ps.size(); ii++){
     draw1p(ii,ss,ps[ii]);
@@ -530,13 +539,13 @@ void onLoad(){
 void onStart(){
   if (es.running){
     es.running=false;
-    pthread_cancel(enginethread);
+    //pthread_cancel(enginethread);
   }
   else{
     es.running=true;
-    alert_float(es.p[0]);
-    pthread_create(&enginethread, NULL, startEngine, static_cast<void*>(&es));
-    alert_float(es.p[0]);
+    //alert_float(es.p[0]);
+    //pthread_create(&enginethread, NULL, startEngine, static_cast<void*>(&es));
+    //alert_float(es.p[0]);
   }
 }
 
@@ -545,6 +554,9 @@ void onStart(){
 
 int main (){
 
+  emscripten_wasm_worker_t worker = emscripten_malloc_wasm_worker(/*stackSize: */1024);
+  emscripten_wasm_worker_post_function_v(worker, run_in_worker);
+
   int nx=9;
   int ny=9;
 
@@ -552,7 +564,7 @@ int main (){
 
   ds.stonesize=ss;
 
-  pthread_mutex_init(&mutexas,NULL);
+  //pthread_mutex_init(&mutexas,NULL);
   
   emscripten_set_touchend_callback(
         "canvas",
