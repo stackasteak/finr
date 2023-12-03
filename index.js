@@ -46,19 +46,6 @@ if (Module['ENVIRONMENT']) {
   throw new Error('Module.ENVIRONMENT has been deprecated. To force the environment, use the ENVIRONMENT compile-time option (for example, -sENVIRONMENT=web or -sENVIRONMENT=node)');
 }
 
-var ENVIRONMENT_IS_WASM_WORKER = Module['$ww'];
-
-// In MODULARIZE mode _scriptDir needs to be captured already at the very top of the page immediately when the page is parsed, so it is generated there
-// before the page load. In non-MODULARIZE modes generate it here.
-var _scriptDir = (typeof document != 'undefined' && document.currentScript) ? document.currentScript.src : undefined;
-
-if (ENVIRONMENT_IS_WORKER) {
-  _scriptDir = self.location.href;
-}
-else if (ENVIRONMENT_IS_NODE) {
-  _scriptDir = __filename;
-}
-
 // `/` should be present at the end if `scriptDirectory` is not empty
 var scriptDirectory = '';
 function locateFile(path) {
@@ -148,15 +135,6 @@ readAsync = (filename, onload, onerror, binary = true) => {
   };
 
   Module['inspect'] = () => '[Emscripten Module object]';
-
-  let nodeWorkerThreads;
-  try {
-    nodeWorkerThreads = require('worker_threads');
-  } catch (e) {
-    console.error('The "worker_threads" module is not supported in this node.js build - perhaps a newer version is needed?');
-    throw e;
-  }
-  global.Worker = nodeWorkerThreads.Worker;
 
 } else
 if (ENVIRONMENT_IS_SHELL) {
@@ -368,9 +346,6 @@ if (typeof WebAssembly != 'object') {
 
 var wasmMemory;
 
-// For sending to workers.
-var wasmModule;
-
 //========================================
 // Runtime essentials
 //========================================
@@ -439,41 +414,9 @@ assert(!Module['STACK_SIZE'], 'STACK_SIZE can no longer be set at runtime.  Use 
 assert(typeof Int32Array != 'undefined' && typeof Float64Array !== 'undefined' && Int32Array.prototype.subarray != undefined && Int32Array.prototype.set != undefined,
        'JS engine does not provide full typed array support');
 
-// In non-standalone/normal mode, we create the memory here.
-// include: runtime_init_memory.js
-// Create the wasm memory. (Note: this only applies if IMPORTED_MEMORY is defined)
-
-var INITIAL_MEMORY = Module['INITIAL_MEMORY'] || 16777216;legacyModuleProp('INITIAL_MEMORY', 'INITIAL_MEMORY');
-
-assert(INITIAL_MEMORY >= 65536, 'INITIAL_MEMORY should be larger than STACK_SIZE, was ' + INITIAL_MEMORY + '! (STACK_SIZE=' + 65536 + ')');
-  
-// check for full engine support (use string 'subarray' to avoid closure compiler confusion)
-
-  if (Module['wasmMemory']) {
-    wasmMemory = Module['wasmMemory'];
-  } else
-  {
-    wasmMemory = new WebAssembly.Memory({
-      'initial': INITIAL_MEMORY / 65536,
-      'maximum': INITIAL_MEMORY / 65536,
-      'shared': true,
-    });
-    if (!(wasmMemory.buffer instanceof SharedArrayBuffer)) {
-      err('requested a shared WebAssembly.Memory but the returned buffer is not a SharedArrayBuffer, indicating that while the browser has SharedArrayBuffer it does not have WebAssembly threads support - you may need to set a flag');
-      if (ENVIRONMENT_IS_NODE) {
-        err('(on node you may need: --experimental-wasm-threads --experimental-wasm-bulk-memory and/or recent version)');
-      }
-      throw Error('bad memory');
-    }
-  }
-
-updateMemoryViews();
-
-// If the user provides an incorrect length, just use that length instead rather than providing the user to
-// specifically provide the memory length with Module['INITIAL_MEMORY'].
-INITIAL_MEMORY = wasmMemory.buffer.byteLength;
-assert(INITIAL_MEMORY % 65536 === 0);
-// end include: runtime_init_memory.js
+// If memory is defined in wasm, the user can't provide it, or set INITIAL_MEMORY
+assert(!Module['wasmMemory'], 'Use of `wasmMemory` detected.  Use -sIMPORTED_MEMORY to define wasmMemory externally');
+assert(!Module['INITIAL_MEMORY'], 'Detected runtime INITIAL_MEMORY setting.  Use -sIMPORTED_MEMORY to define wasmMemory dynamically');
 
 // include: runtime_stack_check.js
 // Initializes the stack cookie. Called at the startup of main and at the startup of each thread in pthreads mode.
@@ -544,8 +487,6 @@ function preRun() {
 function initRuntime() {
   assert(!runtimeInitialized);
   runtimeInitialized = true;
-
-  if (ENVIRONMENT_IS_WASM_WORKER) return _wasmWorkerInitializeRuntime();
 
   checkStackCookie();
 
@@ -886,14 +827,21 @@ function createWasm() {
 
     
 
+    wasmMemory = wasmExports['memory'];
+    
+    assert(wasmMemory, "memory not found in wasm exports");
+    // This assertion doesn't hold when emscripten is run in --post-link
+    // mode.
+    // TODO(sbc): Read INITIAL_MEMORY out of the wasm file in post-link mode.
+    //assert(wasmMemory.buffer.byteLength === 16777216);
+    updateMemoryViews();
+
     wasmTable = wasmExports['__indirect_function_table'];
     
     assert(wasmTable, "table not found in wasm exports");
 
     addOnInit(wasmExports['__wasm_call_ctors']);
 
-    // We now have the Wasm module loaded up, keep a reference to the compiled module so we can post it to the workers.
-    wasmModule = module;
     removeRunDependency('wasm-instantiate');
     return wasmExports;
   }
@@ -910,7 +858,9 @@ function createWasm() {
     // receiveInstance() will swap in the exports (to Module.asm) so they can be called
     assert(Module === trueModule, 'the Module object should not be replaced during async compilation - perhaps the order of HTML elements is wrong?');
     trueModule = null;
-    receiveInstance(result['instance'], result['module']);
+    // TODO: Due to Closure regression https://github.com/google/closure-compiler/issues/3193, the above line no longer optimizes out down to the following line.
+    // When the regression is fixed, can restore the above PTHREADS-enabled path.
+    receiveInstance(result['instance']);
   }
 
   // User shell pages can write their own Module.instantiateWasm = function(imports, successCallback) callback
@@ -1055,54 +1005,6 @@ function redrawpbar() { let ctx = Module.canvas.getContext('2d'); let width = Mo
       this.message = `Program terminated with exit(${status})`;
       this.status = status;
     }
-
-  var _wasmWorkerDelayedMessageQueue = [];
-  
-  var wasmTableMirror = [];
-  
-  var wasmTable;
-  var getWasmTableEntry = (funcPtr) => {
-      var func = wasmTableMirror[funcPtr];
-      if (!func) {
-        if (funcPtr >= wasmTableMirror.length) wasmTableMirror.length = funcPtr + 1;
-        wasmTableMirror[funcPtr] = func = wasmTable.get(funcPtr);
-      }
-      assert(wasmTable.get(funcPtr) == func, "JavaScript-side Wasm function table mirror is out of date!");
-      return func;
-    };
-  var _wasmWorkerRunPostMessage = (e) => {
-      // '_wsc' is short for 'wasm call', trying to use an identifier name that
-      // will never conflict with user code
-      // In Node.js environment, message event 'e' containing the actual data sent,
-      // while in the browser environment it's contained by 'e.data'.
-      let data = ENVIRONMENT_IS_NODE ? e : e.data;
-      let wasmCall = data['_wsc'];
-      wasmCall && getWasmTableEntry(wasmCall)(...data['x']);
-    };
-  
-  var _wasmWorkerAppendToQueue = (e) => {
-      _wasmWorkerDelayedMessageQueue.push(e);
-    };
-  
-  var _wasmWorkerInitializeRuntime = () => {
-      let m = Module;
-      assert(m['sb'] % 16 == 0);
-      assert(m['sz'] % 16 == 0);
-  
-      // Run the C side Worker initialization for stack and TLS.
-      _emscripten_wasm_worker_initialize(m['sb'], m['sz']);
-  
-        // The Wasm Worker runtime is now up, so we can start processing
-        // any postMessage function calls that have been received. Drop the temp
-        // message handler that queued any pending incoming postMessage function calls ...
-        removeEventListener('message', _wasmWorkerAppendToQueue);
-        // ... then flush whatever messages we may have already gotten in the queue,
-        //     and clear _wasmWorkerDelayedMessageQueue to undefined ...
-        _wasmWorkerDelayedMessageQueue = _wasmWorkerDelayedMessageQueue.forEach(_wasmWorkerRunPostMessage);
-        // ... and finally register the proper postMessage handler that immediately
-        // dispatches incoming function calls without queueing them.
-        addEventListener('message', _wasmWorkerRunPostMessage);
-    };
 
   var callRuntimeCallbacks = (callbacks) => {
       while (callbacks.length > 0) {
@@ -1257,12 +1159,7 @@ function redrawpbar() { let ctx = Module.canvas.getContext('2d'); let width = Mo
       abort('native code called abort()');
     };
 
-  var _emscripten_get_now;
-      // Modern environment where performance.now() is supported:
-      // N.B. a shorter form "_emscripten_get_now = performance.now;" is
-      // unfortunately not allowed even in current browsers (e.g. FF Nightly 75).
-      _emscripten_get_now = () => performance.now();
-  ;
+  var _emscripten_memcpy_js = (dest, src, num) => HEAPU8.copyWithin(dest, src, src + num);
 
   var getHeapMax = () =>
       HEAPU8.length;
@@ -1322,7 +1219,7 @@ function redrawpbar() { let ctx = Module.canvas.getContext('2d'); let width = Mo
       while (heapOrArray[endPtr] && !(endPtr >= endIdx)) ++endPtr;
   
       if (endPtr - idx > 16 && heapOrArray.buffer && UTF8Decoder) {
-        return UTF8Decoder.decode(heapOrArray.buffer instanceof SharedArrayBuffer ? heapOrArray.slice(idx, endPtr) : heapOrArray.subarray(idx, endPtr));
+        return UTF8Decoder.decode(heapOrArray.subarray(idx, endPtr));
       }
       var str = '';
       // If building with TextDecoder, we have already computed the string length
@@ -2108,6 +2005,12 @@ function redrawpbar() { let ctx = Module.canvas.getContext('2d'); let width = Mo
       return 0;
     };
   
+  var _emscripten_get_now;
+      // Modern environment where performance.now() is supported:
+      // N.B. a shorter form "_emscripten_get_now = performance.now;" is
+      // unfortunately not allowed even in current browsers (e.g. FF Nightly 75).
+      _emscripten_get_now = () => performance.now();
+  ;
   
   
     /**
@@ -2224,6 +2127,18 @@ function redrawpbar() { let ctx = Module.canvas.getContext('2d'); let width = Mo
     };
   
   
+  var wasmTableMirror = [];
+  
+  var wasmTable;
+  var getWasmTableEntry = (funcPtr) => {
+      var func = wasmTableMirror[funcPtr];
+      if (!func) {
+        if (funcPtr >= wasmTableMirror.length) wasmTableMirror.length = funcPtr + 1;
+        wasmTableMirror[funcPtr] = func = wasmTable.get(funcPtr);
+      }
+      assert(wasmTable.get(funcPtr) == func, "JavaScript-side Wasm function table mirror is out of date!");
+      return func;
+    };
   var _emscripten_set_main_loop_arg = (func, arg, fps, simulateInfiniteLoop) => {
       var browserIterationFunc = () => getWasmTableEntry(func)(arg);
       setMainLoop(browserIterationFunc, fps, simulateInfiniteLoop, arg);
@@ -2463,12 +2378,8 @@ function redrawpbar() { let ctx = Module.canvas.getContext('2d'); let width = Mo
       };
       return JSEvents.registerOrRemoveHandler(eventHandler);
     };
-  
-  function _emscripten_set_touchend_callback_on_thread(target, userData, useCapture, callbackfunc, targetThread) {
-    assert(!ENVIRONMENT_IS_WASM_WORKER, "Attempted to call proxied function '_emscripten_set_touchend_callback_on_thread' in a Wasm Worker, but in Wasm Worker enabled builds, proxied function architecture is not available!");
-    registerTouchEventCallback(target, userData, useCapture, callbackfunc, 23, "touchend", targetThread)
-  }
-  
+  var _emscripten_set_touchend_callback_on_thread = (target, userData, useCapture, callbackfunc, targetThread) =>
+      registerTouchEventCallback(target, userData, useCapture, callbackfunc, 23, "touchend", targetThread);
 
   var _fd_close = (fd) => {
       abort('fd_close called without SYSCALLS_REQUIRE_FILESYSTEM');
@@ -2551,7 +2462,7 @@ var wasmImports = {
   /** @export */
   drawmove: drawmove,
   /** @export */
-  emscripten_get_now: _emscripten_get_now,
+  emscripten_memcpy_js: _emscripten_memcpy_js,
   /** @export */
   emscripten_resize_heap: _emscripten_resize_heap,
   /** @export */
@@ -2566,8 +2477,6 @@ var wasmImports = {
   fd_write: _fd_write,
   /** @export */
   loadhiststep: loadhiststep,
-  /** @export */
-  memory: wasmMemory,
   /** @export */
   redraw: redraw,
   /** @export */
@@ -2588,7 +2497,6 @@ var _emscripten_stack_init = () => (_emscripten_stack_init = wasmExports['emscri
 var _emscripten_stack_get_free = () => (_emscripten_stack_get_free = wasmExports['emscripten_stack_get_free'])();
 var _emscripten_stack_get_base = () => (_emscripten_stack_get_base = wasmExports['emscripten_stack_get_base'])();
 var _emscripten_stack_get_end = () => (_emscripten_stack_get_end = wasmExports['emscripten_stack_get_end'])();
-var _emscripten_wasm_worker_initialize = Module['_emscripten_wasm_worker_initialize'] = createExportWrapper('emscripten_wasm_worker_initialize');
 var stackSave = createExportWrapper('stackSave');
 var stackRestore = createExportWrapper('stackRestore');
 var stackAlloc = createExportWrapper('stackAlloc');
@@ -2778,10 +2686,6 @@ var missingLibrarySymbols = [
   'allocate',
   'writeStringToMemory',
   'writeAsciiToMemory',
-  '_wasmWorkersID',
-  '_wasmWorkerPostFunction1',
-  '_wasmWorkerPostFunction2',
-  '_wasmWorkerPostFunction3',
 ];
 missingLibrarySymbols.forEach(missingLibrarySymbol)
 
@@ -2889,11 +2793,6 @@ var unexportedSymbols = [
   'SDL_gfx',
   'allocateUTF8',
   'allocateUTF8OnStack',
-  '_wasmWorkers',
-  '_wasmWorkerDelayedMessageQueue',
-  '_wasmWorkerAppendToQueue',
-  '_wasmWorkerRunPostMessage',
-  '_wasmWorkerInitializeRuntime',
 ];
 unexportedSymbols.forEach(unexportedRuntimeSymbol);
 
@@ -2945,10 +2844,6 @@ function run() {
   }
 
     stackCheckInit();
-
-  if (ENVIRONMENT_IS_WASM_WORKER) {
-    return initRuntime();
-  }
 
   preRun();
 
