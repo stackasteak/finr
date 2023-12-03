@@ -424,6 +424,8 @@ void *startEngine(void * es0){
   for(int ii=0; ii < es1->nx; ii++){
     es1->p[ii]= 1;//std::rand();
   }
+  alert_float(es1->p[0]);
+  alert_float(es.p[0]);
   //pthread_mutex_unlock(&mutexas);
   
 }
