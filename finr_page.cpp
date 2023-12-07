@@ -319,7 +319,7 @@ void onStart(){
 //main loop
 void mainloop(void * as0){
   allState<eT> * as1 = static_cast<allState<eT>*>(as0);
-  engineType * es1 = as1->esp;
+  eT * es1 = as1->esp;
 
   if(es1->running){
     es1->run();
