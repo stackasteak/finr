@@ -317,14 +317,13 @@ void onStart(){
 }
 
 //main loop
+template<engineType>
 void mainloop(void * as0){
-  allState * as1 = static_cast<allState*>(as0);
-  engineState * es1 = as1->esp;
+  allState<engineType> * as1 = static_cast<allState<engineType>*>(as0);
+  engineType * es1 = as1->esp;
 
   if(es1->running){
-    for(int ii=0; ii < es1->nx; ii++){
-      es1->p[ii]= (std::rand()%100)/100.0;
-    }
+    es1->run();
   }
   redrawpbar();
   drawps(as0);
