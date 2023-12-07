@@ -198,7 +198,7 @@ drawingState ds(9,9);
 
 randEngine es(9,9);
 
-template<engineType>
+template<class engineType>
 struct allState{
   drawingState * dsp;
   engineType * esp;
@@ -317,7 +317,7 @@ void onStart(){
 }
 
 //main loop
-template<engineType>
+template<class engineType>
 void mainloop(void * as0){
   allState<engineType> * as1 = static_cast<allState<engineType>*>(as0);
   engineType * es1 = as1->esp;
