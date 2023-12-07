@@ -195,8 +195,8 @@ drawingState ds(9,9);
 
 //engine
 
-
-randEngine es(9,9);
+typedef randEngine eT;
+eT es(9,9);
 
 template<class engineType>
 struct allState{
@@ -206,7 +206,7 @@ struct allState{
   allState(drawingState * ds_, engineType * es_) : dsp(ds_), esp(es_) {};
 };
 
-allState<randEngine> as(&ds,&es);
+allState<eT> as(&ds,&es);
 
 
 
@@ -214,7 +214,7 @@ allState<randEngine> as(&ds,&es);
 //event handling and callbacks 
 
 void drawps(void * as0 ){
-  allState * as2 = static_cast<allState*>(as0);
+  allState<eT> * as2 = static_cast<allState<eT>*>(as0);
     
   std::vector<float> ps = as2->esp->p;
 
@@ -317,9 +317,8 @@ void onStart(){
 }
 
 //main loop
-template<class engineType>
 void mainloop(void * as0){
-  allState<engineType> * as1 = static_cast<allState<engineType>*>(as0);
+  allState<eT> * as1 = static_cast<allState<eT>*>(as0);
   engineType * es1 = as1->esp;
 
   if(es1->running){
@@ -346,7 +345,7 @@ int main (){
         touchend_callback
     );
 
-  emscripten_set_main_loop_arg(mainloop<randEngine>, static_cast<void*>(&as), 1, false);
+  emscripten_set_main_loop_arg(mainloop, static_cast<void*>(&as), 1, false);
   
   
   return 0;
