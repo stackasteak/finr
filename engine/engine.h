@@ -1,1 +1,26 @@
 
+
+struct baseEngine{
+  std::vector<float> p;
+  int nx;
+  int ny;
+  bool running;
+
+  baseEngine(int nx_, int ny_) : nx(nx_), ny(ny_){
+    p.resize(nx_,0.0);
+    running = false;
+  }
+
+  void resize(int nx_, int ny_) {
+    nx =nx_;
+    ny=ny_;
+    p.resize(nx_,0.0);
+  }
+
+};
+
+
+struct randEngine : baseEngine{
+  void run(){
+  }
+};
