@@ -193,43 +193,21 @@ struct drawingState{
 
 drawingState ds(9,9);
 
+//engine
 
 
-struct engineState{
-  std::vector<float> p;
-  int nx;
-  int ny;
-  bool running;
+randEngine es(9,9);
 
-  engineState(int nx_, int ny_) : nx(nx_), ny(ny_){
-    p.resize(nx_,0.0);
-    running = false;
-  }
-
-  void resize(int nx_, int ny_) {
-    nx =nx_;
-    ny=ny_;
-    p.resize(nx_,0.0);
-  }
-
-  
-
-
-};
-
-engineState es(9,9);
-
+template<engineType>
 struct allState{
   drawingState * dsp;
-  engineState * esp;
+  engineType * esp;
 
-  allState(drawingState * ds_, engineState * es_) : dsp(ds_), esp(es_) {};
+  allState(drawingState * ds_, engineType * es_) : dsp(ds_), esp(es_) {};
 };
 
 allState as(&ds,&es);
 
-
-//engine
 
 
 
