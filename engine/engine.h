@@ -23,6 +23,8 @@ struct engineface{
 
 
 struct runrand {
+
+  runrand(){}
  
   void run(engineface * ef){
     for(int ii=0; ii < ef->nx; ii++){
