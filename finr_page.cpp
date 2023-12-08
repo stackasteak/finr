@@ -194,7 +194,7 @@ drawingState ds(9,9);
 //engine
 
 typedef runrand rT;
-rT rs();
+rT rs(0);
 engineface es(9,9);
 
 template<class runType>
