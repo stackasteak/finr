@@ -24,9 +24,9 @@ struct engineface{
 
 struct runrand {
  
-  void run(engineface & ef){
-    for(int ii=0; ii <ef.nx; ii++){
-       ef.p[ii]= (std::rand()%100)/100.0;
+  void run(engineface * ef){
+    for(int ii=0; ii < ef->nx; ii++){
+       ef->p[ii]= (std::rand()%100)/100.0;
      }
   }
 };
