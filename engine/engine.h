@@ -7,7 +7,7 @@ struct engineface{
   int ny;
   bool running;
 
-  baseEngine(int nx_, int ny_, runType rr_) : nx(nx_), ny(ny_), rr(rr_){
+  engineface(int nx_, int ny_) : nx(nx_), ny(ny_){
     p.resize(nx_,0.0);
     running = false;
   }
