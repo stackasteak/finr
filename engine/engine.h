@@ -21,8 +21,10 @@ struct baseEngine{
 
 
 struct randEngine : baseEngine{
-  void run(){
 
+  randEngine(int nx_, int ny_) : baseEngine(nx,ny) {};
+ 
+  void run(){
     for(int ii=0; ii <nx; ii++){
        p[ii]= (std::rand()%100)/100.0;
      }
