@@ -203,7 +203,7 @@ struct allState{
   engineface * esp;
   runType * rsp;
 
-  allState(drawingState * ds_, engineface * es_, runType * rr_) : dsp(ds_), esp(es_), rsp(rs_) {};
+  allState(drawingState * ds_, engineface * es_, runType * rs_) : dsp(ds_), esp(es_), rsp(rs_) {};
 };
 
 allState<rT> as(&ds,&es,&rs);
