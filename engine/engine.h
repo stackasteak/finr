@@ -24,7 +24,7 @@ struct engineface{
 
 struct runrand {
 
-  runrand(){}
+  runrand(int i){}
  
   void run(engineface * ef){
     for(int ii=0; ii < ef->nx; ii++){
