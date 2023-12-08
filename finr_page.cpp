@@ -117,8 +117,6 @@ EM_JS(void, redrawpbar, (), {
 
 //global state variables
 
-//pthread_mutex_t mutexas;
-
 
 struct drawingState{
   float stonesize;
@@ -195,7 +193,7 @@ drawingState ds(9,9);
 
 //engine
 
-typedef randEngine eT;
+typedef baseEngine eT;
 eT es(9,9);
 
 template<class engineType>
