@@ -1,4 +1,4 @@
-
+#include <vector>
 
 struct baseEngine{
   std::vector<float> p;
@@ -23,7 +23,7 @@ struct baseEngine{
 };
 
 
-struct randEngine : baseEngine{
+struct randEngine : public baseEngine{
 
   randEngine(int nx_, int ny_) : baseEngine(nx,ny) {};
  
