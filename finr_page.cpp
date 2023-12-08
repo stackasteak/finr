@@ -193,18 +193,20 @@ drawingState ds(9,9);
 
 //engine
 
-typedef randEngine eT;
-eT es(9,9);
+typedef runrand rT;
+rT rs();
+engineface es(9,9);
 
-template<class engineType>
+template<class runType>
 struct allState{
   drawingState * dsp;
-  engineType * esp;
+  engineface * esp;
+  runType * rsp;
 
-  allState(drawingState * ds_, engineType * es_) : dsp(ds_), esp(es_) {};
+  allState(drawingState * ds_, engineface * es_, runType * rr_) : dsp(ds_), esp(es_), rsp(rs_) {};
 };
 
-allState<eT> as(&ds,&es);
+allState<rT> as(&ds,&es,&rs);
 
 
 
@@ -212,7 +214,7 @@ allState<eT> as(&ds,&es);
 //event handling and callbacks 
 
 void drawps(void * as0 ){
-  allState<eT> * as2 = static_cast<allState<eT>*>(as0);
+  allState<rT> * as2 = static_cast<allState<rT>*>(as0);
     
   std::vector<float> ps = as2->esp->p;
 
@@ -316,11 +318,12 @@ void onStart(){
 
 //main loop
 void mainloop(void * as0){
-  allState<eT> * as1 = static_cast<allState<eT>*>(as0);
-  eT * es1 = as1->esp;
+  allState<rT> * as1 = static_cast<allState<rT>*>(as0);
+  engineface * es1 = as1->esp;
+  rT * rs1 = as1->rsp;
 
   if(es1->running){
-    es1->run();
+    rs1->run(es1);
   }
   redrawpbar();
   drawps(as0);
