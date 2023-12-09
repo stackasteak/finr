@@ -22,14 +22,14 @@ struct engineface{
 
 };
 
-
+template<class allStateType>
 struct runrand {
 
   runrand(int i){}
  
-  void run(drawingState * dsp, engineface * ef){
-    for(int ii=0; ii < ef->nx; ii++){
-       ef->p[ii]= (std::rand()%100)/100.0;
+  void run(allStateType * asp){
+    for(int ii=0; ii < asp->esp->nx; ii++){
+       asp->esp->p[ii]= (std::rand()%100)/100.0;
      }
   }
 };
