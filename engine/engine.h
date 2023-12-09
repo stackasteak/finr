@@ -38,9 +38,24 @@ struct runrand {
 template<class allStateType>
 struct runrand1 {
 
-  runrand1(int i){}
+  Game gg;
+  int ncount;
+  int maxcount;
+  int nx;
+  int ny;
+
+  runrand1(int i){
+    gg.reset();
+    ncount =0;
+    maxcount=100;
+  }
  
   void run(allStateType * asp){
-    
+    for(int ii=0;ii<maxcount; ii++){
+      for(int imove=0; imove< asp->dsp->history.size(); imove++){
+        gg.makemove(asp->dsp->history[imove]);
+      }
+
+      for(int imove=0; imove<
   }
 };
