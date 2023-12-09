@@ -323,7 +323,7 @@ void mainloop(void * as0){
   rT<allState> * rs1 = as1->rsp;
 
   if(es1->running){
-    rs1->run(ds1, es1);
+    rs1->run(as1);
   }
   redrawpbar();
   drawps(as0);
