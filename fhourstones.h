@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 #ifndef WIDTH
-#define WIDTH 8
+#define WIDTH 
 #endif
 #ifndef HEIGHT
 #define HEIGHT 8
