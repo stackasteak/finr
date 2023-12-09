@@ -3,10 +3,10 @@
 #include <stdlib.h>
 
 #ifndef WIDTH
-#define WIDTH 
+#define WIDTH 9
 #endif
 #ifndef HEIGHT
-#define HEIGHT 8
+#define HEIGHT 9
 #endif
 
 // bitmask corresponds to board as follows in 8x8 case:
