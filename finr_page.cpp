@@ -319,11 +319,12 @@ void onStart(){
 //main loop
 void mainloop(void * as0){
   allState<rT> * as1 = static_cast<allState<rT>*>(as0);
+  drawingState * ds1 = as1->dsp;
   engineface * es1 = as1->esp;
   rT * rs1 = as1->rsp;
 
   if(es1->running){
-    rs1->run(es1);
+    rs1->run(ds1, es1);
   }
   redrawpbar();
   drawps(as0);
