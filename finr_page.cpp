@@ -1,6 +1,5 @@
 #include <emscripten.h>
 #include <emscripten/html5.h>
-#include "Game.h"
 #include <vector>
 #include "engine/engine.h"
 #include <stdio.h>
