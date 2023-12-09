@@ -193,20 +193,20 @@ drawingState ds(9,9);
 //engine
 
 typedef runrand rT;
-rT rs(0);
-engineface es(9,9);
+template<class A>
+using rT = runrand<A>;
 
-template<class runType>
 struct allState{
   drawingState * dsp;
   engineface * esp;
-  runType * rsp;
+  rT<allState> * rsp;
 
-  allState(drawingState * ds_, engineface * es_, runType * rs_) : dsp(ds_), esp(es_), rsp(rs_) {};
+  allState(drawingState * ds_, engineface * es_, rT<allState> * rs_) : dsp(ds_), esp(es_), rsp(rs_) {};
 };
 
-allState<rT> as(&ds,&es,&rs);
-
+rT<allState> rs(0);
+engineface es(9,9);
+allState as(&ds,&es,&rs);
 
 
 
