@@ -1,5 +1,6 @@
 #include <vector>
 #include "../fhourstones.h"
+#include <emscripten/emscripten.h>
 
 
 struct engineface{
@@ -31,5 +32,15 @@ struct runrand {
     for(int ii=0; ii < asp->esp->nx; ii++){
        asp->esp->p[ii]= (std::rand()%100)/100.0;
      }
+  }
+};
+
+template<class allStateType>
+struct runrand1 {
+
+  runrand1(int i){}
+ 
+  void run(allStateType * asp){
+    
   }
 };
