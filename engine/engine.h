@@ -1,4 +1,5 @@
 #include <vector>
+#include "fhourstones.h"
 
 
 struct engineface{
@@ -26,7 +27,7 @@ struct runrand {
 
   runrand(int i){}
  
-  void run(engineface * ef){
+  void run(drawingState * dsp, engineface * ef){
     for(int ii=0; ii < ef->nx; ii++){
        ef->p[ii]= (std::rand()%100)/100.0;
      }
