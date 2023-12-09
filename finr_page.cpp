@@ -192,7 +192,6 @@ drawingState ds(9,9);
 
 //engine
 
-typedef runrand rT;
 template<class A>
 using rT = runrand<A>;
 
