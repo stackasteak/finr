@@ -8,10 +8,12 @@ struct engineface{
   int nx;
   int ny;
   bool running;
+  bool refresh;
 
   engineface(int nx_, int ny_) : nx(nx_), ny(ny_){
     p.resize(nx_,0.0);
     running = false;
+    refresh = false;
   }
 
   void resize(int nx_, int ny_) {
@@ -51,14 +53,24 @@ struct runrand1 {
   }
  
   void run(allStateType * asp){
+    if(asp->esp->refresh){
+      asp->esp->refresh = false;
+      ncount =0;
+      for(int jj=0; jj<nx; jj++){
+        asp->esp->p[jj] = 0.0;
+      }
+    }
+    
     for(int ii=0;ii<maxcount; ii++){
+      //set up position
       gg.reset();
       for(int imove=0; imove< asp->dsp->history.size(); imove++){
         gg.makemove(asp->dsp->history[imove]);
       }
 
+      //play moves
       for(int imove=0; imove<nx*ny; imove++){
-        int jj ;
+        
         std::vector<int> plms;
         for(int kk=0; kk<nx; kk++){
           if(gg.isplayable(kk)){
