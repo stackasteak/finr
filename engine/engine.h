@@ -44,18 +44,58 @@ struct runrand1 {
   int nx;
   int ny;
 
-  runrand1(int i){
+  runrand1(allStateType * asp){
     gg.reset();
     ncount =0;
     maxcount=100;
+    nx = asp->dsp->nx;
+    ny = asp->dsp->ny;
   }
  
   void run(allStateType * asp){
     for(int ii=0;ii<maxcount; ii++){
+      gg.reset();
       for(int imove=0; imove< asp->dsp->history.size(); imove++){
         gg.makemove(asp->dsp->history[imove]);
       }
 
-      for(int imove=0; imove<
+      for(int imove=0; imove<nx*ny; imove++){
+        int jj ;
+        std::vector<int> plms;
+        for(int kk=0; kk<nx; kk++){
+          if(gg.isplayable(kk)){
+            plms.push_back(kk);
+          }
+        }
+        int kk1= std::rand()%plms.size();
+        int kk2= plms[kk1];
+        gg.makemove(kk2);
+        /*
+        while(true){
+          jj= std::rand()%nx;
+          if(gg.isplayable(jj)){
+            break;
+          }
+        }
+        */
+        //gg.makemove(jj);
+        
+        if(gg.plies==nx*ny){
+          asp->esp->p[kk2] = asp->esp->p[kk2] * (ncount/(ncount+1)) + 0.5/(ncount+1);
+          ncount++;
+          break;
+        }
+        else if(gg.haswon(gg.color[0])){
+          asp->esp->p[kk2] = asp->esp->p[kk2] * (ncount/(ncount+1)) + 1.0/(ncount+1);
+          ncount++;
+          break;
+        }
+        else if(gg.haswon(gg.color[1])){
+          asp->esp->p[kk2] = asp->esp->p[kk2] * (ncount/(ncount+1)) + 0.0/(ncount+1);
+          ncount++;
+          break;
+        }
+      }
+    }
   }
 };
