@@ -44,12 +44,10 @@ struct runrand1 {
   int nx;
   int ny;
 
-  runrand1(allStateType * asp){
+  runrand1(int nx_, int ny_) : nx(nx_), ny(ny_){
     gg.reset();
     ncount =0;
     maxcount=100;
-    nx = asp->dsp->nx;
-    ny = asp->dsp->ny;
   }
  
   void run(allStateType * asp){
