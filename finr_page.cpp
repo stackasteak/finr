@@ -243,7 +243,7 @@ EM_BOOL touchend_callback(
       
       drawmove(xpos,ypos,userData->dsp->stonesize,pl);
       userData->dsp->update(ii);
-      userData->esp.refresh=true;
+      userData->esp->refresh=true;
     }
   
     
