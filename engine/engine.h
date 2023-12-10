@@ -79,18 +79,20 @@ struct runrand1 {
         //gg.makemove(jj);
         
         if(gg.nplies==nx*ny){
-          asp->esp->p[kk2] = 0.0;// (std::rand()%100)/100.0;//asp->esp->p[kk2] * (ncount/(ncount+1)) + 0.5/(ncount+1);
           ncount++;
+          asp->esp->p[kk2] = asp->esp->p[kk2] * (ncount/(ncount+1)) + 0.5/(ncount+1);
           break;
         }
         else if(gg.haswon(gg.color[0])){
-          asp->esp->p[kk2] =  (std::rand()%100)/100.0;//asp->esp->p[kk2] * (ncount/(ncount+1)) + 1.0/(ncount+1);
           ncount++;
+          asp->esp->p[kk2] = asp->esp->p[kk2] * (ncount/(ncount+1)) + 1.0/(ncount+1);
+          
           break;
         }
         else if(gg.haswon(gg.color[1])){
-          asp->esp->p[kk2] = 0.0;//(std::rand()%100)/100.0;// asp->esp->p[kk2] * (ncount/(ncount+1)) + 0.0/(ncount+1);
           ncount++;
+          asp->esp->p[kk2] = asp->esp->p[kk2] * (ncount/(ncount+1)) + 0.0/(ncount+1);
+          
           break;
         }
       }
