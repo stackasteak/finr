@@ -80,7 +80,7 @@ struct runrand1 {
         */
         //gg.makemove(jj);
         
-        if(gg.plies==nx*ny){
+        if(gg.nplies==nx*ny){
           asp->esp->p[kk2] = asp->esp->p[kk2] * (ncount/(ncount+1)) + 0.5/(ncount+1);
           ncount++;
           break;
