@@ -227,22 +227,25 @@ EM_BOOL touchend_callback(
     const EmscriptenTouchEvent *event,
     void *ud
 ) {
-    drawingState* userData = static_cast<drawingState*>(ud);
-    int ii = userData->iselect(event->touches[0].clientX);
+    allState* userData = static_cast<allState*>(ud);
+    
+  int ii = userData->dsp->iselect(event->touches[0].clientX);
     
   
-    int jj = userData->nextys[ii];
-    int pl = (userData->movenum)%2;
+    int jj = userData->dsp->nextys[ii];
+    int pl = (userData->dsp->movenum)%2;
     
     
-    if (jj< userData->ny){
-      int jj2= userData->ny-1-jj;
-      float xpos=(ii+0.5)*userData->stonesize;
-      float ypos =(jj2+0.5)*userData->stonesize;
+    if (jj< userData->dsp->ny){
+      int jj2= userData->dsp->ny-1-jj;
+      float xpos=(ii+0.5)*userData->dsp->stonesize;
+      float ypos =(jj2+0.5)*userData->dsp->stonesize;
       
-      drawmove(xpos,ypos,userData->stonesize,pl);
-      userData->update(ii);
+      drawmove(xpos,ypos,userData->dsp->stonesize,pl);
+      userData->dsp->update(ii);
+      userData->esp.refresh=true;
     }
+  
     
     return EM_TRUE;
 }
@@ -252,6 +255,7 @@ extern "C"{
 void onClear(){
   redraw(ds.nx,ds.ny);
   ds.reset();
+  es.refresh=true;
 }
 
 void onBack(){
@@ -263,6 +267,7 @@ void onBack(){
     float ypos =(jj2+0.5)*ds.stonesize;
       
     undrawmove(xpos,ypos, ds.stonesize);
+    es.refresh=true;
   }
 }
 
@@ -276,6 +281,7 @@ void onForw(){
       float ypos =(jj2+0.5)*ds.stonesize;
       int pl = (ds.movenum)%2;  
       drawmove(xpos,ypos, ds.stonesize,pl);
+      es.refresh=true;
     }
     ds.forw();
   }
@@ -284,6 +290,7 @@ void onForw(){
 void onLoad(){
   redraw(ds.nx,ds.ny);
   ds.reset();
+  es.refresh=true;
   
   int res = -1;
   for(int n =0; n<ds.nx * ds.ny;n++){
