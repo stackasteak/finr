@@ -193,7 +193,7 @@ drawingState ds(9,9);
 //engine
 
 template<class A>
-using rT = runrand<A>;
+using rT = runrand1<A>;
 
 struct allState{
   drawingState * dsp;
