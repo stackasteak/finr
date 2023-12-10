@@ -85,13 +85,13 @@ struct runrand1 {
         }
         else if(gg.haswon(gg.color[0])){
           ncount++;
-          asp->esp->p[kk2] = asp->esp->p[kk2] * (ncount/(ncount+1)) + 1.0/(ncount+1);
+          asp->esp->p[kk2] = asp->esp->p[kk2] * (ncount/(ncount+1)) + 0.0/(ncount+1);
           
           break;
         }
         else if(gg.haswon(gg.color[1])){
           ncount++;
-          asp->esp->p[kk2] = asp->esp->p[kk2] * (ncount/(ncount+1)) + 0.0/(ncount+1);
+          asp->esp->p[kk2] = asp->esp->p[kk2] * (ncount/(ncount+1)) + 1.0/(ncount+1);
           
           break;
         }
