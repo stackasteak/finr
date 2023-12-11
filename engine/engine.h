@@ -1,7 +1,7 @@
 #include <vector>
 #include "../fhourstones.h"
 #include <emscripten/emscripten.h>
-
+#include <cmath>
 
 struct engineface{
   std::vector<float> p;
@@ -77,7 +77,8 @@ struct runrand1 {
             plms.push_back(kk);
           }
         }
-        int kk1= std::rand()%plms.size();
+        //int kk1= std::rand()%plms.size();
+        int kk1= int(floor(emscripten_random() * plms.size()));
         int kk2= plms[kk1];
         gg.makemove(kk2);
         /*
