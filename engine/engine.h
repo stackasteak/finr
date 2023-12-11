@@ -69,6 +69,7 @@ struct runrand1 {
       }
 
       //play moves
+      int inimove=-1;
       for(int imove=0; imove<nx*ny; imove++){
         
         std::vector<int> plms;
@@ -77,10 +78,11 @@ struct runrand1 {
             plms.push_back(kk);
           }
         }
-        int kk1= std::rand()%plms.size();
-        //int kk1= int(floor(emscripten_random() * plms.size()));
+        //int kk1= std::rand()%plms.size();
+        int kk1= int(floor(emscripten_random() * plms.size()));
         int kk2= plms[kk1];
         gg.makemove(kk2);
+        if (imove==0) inimove=kk2;
         /*
         while(true){
           jj= std::rand()%nx;
@@ -92,20 +94,21 @@ struct runrand1 {
         //gg.makemove(jj);
         
         if(gg.nplies==nx*ny){
+          
+          asp->esp->p[inimove] = asp->esp->p[inimove] * (ncount/(ncount+1.0)) + 0.5/(ncount+1);
           ncount++;
-          asp->esp->p[kk2] = asp->esp->p[kk2] * (ncount/(ncount+1.0)) + 0.5/(ncount+1);
           break;
         }
         else if(gg.haswon(gg.color[0])){
-          ncount++;
-          asp->esp->p[kk2] = asp->esp->p[kk2] * (ncount/(ncount+1.0)) + 1.0/(ncount+1);
           
+          asp->esp->p[inimove] = asp->esp->p[kk2] * (ncount/(ncount+1.0)) + 1.0/(ncount+1);
+          ncount++;
           break;
         }
         else if(gg.haswon(gg.color[1])){
-          ncount++;
-          asp->esp->p[kk2] = asp->esp->p[kk2] * (ncount/(ncount+1.0)) + 0.0/(ncount+1);
           
+          asp->esp->p[inimove] = asp->esp->p[inimove] * (ncount/(ncount+1.0)) + 0.0/(ncount+1);
+          ncount++;
           break;
         }
       }
