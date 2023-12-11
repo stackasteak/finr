@@ -101,7 +101,7 @@ struct runrand1 {
         }
         else if(gg.haswon(gg.color[0])){
           
-          asp->esp->p[inimove] = asp->esp->p[kk2] * (ncount/(ncount+1.0)) + 1.0/(ncount+1);
+          asp->esp->p[inimove] = asp->esp->p[inimove] * (ncount/(ncount+1.0)) + 1.0/(ncount+1);
           ncount++;
           break;
         }
