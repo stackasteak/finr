@@ -347,7 +347,7 @@ int main (){
   
   emscripten_set_touchend_callback(
         "canvas",
-        static_cast<void*>(&ds),
+        static_cast<void*>(&as),
         1,
         touchend_callback
     );
