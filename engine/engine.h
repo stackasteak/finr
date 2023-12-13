@@ -67,11 +67,12 @@ float randrollout_value(Game gg, int nx, int ny){
 }
 
 std::vector<float> randrollout_policy(Game gg0, int nx, int ny, int maxcount){
+  std::vector<float> ans(nx, 0.0);
   for(int ii=0;ii<maxcount; ii++){
     Game gg = gg0;
     for(int kk=0; kk<nx; kk++){
           if(gg.isplayable(kk)){
-
+        gg.makemove(kk);
 
 template<class allStateType>
 struct runrand1 {
