@@ -37,6 +37,35 @@ struct runrand {
   }
 };
 
+float randrollout_value(Game gg, int nx, int ny){
+  for(int imove=0; imove<nx*ny; imove++){
+        
+        std::vector<int> plms;
+        for(int kk=0; kk<nx; kk++){
+          if(gg.isplayable(kk)){
+            plms.push_back(kk);
+          }
+        }
+        
+        int kk1= int(floor(emscripten_random() * plms.size()));
+        int kk2= plms[kk1];
+        gg.makemove(kk2);
+        
+        
+        if(gg.nplies==nx*ny){
+          return 0.5;
+        }
+        else if(gg.haswon(gg.color[0])){
+          return 1.0;
+        }
+        else if(gg.haswon(gg.color[1])){
+          
+          return 0;
+        }
+  }
+  return -1.0;
+}
+
 template<class allStateType>
 struct runrand1 {
 
