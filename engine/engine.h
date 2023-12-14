@@ -2,6 +2,7 @@
 #include "../fhourstones.h"
 #include <emscripten/emscripten.h>
 #include <cmath>
+#include <numeric>
 
 struct engineface{
   std::vector<float> p;
