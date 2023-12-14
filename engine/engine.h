@@ -37,9 +37,13 @@ struct runrand {
   }
 };
 
-float randrollout_value(Game gg, int nx, int ny){
-  for(int imove=0; imove<nx*ny; imove++){
-        
+
+std::vector<float> randrollout_policy(Game gg0, int nx, int ny, int maxcount){
+  std::vector<float> ans(nx, 0.0);
+  for(int ii=0;ii<maxcount; ii++){
+    Game gg = gg0;
+    int inimove=-1;
+    for(int imove=0; imove<nx*ny; imove++){
         std::vector<int> plms;
         for(int kk=0; kk<nx; kk++){
           if(gg.isplayable(kk)){
@@ -50,29 +54,30 @@ float randrollout_value(Game gg, int nx, int ny){
         int kk1= int(floor(emscripten_random() * plms.size()));
         int kk2= plms[kk1];
         gg.makemove(kk2);
-        
+        if (imove==0) inimove=kk2;
         
         if(gg.nplies==nx*ny){
-          return 0.5;
+          ans[inimove] = ans[inimove] * (ii/(ii+1.0)) + 0.5/(ii+1);
+          break;
         }
         else if(gg.haswon(gg.color[0])){
-          return 1.0;
+          ans[inimove] = ans[inimove] * (ii/(ii+1.0)) + 1.0/(ii+1);
+          break;
         }
         else if(gg.haswon(gg.color[1])){
-          
-          return 0;
+          ans[inimove] = ans[inimove] * (ii/(ii+1.0)) + 0.0/(ii+1);
+          break;
         }
+    }
   }
-  return -1.0;
+  return ans;
 }
 
-std::vector<float> randrollout_policy(Game gg0, int nx, int ny, int maxcount){
-  std::vector<float> ans(nx, 0.0);
-  for(int ii=0;ii<maxcount; ii++){
-    Game gg = gg0;
-    for(int kk=0; kk<nx; kk++){
-          if(gg.isplayable(kk)){
-        gg.makemove(kk);
+float randrollout_value(Game gg, int nx, int ny, int maxcount){
+  std::vector<float> p = randrollout_policy(gg,nx,ny,maxcount);
+  return std::reduce(p.begin(), p.end())/p.size();
+}
+
 
 template<class allStateType>
 struct runrand1 {
