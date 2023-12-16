@@ -60,15 +60,15 @@ std::tuple<int, std::vector<float>> randrollout_policy(Game gg0, int nx, int ny,
         if (imove==0) inimove=kk2;
         
         if(gg.nplies==nx*ny){
-          ans[inimove] = ans[inimove] * (ii/(ii+1.0)) + 0.5/(ii+1);
+          ans[inimove] = ans[inimove] * (ii/(ii+1.0)) + 0.5/(ii+1.0);
           break;
         }
         else if(gg.haswon(gg.color[0])){
-          ans[inimove] = ans[inimove] * (ii/(ii+1.0)) + 1.0/(ii+1);
+          ans[inimove] = ans[inimove] * (ii/(ii+1.0)) + 1.0/(ii+1.0);
           break;
         }
         else if(gg.haswon(gg.color[1])){
-          ans[inimove] = ans[inimove] * (ii/(ii+1.0)) + 0.0/(ii+1);
+          ans[inimove] = ans[inimove] * (ii/(ii+1.0)) + 0.0/(ii+1.0);
           break;
         }
     }
