@@ -118,7 +118,8 @@ struct runrand1 {
     std::vector<float> ptemp = std::get<1>(res);
     
     for(int jj=0; jj<nx; jj++){
-      asp->esp->p[jj] = asp->esp->p[jj] * (ncount_tot/(ncount_tot+nn)) + ptemp[jj] * nn/(ncount_tot+nn);
+      //asp->esp->p[jj] = asp->esp->p[jj] * (ncount_tot/(ncount_tot+nn)) + ptemp[jj] * nn/(ncount_tot+nn);
+      asp->esp->p[jj] = ptemp[jj] ;
     }
     ncount_tot = ncount_tot + nn;
     
