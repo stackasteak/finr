@@ -3,6 +3,7 @@
 #include <emscripten/emscripten.h>
 #include <cmath>
 #include <numeric>
+#include <tuple>
 
 struct engineface{
   std::vector<float> p;
@@ -39,9 +40,10 @@ struct runrand {
 };
 
 
-std::vector<float> randrollout_policy(Game gg0, int nx, int ny, int maxcount){
+std::tuple<int, std::vector<float>> randrollout_policy(Game gg0, int nx, int ny, int maxcount){
   std::vector<float> ans(nx, 0.0);
-  for(int ii=0;ii<maxcount; ii++){
+  int ii;
+  for(ii=0;ii<maxcount; ii++){
     Game gg = gg0;
     int inimove=-1;
     for(int imove=0; imove<nx*ny; imove++){
@@ -71,11 +73,12 @@ std::vector<float> randrollout_policy(Game gg0, int nx, int ny, int maxcount){
         }
     }
   }
-  return ans;
+  return std::make_tuple(ii,ans);
 }
 
 float randrollout_value(Game gg, int nx, int ny, int maxcount){
-  std::vector<float> p = randrollout_policy(gg,nx,ny,maxcount);
+  auto res = randrollout_policy(gg,nx,ny,maxcount);
+  std::vector<float> p = std::get<1>(res);
   return std::reduce(p.begin(), p.end())/p.size();
 }
 
