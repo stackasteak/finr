@@ -101,7 +101,7 @@ struct runrand1 {
   runrand1(int nx_, int ny_) : nx(nx_), ny(ny_){
     gg.reset();
     ncount_tot =0;
-    maxcount=100;
+    maxcount=1;
   }
  
   void run(allStateType * asp){
