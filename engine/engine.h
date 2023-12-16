@@ -101,7 +101,7 @@ struct runrand1 {
   void run(allStateType * asp){
     if(asp->esp->refresh){
       asp->esp->refresh = false;
-      ncount =0;
+      ncount_tot =0;
       for(int jj=0; jj<nx; jj++){
         asp->esp->p[jj] = 0.0;
       }
@@ -115,7 +115,7 @@ struct runrand1 {
 
     auto res = randrollout_policy(gg,nx,ny,maxcount);
     int nn = std::get<0>(res);
-    std:vector<float> ptemp = std::get<1>(res);
+    std::vector<float> ptemp = std::get<1>(res);
     
     for(int jj=0; jj<nx; jj++){
       asp->esp->p[jj] = asp->esp->p[jj] * (ncount_tot/(ncount_tot+nn)) + ptemp[jj] * nn/(ncount_tot+nn);
