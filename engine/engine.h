@@ -111,7 +111,7 @@ struct runrand1 {
 
   runrand1(int nx_, int ny_) : nx(nx_), ny(ny_){
     gg.reset();
-    std::fill(pcounts_tot.begin(), pcounts_tot.end(), 0);
+    pcounts_tot=std::vector<int>(nx,0);
     maxcount=100;
   }
  
