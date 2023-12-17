@@ -4,6 +4,7 @@
 #include <cmath>
 #include <numeric>
 #include <tuple>
+#include <algorithm>
 
 struct engineface{
   std::vector<float> p;
@@ -104,20 +105,20 @@ struct runrand1 {
 
   Game gg;
   int maxcount;
-  int ncount_tot;
+  std::vector<int> pcounts_tot;
   int nx;
   int ny;
 
   runrand1(int nx_, int ny_) : nx(nx_), ny(ny_){
     gg.reset();
-    ncount_tot =0;
+    std::fill(pcounts_tot.begin(), pcounts_tot.end(), 0);
     maxcount=100;
   }
  
   void run(allStateType * asp){
     if(asp->esp->refresh){
       asp->esp->refresh = false;
-      ncount_tot =0;
+        std::fill(pcounts_tot.begin(), pcounts_tot.end(), 0);
       for(int jj=0; jj<nx; jj++){
         asp->esp->p[jj] = 0.0;
       }
@@ -132,8 +133,9 @@ struct runrand1 {
     std::vector<float> ptemp = std::get<1>(res);
     
     for(int jj=0; jj<nx; jj++){
-      //asp->esp->p[jj] = asp->esp->p[jj] * (ncount_tot/(ncount_tot+nn)) + ptemp[jj] * nn/(ncount_tot+nn);
-      asp->esp->p[jj] = ptemp[jj] ;
+      asp->esp->p[jj] = asp->esp->p[jj] * (pcounts_tot[jj]/(1.0*pcounts_tot[jj]+pcounts[jj])) + ptemp[jj] * pcounts[jj]/(1.0*pcounts_tot[jj]+pcounts[jj]);
+      //asp->esp->p[jj] = ptemp[jj] ;
+  pcounts_tot[jj] += pcounts[jj];
     }
     //ncount_tot = ncount_tot + nn;
     
