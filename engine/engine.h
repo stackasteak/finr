@@ -136,7 +136,7 @@ struct runrand1 {
   //if(pcounts[jj]>0){
       //asp->esp->p[jj] = asp->esp->p[jj] * (pcounts_tot[jj]/(1.0*pcounts_tot[jj]+pcounts[jj])) + ptemp[jj] * pcounts[jj]/(1.0*pcounts_tot[jj]+pcounts[jj]);
       //asp->esp->p[jj] = ptemp[jj] ;
-    //pcounts_tot[jj] += pcounts[jj];
+    pcounts_tot[jj] += pcounts[jj];
   //}
 asp->esp->p[jj] = ptemp[jj] ;
     }
