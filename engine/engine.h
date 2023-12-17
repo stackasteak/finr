@@ -40,9 +40,9 @@ struct runrand {
 };
 
 
-std::tuple<int, std::vector<float>> randrollout_policy(std::vector<int> hist, int nx, int ny, int maxcount){
+std::tuple<std::vector<int>, std::vector<float>> randrollout_policy(std::vector<int> hist, int nx, int ny, int maxcount){
   std::vector<float> ans(nx, 0.0);
-  int ii=0;
+  std::vector<int> pcounts(nx, 0);
   Game gg;
   for(int jj=0;jj<maxcount; jj++){
     
@@ -67,26 +67,29 @@ std::tuple<int, std::vector<float>> randrollout_policy(std::vector<int> hist, in
         if (imove==0) inimove=kk2;
         
         if(gg.nplies==nx*ny){
+  int ii = pcounts[inimove];
           ans[inimove] = ans[inimove] * (ii/(ii+1.0)) + 0.5/(ii+1.0);
           //ans[inimove] = 0.5;
-          ii++;
+          pcounts[inimove] = pcounts[inimove]+1;
           break;
         }
         else if(gg.haswon(gg.color[0])){
+  int ii = pcounts[inimove];
           ans[inimove] = ans[inimove] * (ii/(ii+1.0)) + 1.0/(ii+1.0);
           //ans[inimove] = 1.0;
-          ii++;
+          pcounts[inimove] = pcounts[inimove]+1;
           break;
         }
         else if(gg.haswon(gg.color[1])){
+  int ii = pcounts[inimove];
           ans[inimove] = ans[inimove] * (ii/(ii+1.0)) + 0.0/(ii+1.0);
           //ans[inimove] = 0.0;
-          ii++;
+          pcounts[inimove] = pcounts[inimove]+1;
           break;
         }
     }
   }
-  return std::make_tuple(ii,ans);
+  return std::make_tuple(pcounts,ans);
 }
 
 float randrollout_value(std::vector<int> hist, int nx, int ny, int maxcount){
@@ -125,14 +128,14 @@ struct runrand1 {
     auto hist = asp->dsp->history;
 
     auto res = randrollout_policy(hist,nx,ny,maxcount);
-    int nn = std::get<0>(res);
+    auto pcounts = std::get<0>(res);
     std::vector<float> ptemp = std::get<1>(res);
     
     for(int jj=0; jj<nx; jj++){
       //asp->esp->p[jj] = asp->esp->p[jj] * (ncount_tot/(ncount_tot+nn)) + ptemp[jj] * nn/(ncount_tot+nn);
       asp->esp->p[jj] = ptemp[jj] ;
     }
-    ncount_tot = ncount_tot + nn;
+    //ncount_tot = ncount_tot + nn;
     
   }
 };
