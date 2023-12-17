@@ -49,6 +49,21 @@ public:
   int moves[SIZE],nplies;
   char hight[WIDTH]; // holds bit index of lowest free square
   
+  Game(Game& g){
+    color[0] = g.color[0];
+    color[1] = g.color[1];
+    nplies = g.nplies;
+
+    for(int ii=0; ii<nplies; ii++){
+		moves[ii]=g.moves[ii];
+     }
+
+    for(int jj=0; jj<WIDTH; jj++){
+      hight[jj]=g.hight[jj];
+    }
+
+  }
+
   void reset() {
     nplies = 0;
     color[0] = color[1] = (bitboard)0;
