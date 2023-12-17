@@ -40,11 +40,18 @@ struct runrand {
 };
 
 
-std::tuple<int, std::vector<float>> randrollout_policy(Game gg0, int nx, int ny, int maxcount){
+std::tuple<int, std::vector<float>> randrollout_policy(std::vector<int> hist, int nx, int ny, int maxcount){
   std::vector<float> ans(nx, 0.0);
   int ii=0;
+  Game gg;
   for(int jj=0;jj<maxcount; jj++){
-    Game gg = gg0;
+    
+    //set up position
+    gg.reset();
+    for(int imove=0; imove< hist.size(); imove++){
+      gg.makemove(hist[imove]);
+    }
+
     int inimove=-1;
     for(int imove=0; imove<nx*ny; imove++){
         std::vector<int> plms;
@@ -82,8 +89,8 @@ std::tuple<int, std::vector<float>> randrollout_policy(Game gg0, int nx, int ny,
   return std::make_tuple(ii,ans);
 }
 
-float randrollout_value(Game gg, int nx, int ny, int maxcount){
-  auto res = randrollout_policy(gg,nx,ny,maxcount);
+float randrollout_value(std::vector<int> hist, int nx, int ny, int maxcount){
+  auto res = randrollout_policy(hist,nx,ny,maxcount);
   std::vector<float> p = std::get<1>(res);
   return std::reduce(p.begin(), p.end())/p.size();
 }
@@ -115,11 +122,9 @@ struct runrand1 {
     
     //set up position
     gg.reset();
-    for(int imove=0; imove< asp->dsp->history.size(); imove++){
-      gg.makemove(asp->dsp->history[imove]);
-    }
+    auto hist = asp->dsp->history;
 
-    auto res = randrollout_policy(gg,nx,ny,maxcount);
+    auto res = randrollout_policy(hist,nx,ny,maxcount);
     int nn = std::get<0>(res);
     std::vector<float> ptemp = std::get<1>(res);
     
