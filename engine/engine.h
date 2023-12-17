@@ -138,7 +138,7 @@ struct runrand1 {
       //asp->esp->p[jj] = ptemp[jj] ;
     pcounts_tot[jj] += pcounts[jj];
   }
-asp->esp->p[jj] = pcounts[jj] ;
+asp->esp->p[jj] = ptemp[jj] ;
     }
     //ncount_tot = ncount_tot + nn;
     
