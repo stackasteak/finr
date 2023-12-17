@@ -71,6 +71,8 @@ public:
       hight[i] = (char)(HEIGHT1*i);
   }
 
+  Game(){reset();}
+
   bitboard positioncode() const {
     return color[nplies&1] + color[0] + color[1] + BOTTOM;
     // color[0] + color[1] + BOTTOM forms bitmap of hights
