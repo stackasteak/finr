@@ -146,11 +146,11 @@ std::fill(p.begin(), p.end(), 0.0);
 
 //alpha beta search
 
-std::vector<float> ab_policy(std::vector<int hh, int nx, int ny){
+std::vector<float> ab_policy(std::vector<int> hh, int nx, int ny){
 
 }
 
-template<class allStateType>
+/*
 struct runab{
   Game gg;
   int depth=5;
@@ -177,3 +177,4 @@ struct runab{
 
 
 };
+*/
