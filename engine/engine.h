@@ -144,3 +144,37 @@ struct runrand1 {
     
   }
 };
+
+//alpha beta search
+
+std::vector<float> ab_policy(std::vector<int hh, int nx, int ny){
+
+}
+
+template<class allStateType>
+struct runab{
+  Game gg;
+  int depth=5;
+  int nx;
+  int ny;
+
+  runab(int nx_, int ny_) : nx(nx_), ny(ny_){
+    gg.reset();
+  }
+
+ void run(allStateType * asp){
+
+    if(asp->esp->refresh){
+      asp->esp->refresh = false;
+        
+      for(int jj=0; jj<nx; jj++){
+        asp->esp->p[jj] = 0.0;
+      }
+    }
+    
+    //set up position
+    gg.reset();
+    auto hist = asp->dsp->history;
+
+
+};
