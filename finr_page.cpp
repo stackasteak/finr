@@ -325,14 +325,14 @@ void mainloop(void * as0){
   allState * as1 = static_cast<allState*>(as0);
   drawingState * ds1 = as1->dsp;
   engineface * es1 = as1->esp;
-  rT<allState> * rs1 = as1->rsp;
+  rT * rs1 = as1->rsp;
 
   if(es1->running){
 
     if (es1->refresh){
       es1->refresh = false;
       rs1->refresh();
-      for(int jj=0; jj<nx; jj++){
+      for(int jj=0; jj<ds1->nx; jj++){
       es1->p[jj] = 0.0;
       }
     
