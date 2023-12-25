@@ -28,15 +28,17 @@ struct engineface{
 
 };
 
-template<class allStateType>
+
 struct runrand {
 
   runrand(int i){}
  
-  void run(allStateType * asp){
-    for(int ii=0; ii < asp->esp->nx; ii++){
-       asp->esp->p[ii]= (std::rand()%100)/100.0;
+  std::vector<float> run(std::vector<int> hh, int nx, int ny){
+    std::vector<float> ans(nx,0.0);
+    for(int ii=0; ii < nx; ii++){
+       ans[ii]= (std::rand()%100)/100.0;
      }
+    return ans;
   }
 };
 
@@ -100,33 +102,30 @@ float randrollout_value(std::vector<int> hist, int nx, int ny, int maxcount){
 }
 
 
-template<class allStateType>
+
 struct runrand1 {
 
   Game gg;
   int maxcount;
   std::vector<int> pcounts_tot;
+  std::vector<float> p;
   int nx;
   int ny;
 
   runrand1(int nx_, int ny_) : nx(nx_), ny(ny_){
     gg.reset();
     pcounts_tot=std::vector<int>(nx,0);
+    p=std::vector<float>(nx,0.0);
     maxcount=100;
   }
+
+  void refresh(){
+    std::fill(pcounts_tot.begin(), pcounts_tot.end(), 0);
+std::fill(p.begin(), p.end(), 0.0);
+  }
  
-  void run(allStateType * asp){
-    if(asp->esp->refresh){
-      asp->esp->refresh = false;
-        std::fill(pcounts_tot.begin(), pcounts_tot.end(), 0);
-      for(int jj=0; jj<nx; jj++){
-        asp->esp->p[jj] = 0.0;
-      }
-    }
+  std::vector<float> run(std::vector<int> hist, int nx, int ny){
     
-    //set up position
-    gg.reset();
-    auto hist = asp->dsp->history;
 
     auto res = randrollout_policy(hist,nx,ny,maxcount);
     auto pcounts = std::get<0>(res);
@@ -134,13 +133,13 @@ struct runrand1 {
     
     for(int jj=0; jj<nx; jj++){
   if(pcounts[jj]>0){
-      asp->esp->p[jj] = asp->esp->p[jj] * (pcounts_tot[jj]/(1.0*pcounts_tot[jj]+pcounts[jj])) + ptemp[jj] * pcounts[jj]/(1.0*pcounts_tot[jj]+pcounts[jj]);
-      //asp->esp->p[jj] = ptemp[jj] ;
+      p[jj] = p[jj] * (pcounts_tot[jj]/(1.0*pcounts_tot[jj]+pcounts[jj])) + ptemp[jj] * pcounts[jj]/(1.0*pcounts_tot[jj]+pcounts[jj]);
+      
     pcounts_tot[jj] += pcounts[jj];
   }
-//asp->esp->p[jj] = ptemp[jj] ;
+
     }
-    //ncount_tot = ncount_tot + nn;
+    return p;
     
   }
 };

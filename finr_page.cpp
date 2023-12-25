@@ -192,18 +192,17 @@ drawingState ds(9,9);
 
 //engine
 
-template<class A>
-using rT = runrand1<A>;
+using rT = runrand1;
 
 struct allState{
   drawingState * dsp;
   engineface * esp;
-  rT<allState> * rsp;
+  rT * rsp;
 
-  allState(drawingState * ds_, engineface * es_, rT<allState> * rs_) : dsp(ds_), esp(es_), rsp(rs_) {};
+  allState(drawingState * ds_, engineface * es_, rT * rs_) : dsp(ds_), esp(es_), rsp(rs_) {};
 };
 
-rT<allState> rs(9,9);
+rT rs(9,9);
 engineface es(9,9);
 allState as(&ds,&es,&rs);
 
@@ -329,7 +328,16 @@ void mainloop(void * as0){
   rT<allState> * rs1 = as1->rsp;
 
   if(es1->running){
-    rs1->run(as1);
+
+    if (es1->refresh){
+      es1->refresh = false;
+      rs1->refresh();
+      for(int jj=0; jj<nx; jj++){
+      es1->p[jj] = 0.0;
+      }
+    
+    }
+    es1->p = rs1->run(ds1->history, ds1->nx, ds1->ny);
   }
   redrawpbar();
   drawps(as0);
