@@ -202,11 +202,11 @@ break;
 std::vector<float> ab_policy(Game gg, int nx, int ny, int depth){
 std::vector<float> ans;
 for(int jj=0; jj<nx; jj++){
-ans.push_back(ab_value(hh, nx, ny, depth));
+ans.push_back(ab_value(gg, nx, ny, depth));
 }
 return ans;
 }
-}
+
 
 
 struct runab{
