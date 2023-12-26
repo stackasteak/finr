@@ -192,7 +192,7 @@ drawingState ds(9,9);
 
 //engine
 
-using rT = runrand1;
+using rT = runab;
 
 struct allState{
   drawingState * dsp;

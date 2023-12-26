@@ -138,7 +138,7 @@ std::fill(p.begin(), p.end(), 0.0);
 
 //alpha beta search
 
-float ab_value(Game gg, int nx, int ny, float aa, float bb, int depth){
+float ab_value(Game gg, int nx, int ny, float aa, float bb, int depth, int nrand){
   int pl=gg.nplies%2;
   float vv0;
   if (pl==0){
@@ -158,7 +158,7 @@ float ab_value(Game gg, int nx, int ny, float aa, float bb, int depth){
     vv=0.0;
 }
   else if (depth==0){
-    vv=randrollout_value(gg1, nx,ny, 10);
+    vv=randrollout_value(gg1, nx,ny, nrand);
 }
   else{
 vv=ab_value(gg1,nx,ny,vv0,bb,depth-1);
@@ -184,7 +184,7 @@ break;
     vv=0.0;
 }
   else if (depth==0){
-    vv=randrollout_value(gg1, nx,ny, 10);
+    vv=randrollout_value(gg1, nx,ny, nrand);
 }
   else{
 vv=ab_value(gg1,nx,ny,aa,vv0,depth-1);
@@ -199,10 +199,10 @@ break;
 
 
 
-std::vector<float> ab_policy(Game gg, int nx, int ny, int depth){
+std::vector<float> ab_policy(Game gg, int nx, int ny, int depth, int nrand){
 std::vector<float> ans;
 for(int jj=0; jj<nx; jj++){
-ans.push_back(ab_value(gg, nx, ny, 0.0, 1.0, depth));
+ans.push_back(ab_value(gg, nx, ny, 0.0, 1.0, depth, nrand));
 }
 return ans;
 }
@@ -212,6 +212,7 @@ return ans;
 struct runab{
   
   int depth=5;
+  int nrand=1;
   int nx;
   int ny;
 
@@ -220,7 +221,7 @@ struct runab{
   void refresh(){};
   
   std::vector<float> run(Game gg, int nx, int ny){
-    return ab_policy(gg,nx,ny,depth);
+    return ab_policy(gg,nx,ny,depth,nrand);
 }
 
 
