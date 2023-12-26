@@ -337,7 +337,15 @@ void mainloop(void * as0){
       }
     
     }
-    es1->p = rs1->run(ds1->history, ds1->nx, ds1->ny);
+
+    //set up position
+    Game gg;
+    gg.reset();
+    for(int imove=0; imove< ds1->history.size(); imove++){
+    gg.makemove(ds1->history[imove]);
+    }
+
+    es1->p = rs1->run(gg, ds1->nx, ds1->ny);
   }
   redrawpbar();
   drawps(as0);

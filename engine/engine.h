@@ -43,17 +43,12 @@ struct runrand {
 };
 
 
-std::tuple<std::vector<int>, std::vector<float>> randrollout_policy(std::vector<int> hist, int nx, int ny, int maxcount){
+std::tuple<std::vector<int>, std::vector<float>> randrollout_policy(Game gg0, int nx, int ny, int maxcount){
   std::vector<float> ans(nx, 0.0);
   std::vector<int> pcounts(nx, 0);
-  Game gg;
+  
   for(int jj=0;jj<maxcount; jj++){
-    
-    //set up position
-    gg.reset();
-    for(int imove=0; imove< hist.size(); imove++){
-      gg.makemove(hist[imove]);
-    }
+    Game gg=gg0;
 
     int inimove=-1;
     for(int imove=0; imove<nx*ny; imove++){
@@ -95,8 +90,8 @@ std::tuple<std::vector<int>, std::vector<float>> randrollout_policy(std::vector<
   return std::make_tuple(pcounts,ans);
 }
 
-float randrollout_value(std::vector<int> hist, int nx, int ny, int maxcount){
-  auto res = randrollout_policy(hist,nx,ny,maxcount);
+float randrollout_value(Game gg, int nx, int ny, int maxcount){
+  auto res = randrollout_policy(gg,nx,ny,maxcount);
   std::vector<float> p = std::get<1>(res);
   return std::reduce(p.begin(), p.end())/p.size();
 }
@@ -105,7 +100,6 @@ float randrollout_value(std::vector<int> hist, int nx, int ny, int maxcount){
 
 struct runrand1 {
 
-  Game gg;
   int maxcount;
   std::vector<int> pcounts_tot;
   std::vector<float> p;
@@ -113,7 +107,6 @@ struct runrand1 {
   int ny;
 
   runrand1(int nx_, int ny_) : nx(nx_), ny(ny_){
-    gg.reset();
     pcounts_tot=std::vector<int>(nx,0);
     p=std::vector<float>(nx,0.0);
     maxcount=100;
@@ -124,10 +117,9 @@ struct runrand1 {
 std::fill(p.begin(), p.end(), 0.0);
   }
  
-  std::vector<float> run(std::vector<int> hist, int nx, int ny){
+  std::vector<float> run(Game gg, int nx, int ny){
     
-
-    auto res = randrollout_policy(hist,nx,ny,maxcount);
+    auto res = randrollout_policy(gg,nx,ny,maxcount);
     auto pcounts = std::get<0>(res);
     std::vector<float> ptemp = std::get<1>(res);
     
@@ -145,36 +137,91 @@ std::fill(p.begin(), p.end(), 0.0);
 };
 
 //alpha beta search
-/*
-std::vector<float> ab_policy(std::vector<int> hh, int nx, int ny){
 
+float ab_value(Game gg, int nx, int ny, float aa, float bb, int depth){
+  int pl=gg.nplies%2;
+  float vv0;
+  if (pl==0){
+    vv0=aa;
+    for(int ii=0; ii<nx; ii++){
+      Game gg1=gg;
+      float vv=0;
+  if(gg1.isplayable(ii)){
+  gg1.makemove(ii);
+  if(gg1.nplies==nx*ny){
+    vv=0.5;
+}
+  else if (gg1.haswon(gg1.color[0])){
+    vv=1.0;
+}
+  else if (gg1.haswon(gg1.color[1])){
+    vv=0.0;
+}
+  else if (depth==0){
+    vv=randrollout_value(gg1, nx,ny, 10);
+}
+  else{
+vv=ab_value(gg1,nx,ny,vv0,bb,depth-1);
+}}
+      if(vv>vv0)vv0=vv;
+      if(vv0>bb){
+break;
+}}
+  else if(pl==1){
+    vv0=bb;
+    for(int ii=0; ii<nx; ii++){
+      Game gg1=gg;
+      float vv=0;
+  if(gg1.isplayable(ii)){
+  gg1.makemove(ii);
+  if(gg1.nplies==nx*ny){
+    vv=0.5;
+}
+  else if (gg1.haswon(gg1.color[0])){
+    vv=1.0;
+}
+  else if (gg1.haswon(gg1.color[1])){
+    vv=0.0;
+}
+  else if (depth==0){
+    vv=randrollout_value(gg1, nx,ny, 10);
+}
+  else{
+vv=ab_value(gg1,nx,ny,aa,vv0,depth-1);
+}}
+      if(vv<vv0)vv0=vv;
+      if(vv0<aa){
+break;
+}}    
+  return vv0;
+}
+
+
+
+
+std::vector<float> ab_policy(Game gg, int nx, int ny, int depth){
+std::vector<float> ans;
+for(int jj=0; jj<nx; jj++){
+ans.push_back(ab_value(hh, nx, ny, depth));
+}
+return ans;
+}
 }
 
 
 struct runab{
-  Game gg;
+  
   int depth=5;
   int nx;
   int ny;
 
-  runab(int nx_, int ny_) : nx(nx_), ny(ny_){
-    gg.reset();
-  }
+  runab(int nx_, int ny_) : nx(nx_), ny(ny_){}
 
- void run(allStateType * asp){
-
-    if(asp->esp->refresh){
-      asp->esp->refresh = false;
-        
-      for(int jj=0; jj<nx; jj++){
-        asp->esp->p[jj] = 0.0;
-      }
-    }
-    
-    //set up position
-    gg.reset();
-    auto hist = asp->dsp->history;
+  void refresh(){};
+  
+  std::vector<float> run(Game gg, int nx, int ny){
+    return ab_policy(gg,nx,ny,depth);
+}
 
 
 };
-*/
