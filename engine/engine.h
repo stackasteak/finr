@@ -166,7 +166,7 @@ vv=ab_value(gg1,nx,ny,vv0,bb,depth-1);
       if(vv>vv0)vv0=vv;
       if(vv0>bb){
 break;
-}}
+}}}
   else if(pl==1){
     vv0=bb;
     for(int ii=0; ii<nx; ii++){
@@ -192,7 +192,7 @@ vv=ab_value(gg1,nx,ny,aa,vv0,depth-1);
       if(vv<vv0)vv0=vv;
       if(vv0<aa){
 break;
-}}    
+}}}    
   return vv0;
 }
 
