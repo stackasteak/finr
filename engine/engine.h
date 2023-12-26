@@ -211,7 +211,7 @@ return ans;
 
 struct runab{
   
-  int depth=5;
+  int depth=2;
   int nrand=1;
   int nx;
   int ny;
