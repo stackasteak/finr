@@ -161,7 +161,7 @@ float ab_value(Game gg, int nx, int ny, float aa, float bb, int depth, int nrand
     vv=randrollout_value(gg1, nx,ny, nrand);
 }
   else{
-vv=ab_value(gg1,nx,ny,vv0,bb,depth-1);
+vv=ab_value(gg1,nx,ny,vv0,bb,depth-1,nrand);
 }}
       if(vv>vv0)vv0=vv;
       if(vv0>bb){
@@ -187,7 +187,7 @@ break;
     vv=randrollout_value(gg1, nx,ny, nrand);
 }
   else{
-vv=ab_value(gg1,nx,ny,aa,vv0,depth-1);
+vv=ab_value(gg1,nx,ny,aa,vv0,depth-1,nrand);
 }}
       if(vv<vv0)vv0=vv;
       if(vv0<aa){
