@@ -121,7 +121,7 @@ for(int ii=0;ii<maxcount; ii++){
           break;
         }
         else if(gg.haswon(gg.color[0])){
-    ans[inimove] = ans[inimove] * (ii/(ii+1.0)) + 1.0/(ii+1.0);
+    ans = ans* (ii/(ii+1.0)) + 1.0/(ii+1.0);
           //ans[inimove] = 1.0;
           break;
         }
