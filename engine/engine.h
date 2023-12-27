@@ -96,6 +96,44 @@ float randrollout_value(Game gg, int nx, int ny, int maxcount){
   return std::reduce(p.begin(), p.end())/p.size();
 }
 
+float randrollout_value1(Game gg0, int nx, int ny, int maxcount){
+  float ans =0.0;
+for(int ii=0;ii<maxcount; ii++){
+    Game gg=gg0;
+
+    for(int imove=0; imove<nx*ny; imove++){
+        std::vector<int> plms;
+        for(int kk=0; kk<nx; kk++){
+          if(gg.isplayable(kk)){
+            plms.push_back(kk);
+          }
+        }
+        
+        int kk1= int(floor(emscripten_random() * plms.size()));
+        int kk2= plms[kk1];
+        gg.makemove(kk2);
+        
+        if(gg.nplies==nx*ny){
+ 
+  ans = ans * (ii/(ii+1.0)) + 0.5/(ii+1.0);
+          //ans[inimove] = 0.5;
+        
+          break;
+        }
+        else if(gg.haswon(gg.color[0])){
+    ans[inimove] = ans[inimove] * (ii/(ii+1.0)) + 1.0/(ii+1.0);
+          //ans[inimove] = 1.0;
+          break;
+        }
+        else if(gg.haswon(gg.color[1])){
+    ans = ans* (ii/(ii+1.0)) + 0.0/(ii+1.0);
+          //ans[inimove] = 0.0;
+          break;
+        }
+    }
+  }
+  return ans;
+}
 
 
 struct runrand1 {
@@ -158,7 +196,7 @@ float ab_value(Game gg, int nx, int ny, float aa, float bb, int depth, int nrand
     vv=0.0;
 }
   else if (depth==0){
-    vv=randrollout_value(gg1, nx,ny, nrand);
+    vv=randrollout_value1(gg1, nx,ny, nrand);
 }
   else{
 vv=ab_value(gg1,nx,ny,vv0,bb,depth-1,nrand);
@@ -184,7 +222,7 @@ break;
     vv=0.0;
 }
   else if (depth==0){
-    vv=randrollout_value(gg1, nx,ny, nrand);
+    vv=randrollout_value1(gg1, nx,ny, nrand);
 }
   else{
 vv=ab_value(gg1,nx,ny,aa,vv0,depth-1,nrand);
