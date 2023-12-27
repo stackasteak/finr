@@ -240,7 +240,12 @@ break;
 std::vector<float> ab_policy(Game gg, int nx, int ny, int depth, int nrand){
 std::vector<float> ans;
 for(int jj=0; jj<nx; jj++){
-ans.push_back(ab_value(gg, nx, ny, 0.0, 1.0, depth, nrand));
+  Game gg1=gg;
+    if(gg1.isplayable(ii)){
+  gg1.makemove(ii);
+ans.push_back(ab_value(gg1, nx, ny, 0.0, 1.0, depth, nrand));
+}
+else ans.push_back(0.0);
 }
 return ans;
 }
