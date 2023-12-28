@@ -247,7 +247,7 @@ float ab_value(Game gg, int nx, int ny, float aa, float bb, int depth, valType v
     vv=vf(gg1, nx,ny);
 }
   else{
-vv=ab_value(gg1,nx,ny,vv0,bb,depth-1,nrand);
+vv=ab_value(gg1,nx,ny,vv0,bb,depth-1,vf);
 }}
       if(vv>vv0)vv0=vv;
       if(vv0>bb){
@@ -273,7 +273,7 @@ break;
     vv=vf(gg1, nx,ny);
 }
   else{
-vv=ab_value(gg1,nx,ny,aa,vv0,depth-1,nrand);
+vv=ab_value(gg1,nx,ny,aa,vv0,depth-1,vf);
 }}
       if(vv<vv0)vv0=vv;
       if(vv0<aa){
