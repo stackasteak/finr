@@ -343,7 +343,7 @@ void mainloop(void * as0){
     //set up position
     Game gg;
     gg.reset();
-    for(int imove=0; imove< ds1->history.size(); imove++){
+    for(int imove=0; imove< ds1->movenum; imove++){
     gg.makemove(ds1->history[imove]);
     }
 
