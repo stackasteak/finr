@@ -192,7 +192,9 @@ drawingState ds(9,9);
 
 //engine
 
-using rT = runab;
+using rT = runab<randrollout>;
+randrollout rro(5);
+rT rs(9,9,rro);
 
 struct allState{
   drawingState * dsp;
@@ -202,7 +204,7 @@ struct allState{
   allState(drawingState * ds_, engineface * es_, rT * rs_) : dsp(ds_), esp(es_), rsp(rs_) {};
 };
 
-rT rs(9,9);
+
 engineface es(9,9);
 allState as(&ds,&es,&rs);
 

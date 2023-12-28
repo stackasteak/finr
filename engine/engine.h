@@ -96,7 +96,10 @@ float randrollout_value(Game gg, int nx, int ny, int maxcount){
   return std::reduce(p.begin(), p.end())/p.size();
 }
 
-float randrollout_value1(Game gg0, int nx, int ny, int maxcount){
+struct randrollout{
+  int maxcount;
+  randrollout(int mc) : maxcount(mc) {};
+  float operator()(Game gg0, int nx, int ny){
   float ans =0.0;
 for(int ii=0;ii<maxcount; ii++){
     Game gg=gg0;
@@ -107,6 +110,51 @@ for(int ii=0;ii<maxcount; ii++){
           if(gg.isplayable(kk)){
             plms.push_back(kk);
           }
+        }
+        
+        int kk1= int(floor(emscripten_random() * plms.size()));
+        int kk2= plms[kk1];
+        gg.makemove(kk2);
+        
+        if(gg.nplies==nx*ny){
+ 
+  ans = ans * (ii/(ii+1.0)) + 0.5/(ii+1.0);
+          //ans[inimove] = 0.5;
+        
+          break;
+        }
+        else if(gg.haswon(gg.color[0])){
+    ans = ans* (ii/(ii+1.0)) + 1.0/(ii+1.0);
+          //ans[inimove] = 1.0;
+          break;
+        }
+        else if(gg.haswon(gg.color[1])){
+    ans = ans* (ii/(ii+1.0)) + 0.0/(ii+1.0);
+          //ans[inimove] = 0.0;
+          break;
+        }
+    }
+  }
+  return ans;
+}
+};
+
+float lookrollout_value(Game gg0, int nx, int ny, int maxcount){
+float ans =0.0;
+for(int ii=0;ii<maxcount; ii++){
+    Game gg=gg0;
+
+    for(int imove=0; imove<nx*ny; imove++){
+int pl1 = (gg.nplies+1)%2;
+        std::vector<int> plms;
+        for(int kk=0; kk<nx; kk++){
+          if(gg.isplayable(kk)){
+gg.makemove(kk);
+if(!gg.haswon(gg.color[pl1])){
+            plms.push_back(kk);
+          }
+gg.backmove();
+}
         }
         
         int kk1= int(floor(emscripten_random() * plms.size()));
@@ -175,8 +223,8 @@ std::fill(p.begin(), p.end(), 0.0);
 };
 
 //alpha beta search
-
-float ab_value(Game gg, int nx, int ny, float aa, float bb, int depth, int nrand){
+template<class valType>
+float ab_value(Game gg, int nx, int ny, float aa, float bb, int depth, valType vf){
   int pl=gg.nplies%2;
   float vv0;
   if (pl==0){
@@ -196,7 +244,7 @@ float ab_value(Game gg, int nx, int ny, float aa, float bb, int depth, int nrand
     vv=0.0;
 }
   else if (depth==0){
-    vv=randrollout_value1(gg1, nx,ny, nrand);
+    vv=vf(gg1, nx,ny);
 }
   else{
 vv=ab_value(gg1,nx,ny,vv0,bb,depth-1,nrand);
@@ -222,7 +270,7 @@ break;
     vv=0.0;
 }
   else if (depth==0){
-    vv=randrollout_value1(gg1, nx,ny, nrand);
+    vv=vf(gg1, nx,ny);
 }
   else{
 vv=ab_value(gg1,nx,ny,aa,vv0,depth-1,nrand);
@@ -236,14 +284,14 @@ break;
 
 
 
-
-std::vector<float> ab_policy(Game gg, int nx, int ny, int depth, int nrand){
+template<class valType>
+std::vector<float> ab_policy(Game gg, int nx, int ny, int depth, valType vf){
 std::vector<float> ans;
 for(int jj=0; jj<nx; jj++){
   Game gg1=gg;
     if(gg1.isplayable(jj)){
   gg1.makemove(jj);
-ans.push_back(ab_value(gg1, nx, ny, 0.0, 1.0, depth, nrand));
+ans.push_back(ab_value(gg1, nx, ny, 0.0, 1.0, depth, vf));
 }
 else ans.push_back(0.0);
 }
@@ -251,20 +299,20 @@ return ans;
 }
 
 
-
+template<class valType>
 struct runab{
   
   int depth=2;
-  int nrand=5;
+  valType vf;
   int nx;
   int ny;
 
-  runab(int nx_, int ny_) : nx(nx_), ny(ny_){}
+  runab(int nx_, int ny_, valType vf_) : nx(nx_), ny(ny_), vf(vf_){}
 
   void refresh(){};
   
   std::vector<float> run(Game gg, int nx, int ny){
-    return ab_policy(gg,nx,ny,depth,nrand);
+    return ab_policy(gg,nx,ny,depth,vf);
 }
 
 
