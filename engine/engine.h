@@ -227,57 +227,45 @@ template<class valType>
 float ab_value(Game gg, int nx, int ny, float aa, float bb, int depth, valType vf){
   int pl=gg.nplies%2;
   float vv0;
-  if (pl==0){
-    vv0=aa;
+if(gg.nplies==nx*ny){
+    return 0.5;
+}
+  else if (gg.haswon(gg.color[0])){
+    return 1.0;
+}
+  else if (gg.haswon(gg.color[1])){
+    return 0.0;
+}
+  else if (depth==0){
+    return vf(gg, nx,ny);
+}
+  else if (pl==0){
+    vv0=0.0;
+    float aa0=aa;
     for(int ii=0; ii<nx; ii++){
       Game gg1=gg;
       float vv=0;
   if(gg1.isplayable(ii)){
   gg1.makemove(ii);
-  if(gg1.nplies==nx*ny){
-    vv=0.5;
-}
-  else if (gg1.haswon(gg1.color[0])){
-    vv=1.0;
-}
-  else if (gg1.haswon(gg1.color[1])){
-    vv=0.0;
-}
-  else if (depth==0){
-    vv=vf(gg1, nx,ny);
-}
-  else{
-vv=ab_value(gg1,nx,ny,vv0,bb,depth-1,vf);
-}}
-      if(vv>vv0)vv0=vv;
-      if(vv0>bb){
-break;
+  vv=ab_value(gg1, nx,ny,aa0,bb,depth-1,vf);
+
+  if(vv>vv0)vv0=vv;
+  if(vv>aa0)aa0=vv;
+  if(vv0>=bb)break;
 }}}
   else if(pl==1){
-    vv0=bb;
+    vv0=1.0;
+    float bb0=bb;
     for(int ii=0; ii<nx; ii++){
       Game gg1=gg;
       float vv=0;
   if(gg1.isplayable(ii)){
   gg1.makemove(ii);
-  if(gg1.nplies==nx*ny){
-    vv=0.5;
-}
-  else if (gg1.haswon(gg1.color[0])){
-    vv=1.0;
-}
-  else if (gg1.haswon(gg1.color[1])){
-    vv=0.0;
-}
-  else if (depth==0){
-    vv=vf(gg1, nx,ny);
-}
-  else{
-vv=ab_value(gg1,nx,ny,aa,vv0,depth-1,vf);
-}}
-      if(vv<vv0)vv0=vv;
-      if(vv0<aa){
-break;
+  vv=ab_value(gg1, nx,ny,aa,bb0,depth-1,vf);
+
+  if(vv<vv0)vv0=vv;
+  if(vv<bb0)bb0=vv;
+  if(vv0<=aa)break;
 }}}    
   return vv0;
 }
@@ -293,7 +281,7 @@ for(int jj=0; jj<nx; jj++){
   gg1.makemove(jj);
 ans.push_back(ab_value(gg1, nx, ny, 0.0, 1.0, depth, vf));
 }
-else ans.push_back(0.0);
+else ans.push_back(-1);
 }
 return ans;
 }
