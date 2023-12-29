@@ -281,7 +281,7 @@ for(int jj=0; jj<nx; jj++){
   gg1.makemove(jj);
 ans.push_back(ab_value(gg1, nx, ny, 0.0, 1.0, depth, vf));
 }
-else ans.push_back(-1);
+else ans.push_back(-0.01);
 }
 return ans;
 }

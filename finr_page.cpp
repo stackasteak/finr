@@ -90,10 +90,17 @@ EM_JS(int, loadhiststep, (int nx, int ny, int n), {
   }
 });
 
-EM_JS(void, draw1p, (int ii, float ss, float p), {
+EM_JS(void, draw1p, (int ii, float ss, float p, int pl), {
   let ctx = Module.canvas.getContext('2d');
   let height = Module.canvas.height;
-  let colo = "rgb(255,255,255)";
+  let colo;
+if (pl==0){
+    colo = "rgb(255, 234, 128)";
+  }
+  else {
+    colo = "rgb(255, 0,0)";
+  }
+  
   let ypos = height+2;
   let xpos = ii*ss+2;
 
@@ -217,9 +224,11 @@ void drawps(void * as0 ){
     
   std::vector<float> ps = as2->esp->p;
 
+  int pl = (as2->dsp->movenum)%2;
+
   float ss = as2->dsp->stonesize;
   for(int ii=0; ii<ps.size(); ii++){
-    draw1p(ii,ss,ps[ii]);
+    draw1p(ii,ss,ps[ii],pl);
   }
 }
 
