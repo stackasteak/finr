@@ -139,29 +139,20 @@ for(int ii=0;ii<maxcount; ii++){
 }
 };
 
-float lookrollout_value(Game gg0, int nx, int ny, int maxcount){
+
+struct lookrollout{
+  int maxcount;
+  lookrollout(int mc) : maxcount(mc) {};
+  float operator()(Game gg0, int nx, int ny){
 float ans =0.0;
 for(int ii=0;ii<maxcount; ii++){
     Game gg=gg0;
 
     for(int imove=0; imove<nx*ny; imove++){
-int pl1 = (gg.nplies+1)%2;
-        std::vector<int> plms;
-        for(int kk=0; kk<nx; kk++){
-          if(gg.isplayable(kk)){
-gg.makemove(kk);
-if(!gg.haswon(gg.color[pl1])){
-            plms.push_back(kk);
-          }
-gg.backmove();
-}
-        }
-        
-        int kk1= int(floor(emscripten_random() * plms.size()));
-        int kk2= plms[kk1];
-        gg.makemove(kk2);
-        
-        if(gg.nplies==nx*ny){
+int pl = (gg.nplies)%2;
+int pl1 = (pl+1)%2;
+
+if(gg.nplies==nx*ny){
  
   ans = ans * (ii/(ii+1.0)) + 0.5/(ii+1.0);
           //ans[inimove] = 0.5;
@@ -178,10 +169,32 @@ gg.backmove();
           //ans[inimove] = 0.0;
           break;
         }
+        std::vector<int> plms;
+        for(int kk=0; kk<nx; kk++){
+          if(gg.isplayable(kk)){
+gg.makemove(kk);
+if(!gg.haswon(gg.color[pl1])){
+            plms.push_back(kk);
+          }
+gg.backmove();
+}
+        }
+
+        if(plms.size()==0){
+  ans = ans*(ii/(ii+1.0)) + 1.0*pl/(ii+1.0);;
+  break;
+}
+        
+        int kk1= int(floor(emscripten_random() * plms.size()));
+        int kk2= plms[kk1];
+        gg.makemove(kk2);
+        
+        
     }
   }
   return ans;
 }
+};
 
 
 struct runrand1 {
