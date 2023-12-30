@@ -171,11 +171,12 @@ if(gg.nplies==nx*ny){
         for(int kk=0; kk<nx; kk++){
           
 if(gg.isplayable(kk)){
-gg.makemove(kk);
+Game gg2=gg;
+gg2.makemove(kk);
 //if(!gg.haswon(gg.color[pl1])){
             plms.push_back(kk);
           //}
-gg.backmove();
+//gg.backmove();
 }
         }
 
