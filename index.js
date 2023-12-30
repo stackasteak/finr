@@ -1155,8 +1155,6 @@ function redrawpbar() { let ctx = Module.canvas.getContext('2d'); let width = wi
 
   var _emscripten_memcpy_js = (dest, src, num) => HEAPU8.copyWithin(dest, src, src + num);
 
-  var _emscripten_random = () => Math.random();
-
   var getHeapMax = () =>
       HEAPU8.length;
   
@@ -2457,8 +2455,6 @@ var wasmImports = {
   drawmove: drawmove,
   /** @export */
   emscripten_memcpy_js: _emscripten_memcpy_js,
-  /** @export */
-  emscripten_random: _emscripten_random,
   /** @export */
   emscripten_resize_heap: _emscripten_resize_heap,
   /** @export */
