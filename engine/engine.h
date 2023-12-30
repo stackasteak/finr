@@ -145,6 +145,7 @@ struct lookrollout{
   lookrollout(int mc) : maxcount(mc) {};
   float operator()(Game gg0, int nx, int ny){
 float ans =0.0;
+/*
 for(int ii=0;ii<maxcount; ii++){
     Game gg=gg0;
 
@@ -181,7 +182,7 @@ gg.backmove();
         }
 
         if(plms.size()==0){
-  ans = ans*(ii/(ii+1.0)) + 1.0*pl/(ii+1.0);;
+  ans = ans*(ii/(ii+1.0)) + 1.0*pl/(ii+1.0);
   break;
 }
         
@@ -192,6 +193,7 @@ gg.backmove();
         
     }
   }
+*/
   return ans;
 }
 };
