@@ -173,18 +173,15 @@ if(gg.nplies==nx*ny){
 if(gg.isplayable(kk)){
 Game gg2=gg;
 gg2.makemove(kk);
-//if(!gg.haswon(gg.color[pl1])){
+if(!gg2.haswon(gg2.color[pl1])){
             plms.push_back(kk);
-          //}
-//gg.backmove();
-}
-        }
+}}}
 
-        /* if(plms.size()==0){
+         if(plms.size()==0){
   ans = ans*(ii/(ii+1.0)) + 1.0*pl/(ii+1.0);
   break;
 }
-    */    
+        
         int kk1= int(floor(emscripten_random() * plms.size()));
         int kk2= plms[kk1];
         gg.makemove(kk2);
