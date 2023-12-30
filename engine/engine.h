@@ -172,9 +172,9 @@ if(gg.nplies==nx*ny){
           
 if(gg.isplayable(kk)){
 gg.makemove(kk);
-if(!gg.haswon(gg.color[pl1])){
+//if(!gg.haswon(gg.color[pl1])){
             plms.push_back(kk);
-          }
+          //}
 gg.backmove();
 }
         }
