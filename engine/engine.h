@@ -173,6 +173,7 @@ if(gg.nplies==nx*ny){
 if(gg.isplayable(kk)){
 Game gg2=gg;
 gg2.makemove(kk);
+if(gg2.isplayable(kk)) gg2.makemove(kk);
 if(!gg2.haswon(gg2.color[pl1])){
             plms.push_back(kk);
 }}}
