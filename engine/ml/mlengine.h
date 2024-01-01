@@ -2,6 +2,10 @@
 #include <tuple>
 #include "../../fhourstones.h"
 
+struct mtcsEdge{
+  float q;
+  int n;
+
 struct mtcsNode{
   std::vector<float> prior;
   std::vector<float> q;
