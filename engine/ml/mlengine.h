@@ -48,17 +48,16 @@ struct runmtcs{
 
   void refresh(){};
   
-  std::vector<float> run(Game& gg, int nx, int ny);
-  void play(Game& gg, int nx, int ny);
+  std::vector<float> run(Game gg, int nx, int ny);
+  int play(Game gg, int nx, int ny);
 
 
 };
 
 
 template<class randBackend, class gBackend, class valType, class poltype>
-std::vector<float> runmtcs<randBackend, gBackend, valType, polType>::run(Game& gg, int nx, int ny){
+std::vector<float> runmtcs<randBackend, gBackend, valType, polType>::run(Game gg, int nx, int ny){
 
-gbackend gbe(gg, nx, ny);
 
 mtcsNode root(nx);
 
@@ -71,6 +70,8 @@ for(int iplo=0; iplo<plocap; iplo++){
 
 std::vector<std::shared_ptr<mtcsEdge>> path;
 std::shared_ptr<mtcsNode> currnode = &root;
+
+gbackend gbe(gg, nx, ny);
 
 for(int imove=0; imove<nx*ny; imove++){
 
@@ -88,9 +89,11 @@ vv = vf(gbe);
 
 if(std::get<0>(termres) || isleaf){//leaf
 
-for(auto ie=path.begin(); ie!=path.end(); ie++){
+for(int ie=path.size()-1; ie>-1; ie--){
   path[ie]->q = path[ie]->q * (path[ie]->n)/(path[ie]->n+1.0) + vv/(path[ie]->n+1.0);
   path[ie]->n +=1;
+
+  vv=1.0-vv;
 }
 break;
 }
@@ -126,6 +129,8 @@ currnode->childs[plms[bestiplm]]->child = std::shared_ptr<mtcsNode>(new mtcsNode
 path.push_back(currnode->childs[plms[bestiplm]]);
 
 currnode= currnode->childs[plms[bestiplm]]-> child;
+
+gbe.makemove(plms[bestiplm]);
 }//end nonleaf
 }//end imove
 }//end iplo
@@ -138,7 +143,7 @@ return ans;
 }
 
 template<class randBackend, class gBackend, class valType, class poltype>
-void runmtcs<randBackend, gBackend, valType, polType>::play(Game& gg, int nx, int ny){
+int runmtcs<randBackend, gBackend, valType, polType>::play(Game gg, int nx, int ny){
 
 std::vector<float> qs=run(gg, nx,ny);
 float bestq= qs[0];
@@ -149,5 +154,5 @@ bestq=qs[ii];
 bestii=ii;
 }}
 
-gg.makemove(bestii);
+return bestii;
 }
