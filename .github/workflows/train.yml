@@ -9,8 +9,8 @@ jobs:
       - name: toolchain
         run: |
           sudo add-apt-repository ppa:edd/misc
-          sudo apt update
-          sudo apt-get install mlpack=4.0.1-1.2204.1 libarmadillo-dev
+          sudo apt-get update
+          sudo apt-get install mlpack libarmadillo-dev
       - name: compile  
         working-directory: engine/ml/train
         run: g++ train.cpp -o train.x -std=c++20
