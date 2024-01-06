@@ -8,7 +8,7 @@ jobs:
     steps:
       - name: toolchain
         run: |
-          sudo add-apt-repository https://launchpad.net/~edd/+archive/ubuntu/misc/+packages
+          sudo add-apt-repository ppa:edd/misc
           sudo apt-get update
           sudo apt-get install mlpack=4.0.1-1.2204.1 libarmadillo-dev
       - name: compile  
