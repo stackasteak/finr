@@ -7,3 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: sudo apt-get install libmlpack-dev mlpack-bin libarmadillo-dev
+      - name: compile  
+        working-directory: engine/ml/train
+        run: g++ train.cpp -o train.x -std=c++20
+      - name: run train
+        working-directory: engine/ml/train
+        run: ./train.x
