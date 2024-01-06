@@ -6,6 +6,8 @@ jobs:
   train-job:
     runs-on: ubuntu-latest
     steps:
+      - name: Set up GCC
+        uses: egor-tensin/setup-gcc@v1
       - name: toolchain
         run: |
           sudo add-apt-repository ppa:edd/misc
