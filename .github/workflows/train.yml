@@ -2,3 +2,8 @@ on:
   push:
     paths:
       - engine/ml/todoactions.txt
+jobs: 
+  train-job:
+    runs-on: ubuntu-latest
+    steps:
+      - run: apt-get install libmlpack-dev mlpack-bin libarmadillo-dev
