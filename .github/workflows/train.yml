@@ -10,7 +10,7 @@ jobs:
         run: |
           sudo add-apt-repository ppa:edd/misc
           sudo apt-get update
-          sudo apt-get install mlpack libarmadillo-dev
+          sudo apt-get install libmlpack-dev_4.0.1-1.2204.1_amd64.deb libarmadillo-dev
       - name: compile  
         working-directory: engine/ml/train
         run: g++ train.cpp -o train.x -std=c++20
