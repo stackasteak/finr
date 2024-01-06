@@ -6,4 +6,4 @@ jobs:
   train-job:
     runs-on: ubuntu-latest
     steps:
-      - run: apt-get install libmlpack-dev mlpack-bin libarmadillo-dev
+      - run: sudo apt-get install libmlpack-dev mlpack-bin libarmadillo-dev
