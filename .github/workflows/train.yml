@@ -1,7 +1,7 @@
 on:
   push:
     paths:
-      - engine/ml/todoactions.txt
+      - engine/ml/train/todoactions.txt
 jobs: 
   train-job:
     runs-on: ubuntu-latest
