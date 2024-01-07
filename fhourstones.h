@@ -1,3 +1,6 @@
+#ifndef FHOURSTONES
+#define FHOURSTONES
+
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -149,3 +152,5 @@ public:
     moves[nplies++] = n;
   }
 };
+
+#endif
