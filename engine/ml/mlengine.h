@@ -55,14 +55,14 @@ struct runmtcs{
 };
 
 
-template<class randBackend, class gBackend, class valType, class poltype>
+template<class randBackend, class gBackend, class valType, class polType>
 std::vector<float> runmtcs<randBackend, gBackend, valType, polType>::run(Game gg, int nx, int ny){
 
 
 mtcsNode root(nx);
 
 int plocap=playoutcap_small;
-if (randBackend.rand()<pbigcap){
+if (randBackend::rand()<pbigcap){
   plocap=playoutcap_big;
 }
 
@@ -71,7 +71,7 @@ for(int iplo=0; iplo<plocap; iplo++){
 std::vector<std::shared_ptr<mtcsEdge>> path;
 std::shared_ptr<mtcsNode> currnode = &root;
 
-gbackend gbe(gg, nx, ny);
+gBackend gbe(gg, nx, ny);
 
 for(int imove=0; imove<nx*ny; imove++){
 
@@ -142,7 +142,7 @@ ans.push_back(root.childs[ii]->q);
 return ans;
 }
 
-template<class randBackend, class gBackend, class valType, class poltype>
+template<class randBackend, class gBackend, class valType, class polType>
 int runmtcs<randBackend, gBackend, valType, polType>::play(Game gg, int nx, int ny){
 
 std::vector<float> qs=run(gg, nx,ny);
