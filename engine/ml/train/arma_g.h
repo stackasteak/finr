@@ -2,14 +2,14 @@
 #include <armadillo>
 #include <tuple>
 
-struct armg{
+struct armag{
   Game gg;
   int nx;
   int ny;
-  arma::Cube bb;
+  arma::Cube<float> bb;
   
 
-  armg(Game gg_,int nx_, int ny_) : gg(gg_), nx(nx_), ny(ny_) {
+  armag(Game gg_,int nx_, int ny_) : gg(gg_), nx(nx_), ny(ny_) {
     bb.zeros(2,nx,ny);
   }
 
