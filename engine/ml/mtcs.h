@@ -1,3 +1,6 @@
+#ifndef MTCS
+#define MTCS
+
 #include <vector>
 #include <tuple>
 #include "../../fhourstones.h"
@@ -33,7 +36,7 @@ struct mtcsNode{
 
 
 template<class randBackend, class gBackend, class valType, class polType>
-struct runmtcs{
+struct mtcsEngine{
   
   int playoutcap_small=10;
   int playoutcap_big=40;
@@ -44,7 +47,7 @@ struct runmtcs{
   int nx;
   int ny;
 
-  runmtcs(int nx_, int ny_, valType vf_, polType pf_) : nx(nx_), ny(ny_), vf(vf_), pf(pf_){}
+  mtcsEngine(int nx_, int ny_, valType vf_, polType pf_) : nx(nx_), ny(ny_), vf(vf_), pf(pf_){}
 
   void refresh(){};
   
@@ -76,18 +79,18 @@ gBackend gbe(gg, nx, ny);
 for(int imove=0; imove<nx*ny; imove++){
 
 float vv;
-auto termres = gbe.terminal();
+auto [gres, gval] = gbe.terminal();
 bool isleaf = (currnode->prior.size()==0);
 
-if(std::get<0>(termres)) {
-vv = std::get<1>(termres);
+if(gres) {
+vv = gval;
 }
 else if(isleaf){
 currnode->prior = pf(gbe);
 vv = vf(gbe);
 }
 
-if(std::get<0>(termres) || isleaf){//leaf
+if(gres || isleaf){//leaf
 
 for(int ie=path.size()-1; ie>-1; ie--){
   path[ie]->q = path[ie]->q * (path[ie]->n)/(path[ie]->n+1.0) + vv/(path[ie]->n+1.0);
@@ -156,3 +159,6 @@ bestii=ii;
 
 return bestii;
 }
+
+
+#endif

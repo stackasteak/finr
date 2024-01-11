@@ -1,3 +1,6 @@
+#ifndef STDRANDHH
+#define STDRANDHH
+
 #include <cstdlib>
 
 struct stdrand{
@@ -6,3 +9,5 @@ struct stdrand{
     return (float)(std::rand()) / (float)(RAND_MAX);
   }
 };
+
+#endif

@@ -1,22 +1,40 @@
+#ifndef ARMA_GAME
+#define ARMA_GAME
+
+
 #include "../../../fhourstones.h"
 #include <armadillo>
 #include <tuple>
+#include <vector>
 
-struct armag{
+struct arma_g{
   Game gg;
   int nx;
   int ny;
   arma::Cube<float> bb;
   
 
-  armag(Game gg_,int nx_, int ny_) : gg(gg_), nx(nx_), ny(ny_) {
+  arma_g(Game gg_,int nx_, int ny_) : gg(gg_), nx(nx_), ny(ny_) {
     bb.zeros(2,nx,ny);
+    std::vector<int> hights(0,nx);
+    int pl=0;
+    for(int imove=0; imove<gg.nplies; imove++){
+      ii= gg.moves[imove];
+      bb(pl,ii,hights[ii])=1.0;
+       hights[ii] +=1;
+       pl= 1-pl;
+    }
+
   }
 
+arma_g(int nx_, int ny_) : nx(nx_), ny(ny_) {
+  bb.zeros(2,nx,ny);
+}
+   
   std::tuple<bool,float> terminal(){
 
 int pl=gg.nplies%2;
-int pl1=(gg.nplies+1)%2;
+int pl1= 1-pl;
   
 if(gg.nplies==nx*ny){
     return std::make_tuple(true,0.5);
@@ -45,3 +63,6 @@ gg.makemove(ii);
 
 }
 };
+
+
+#endif
