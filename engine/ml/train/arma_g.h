@@ -19,7 +19,7 @@ struct arma_g{
     std::vector<int> hights(0,nx);
     int pl=0;
     for(int imove=0; imove<gg.nplies; imove++){
-      ii= gg.moves[imove];
+      int ii= gg.moves[imove];
       bb(pl,ii,hights[ii])=1.0;
        hights[ii] +=1;
        pl= 1-pl;

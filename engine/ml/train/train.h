@@ -15,7 +15,7 @@ std::tuple<float, Game> h2h(eng1_t& eng1, eng2_t& eng2){
   int nx=eng1.nx;
   int ny=eng2.ny;
 
-  arma_g agg();
+  arma_g agg(nx,ny);
   int pl=0;
   for(int ii=0; ii<nx*ny; ii++){
 
@@ -37,6 +37,7 @@ float retval = (gval-0.5)*(-2.0*pl+1.0)+0.5;
 return std::make_tuple(retval, agg.gg);
 }
 
+}
 }
 
 
