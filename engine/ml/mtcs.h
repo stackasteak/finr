@@ -62,7 +62,7 @@ template<class randBackend, class gBackend, class valType, class polType>
 std::vector<float> mtcsEngine<randBackend, gBackend, valType, polType>::run(Game gg, int nx, int ny){
 
 
-mtcsNode root(nx);
+std::shared_ptr<mtcsNode> root = std::make_shared<mtcsNode>(mtcsNode(nx));
 
 int plocap=playoutcap_small;
 if (randBackend::rand()<pbigcap){
@@ -72,7 +72,7 @@ if (randBackend::rand()<pbigcap){
 for(int iplo=0; iplo<plocap; iplo++){
 
 std::vector<std::shared_ptr<mtcsEdge>> path;
-std::shared_ptr<mtcsNode> currnode = &root;
+std::shared_ptr<mtcsNode> currnode = root;
 
 gBackend gbe(gg, nx, ny);
 
