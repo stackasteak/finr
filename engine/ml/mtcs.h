@@ -59,7 +59,7 @@ struct mtcsEngine{
 
 
 template<class randBackend, class gBackend, class valType, class polType>
-std::vector<float> runmtcs<randBackend, gBackend, valType, polType>::run(Game gg, int nx, int ny){
+std::vector<float> mtcsEngine<randBackend, gBackend, valType, polType>::run(Game gg, int nx, int ny){
 
 
 mtcsNode root(nx);
@@ -146,7 +146,7 @@ return ans;
 }
 
 template<class randBackend, class gBackend, class valType, class polType>
-int runmtcs<randBackend, gBackend, valType, polType>::play(Game gg, int nx, int ny){
+int mtcsEngine<randBackend, gBackend, valType, polType>::play(Game gg, int nx, int ny){
 
 std::vector<float> qs=run(gg, nx,ny);
 float bestq= qs[0];
