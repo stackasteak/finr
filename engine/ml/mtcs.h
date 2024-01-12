@@ -80,9 +80,11 @@ std::cout << "iplo" << iplo << std::endl;
 std::vector<std::shared_ptr<mtcsEdge>> path;
 std::shared_ptr<mtcsNode> currnode = root;
 
+std::cout << "currnode done" << std::endl;
+
 gBackend gbe(gg, nx, ny);
 
-std::cout << "currnode done" << std::endl;
+std::cout << "gbe done" << std::endl;
 
 
 for(int imove=0; imove<nx*ny; imove++){
@@ -104,7 +106,7 @@ vv = vf(gbe);
 
 if(gres || isleaf){//leaf
 
-std::cout << "imleaf " << std::endl;
+std::cout << "imleaf " << gres << isleaf << std::endl;
 
 for(int ie=path.size()-1; ie>-1; ie--){
   path[ie]->q = path[ie]->q * (path[ie]->n)/(path[ie]->n+1.0) + vv/(path[ie]->n+1.0);
