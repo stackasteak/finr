@@ -6,6 +6,7 @@
 #include "../../fhourstones.h"
 #include <memory>
 #include <cmath>
+#include <iostream>
 
 struct mtcsNode;
 
@@ -61,8 +62,11 @@ struct mtcsEngine{
 template<class randBackend, class gBackend, class valType, class polType>
 std::vector<float> mtcsEngine<randBackend, gBackend, valType, polType>::run(Game gg, int nx, int ny){
 
+std::cout << "in run" << std::endl;
 
 std::shared_ptr<mtcsNode> root = std::make_shared<mtcsNode>(mtcsNode(nx));
+
+std::cout << "root done" << std::endl;
 
 int plocap=playoutcap_small;
 if (randBackend::rand()<pbigcap){
@@ -71,12 +75,20 @@ if (randBackend::rand()<pbigcap){
 
 for(int iplo=0; iplo<plocap; iplo++){
 
+std::cout << "iplo" << iplo << std::endl;
+
 std::vector<std::shared_ptr<mtcsEdge>> path;
 std::shared_ptr<mtcsNode> currnode = root;
 
 gBackend gbe(gg, nx, ny);
 
+std::cout << "currnode done" << std::endl;
+
+
 for(int imove=0; imove<nx*ny; imove++){
+
+std::cout << "imove" << imove << std::endl;
+
 
 float vv;
 auto [gres, gval] = gbe.terminal();
@@ -92,6 +104,8 @@ vv = vf(gbe);
 
 if(gres || isleaf){//leaf
 
+std::cout << "imleaf " << std::endl;
+
 for(int ie=path.size()-1; ie>-1; ie--){
   path[ie]->q = path[ie]->q * (path[ie]->n)/(path[ie]->n+1.0) + vv/(path[ie]->n+1.0);
   path[ie]->n +=1;
@@ -102,6 +116,8 @@ break;
 }
 
 else{//nonleaf
+
+std::cout << "in non leaf" << std::endl;
 
 std::vector<int> plms;
 std::vector<float> puct;
@@ -124,6 +140,8 @@ if(puct[iplm]>bestpuct){
 bestpuct=puct[iplm];
 bestiplm=iplm;
 }}
+
+std::cout << "puct done" << std::endl;
 
 if(currnode->childs[plms[bestiplm]]->child == nullptr){
 currnode->childs[plms[bestiplm]]->child = std::shared_ptr<mtcsNode>(new mtcsNode(nx));
