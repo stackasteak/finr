@@ -38,8 +38,8 @@ return std::make_tuple(retval, agg.gg);
 }
 
 }
-
-return std::make_tuple(-2.0,agg.gg);
+float defval=-2.0;
+return std::make_tuple(defval,agg.gg);
 }
 
 
