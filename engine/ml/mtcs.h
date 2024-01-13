@@ -108,6 +108,8 @@ if(gres || isleaf){//leaf
 
 std::cout << "imleaf " << gres << isleaf << std::endl;
 
+std::cout << "use count" << currnode.use_count() << std::endl;
+
 for(int ie=path.size()-1; ie>-1; ie--){
   path[ie]->q = path[ie]->q * (path[ie]->n)/(path[ie]->n+1.0) + vv/(path[ie]->n+1.0);
   path[ie]->n +=1;
