@@ -16,7 +16,7 @@ struct arma_g{
 
   arma_g(Game gg_,int nx_, int ny_) : gg(gg_), nx(nx_), ny(ny_) {
     bb.zeros(2,nx,ny);
-    std::vector<int> hights(0,nx);
+    std::vector<int> hights(nx, 0);
     int pl=0;
     for(int imove=0; imove<gg.nplies; imove++){
       int ii= gg.moves[imove];
