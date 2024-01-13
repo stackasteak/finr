@@ -77,16 +77,12 @@ for(int iplo=0; iplo<plocap; iplo++){
 
 std::cout << "iplo" << iplo << std::endl;
 
-std::cout << "root expanded? " << root->prior.size() << std::endl ;
 
 std::vector<std::shared_ptr<mtcsEdge>> path;
 std::shared_ptr<mtcsNode> currnode = root;
 
 std::cout << "currnode defined" << std::endl;
 
-std::cout << "currnode expanded? " << currnode->prior.size() << std::endl ;
-
-std::cout << "root expanded? " << root->prior.size() << std::endl ;
 
 gBackend gbe(gg, nx, ny);
 
@@ -106,21 +102,17 @@ if(gres) {
 vv = gval;
 }
 else if(isleaf){
-currnode->prior = std::vector<float>(9,0.5);
+currnode->prior = pf(gbe);
 vv = vf(gbe);
-std::cout << "inside currnode expanded? " << currnode->prior.size() << std::endl ;
+
 
 }
 
 if(gres || isleaf){//leaf
 
-std::cout << "imleaf " << gres << isleaf << std::endl;
+std::cout << "in leaf " << gres << isleaf << std::endl;
 
-std::cout << "use count" << currnode.use_count() << std::endl;
 
-std::cout << "currnode expanded? " << currnode->prior.size() << std::endl ;
-
-std::cout << "root expanded? " << root->prior.size() << std::endl ;
 
 for(int ie=path.size()-1; ie>-1; ie--){
   path[ie]->q = path[ie]->q * (path[ie]->n)/(path[ie]->n+1.0) + vv/(path[ie]->n+1.0);
@@ -157,7 +149,7 @@ bestpuct=puct[iplm];
 bestiplm=iplm;
 }}
 
-std::cout << "puct done" << std::endl;
+std::cout << "move is " << plms[bestiplm] << std::endl;
 
 if(currnode->childs[plms[bestiplm]]->child == nullptr){
 currnode->childs[plms[bestiplm]]->child = std::shared_ptr<mtcsNode>(new mtcsNode(nx));

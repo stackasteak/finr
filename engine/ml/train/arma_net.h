@@ -15,7 +15,7 @@ float operator()(arma_g gbe){
 struct polnet_t{
 
 std::vector<float> operator()(arma_g gbe){
-  std::vector<float> ans(1.0/gbe.nx, gbe.nx);
+  std::vector<float> ans(gbe.nx, 1.0/gbe.nx );
   return ans;
 }
 
