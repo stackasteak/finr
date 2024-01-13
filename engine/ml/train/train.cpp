@@ -17,7 +17,7 @@ auto [vv, gg] = h2h(eng,eng);
 std::cout << vv << std::endl;
 
 for(int ii=0; ii<gg.nplies; ii ++){
-std::cout << gg.moves[ii] << " ";
+std::cout << gg.moves[ii]+1 << " ";
 }
 
 
