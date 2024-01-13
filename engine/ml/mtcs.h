@@ -77,10 +77,16 @@ for(int iplo=0; iplo<plocap; iplo++){
 
 std::cout << "iplo" << iplo << std::endl;
 
+std::cout << "root expanded? " << root->prior.size() << std::endl ;
+
 std::vector<std::shared_ptr<mtcsEdge>> path;
 std::shared_ptr<mtcsNode> currnode = root;
 
-std::cout << "currnode done" << std::endl;
+std::cout << "currnode defined" << std::endl;
+
+std::cout << "currnode expanded? " << currnode->prior.size() << std::endl ;
+
+std::cout << "root expanded? " << root->prior.size() << std::endl ;
 
 gBackend gbe(gg, nx, ny);
 
@@ -109,6 +115,10 @@ if(gres || isleaf){//leaf
 std::cout << "imleaf " << gres << isleaf << std::endl;
 
 std::cout << "use count" << currnode.use_count() << std::endl;
+
+std::cout << "currnode expanded? " << currnode->prior.size() << std::endl ;
+
+std::cout << "root expanded? " << root->prior.size() << std::endl ;
 
 for(int ie=path.size()-1; ie>-1; ie--){
   path[ie]->q = path[ie]->q * (path[ie]->n)/(path[ie]->n+1.0) + vv/(path[ie]->n+1.0);
