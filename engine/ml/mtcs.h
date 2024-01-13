@@ -106,7 +106,7 @@ if(gres) {
 vv = gval;
 }
 else if(isleaf){
-currnode->prior = std::vector<float>(0.5,9);
+currnode->prior = std::vector<float>(9,0.5);
 vv = vf(gbe);
 std::cout << "inside currnode expanded? " << currnode->prior.size() << std::endl ;
 
