@@ -39,8 +39,8 @@ struct mtcsNode{
 template<class randBackend, class gBackend, class valType, class polType>
 struct mtcsEngine{
   
-  int playoutcap_small=10;
-  int playoutcap_big=40;
+  int playoutcap_small=100;
+  int playoutcap_big=400;
   float pbigcap=0.25;
   float cpuct =1.1;
   valType vf;
