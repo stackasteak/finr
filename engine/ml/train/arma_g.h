@@ -61,7 +61,7 @@ void makemove(int ii){
 int pl=gg.nplies%2;
 int jj= nextys[ii];
 
-std::cout << "move " << pl << " " << ii << " " << jj << std::endl;
+//std::cout << "move " << pl << " " << ii << " " << jj << std::endl;
 
 bb(pl,ii,jj)=1.0;
 gg.makemove(ii);
