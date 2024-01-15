@@ -33,7 +33,8 @@ arma_g(int nx_, int ny_) : nx(nx_), ny(ny_) {
   nextys = std::vector<int>(nx, 0);
 }
    
-  std::tuple<bool,float> terminal(){
+  std::tuple<bool,float> terminal(){ 
+    //from the point of view of the player to play
 
 int pl=gg.nplies%2;
 int pl1= 1-pl;
