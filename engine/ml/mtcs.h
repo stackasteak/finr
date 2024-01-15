@@ -166,11 +166,18 @@ int mtcsEngine<randBackend, gBackend, valType, polType>::play(Game gg, int nx, i
 std::vector<float> qs=run(gg, nx,ny);
 float bestq= qs[0];
 int bestii=0;
+
+std::cout << "qs: " ;
+  
 for(int ii=0; ii<nx; ii++){
+std::cout << qs[ii] << " ";
 if(qs[ii]>bestq){
 bestq=qs[ii];
 bestii=ii;
 }}
+
+std::cout << std::endl;
+std::cout <<"moved " << bestii+1 <<std::endl;
 
 return bestii;
 }
