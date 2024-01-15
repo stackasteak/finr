@@ -94,7 +94,7 @@ auto [gres, gval] = gbe.terminal();
 bool isleaf = (currnode->prior.size()==0);
 
 if(gres) {
-vv = gval;
+vv = 1.0-gval;
 }
 else if(isleaf){
 currnode->prior = pf(gbe);
