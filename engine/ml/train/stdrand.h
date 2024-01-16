@@ -10,7 +10,7 @@ struct stdrand{
     return (float)(std::rand()) / (float)(RAND_MAX);
   }
 
-  static std::vector<float> poormandirichlet(int n, float a){
+  static std::vector<float> poormandirichlet(int n){
     std::vector<float> ans;
     float tot = 0.0;
     for(int ii=0; ii<n; ii++){
