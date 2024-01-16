@@ -19,7 +19,7 @@ struct stdrand{
       tot += v;
     }
 
-    for(int ii=0; ii<nl ii++){
+    for(int ii=0; ii<n; ii++){
       ans[ii] = ans[ii]/tot;
     }
     return ans;
