@@ -11,7 +11,7 @@
 struct mtcsNode;
 
 struct mtcsEdge{
-  float q= -0.01;
+  float q= 0.5;
   int n=0;
   
   std::shared_ptr<mtcsNode> child ;
