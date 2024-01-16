@@ -43,6 +43,7 @@ struct mtcsEngine{
   int playoutcap_big=400;
   float pbigcap=0.25;
   float cpuct =1.1;
+  float pdirichlet = 0.03;
   valType vf;
   polType pf;
   int nx;
@@ -100,7 +101,19 @@ else if(isleaf){
 currnode->prior = pf(gbe);
 vv = vf(gbe);
 
-
+//add noise if root
+if(imove==0){
+  std::vector<int> plms;
+  for(int ii=0; ii<nx; ii++){
+    if(gbe.isplayable(ii)){
+      plms.push_back(ii);
+    }
+  }
+  std::vector<float> pd = randBackend::poormandirichlet(plms.size());
+  for(int iplm=0; iplm<plms.size(); iplm++){
+    int jj = plms[iplm];
+    currnode->prior[jj] = (1.0-pdirichlet)*currnode->prior[jj] + pdirichlet*pd[iplm];
+  }
 }
 
 if(gres || isleaf){//leaf
