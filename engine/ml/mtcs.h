@@ -114,7 +114,7 @@ if(imove==0){
     int jj = plms[iplm];
     currnode->prior[jj] = (1.0-pdirichlet)*currnode->prior[jj] + pdirichlet*pd[iplm];
   }
-}
+}}
 
 if(gres || isleaf){//leaf
 
