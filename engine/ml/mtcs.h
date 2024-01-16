@@ -155,7 +155,12 @@ gbe.makemove(plms[bestiplm]);
 
 std::vector<float> ans;
 for(int ii=0;ii<nx; ii++){
-ans.push_back(root->childs[ii]->q);
+  if(gg.isplayable(ii){
+    ans.push_back(root->childs[ii]->q);
+  }
+  else{
+    ans.push_back(-0.01);
+  }
 }
 return ans;
 }
