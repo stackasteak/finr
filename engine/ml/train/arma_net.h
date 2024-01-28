@@ -3,6 +3,7 @@
 
 #include "arma_g.h"
 #include <vector>
+#include <tuple>
 
 /*
 struct valnet_t{
@@ -25,9 +26,9 @@ std::vector<float> operator()(arma_g gbe){
 
 struct simple_valpol_t{
 
-std::vector<float> operator()(arma_g gbe){
-  std::vector<float> ans(gbe.nx+1, 1.0/gbe.nx );
-  ans[0] = 0.5;
+std::tuple<float, std::vector<float>> operator()(arma_g gbe){
+  std::vector<float> pans(gbe.nx, 1.0/gbe.nx );
+  auto ans = std::make_tuple(0.5, pans);
   return ans;
 }
 
