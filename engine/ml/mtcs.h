@@ -36,7 +36,7 @@ struct mtcsNode{
 
 
 
-template<class randBackend, class gBackend, class valType, class polType>
+template<class randBackend, class gBackend, class valpolType>
 struct mtcsEngine{
   
   int playoutcap_small=100;
@@ -44,12 +44,11 @@ struct mtcsEngine{
   float pbigcap=0.25;
   float cpuct =1.1;
   float pdirichlet = 0.03;
-  valType vf;
-  polType pf;
+  valpolType vpf;
   int nx;
   int ny;
 
-  mtcsEngine(int nx_, int ny_, valType vf_, polType pf_) : nx(nx_), ny(ny_), vf(vf_), pf(pf_){}
+  mtcsEngine(int nx_, int ny_, valpolType vpf_) : nx(nx_), ny(ny_), vpf(vpf_){}
 
   void refresh(){};
   
@@ -60,8 +59,8 @@ struct mtcsEngine{
 };
 
 
-template<class randBackend, class gBackend, class valType, class polType>
-std::vector<float> mtcsEngine<randBackend, gBackend, valType, polType>::run(Game gg, int nx, int ny){
+template<class randBackend, class gBackend, class valpolType>
+std::vector<float> mtcsEngine<randBackend, gBackend, valpolType>::run(Game gg, int nx, int ny){
 
 
 
@@ -98,8 +97,9 @@ if(gres) {
 vv = 1.0-gval;
 }
 else if(isleaf){
-currnode->prior = pf(gbe);
-vv = vf(gbe);
+auto [vv1, pp1] = vpf(gbe);
+currnode->prior = pp1;
+vv = vv1;
 
 //add noise if root
 if(imove==0){
