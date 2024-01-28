@@ -134,8 +134,6 @@ readAsync = (filename, onload, onerror, binary = true) => {
     throw toThrow;
   };
 
-  Module['inspect'] = () => '[Emscripten Module object]';
-
 } else
 if (ENVIRONMENT_IS_SHELL) {
 
@@ -468,7 +466,6 @@ function checkStackCookie() {
 // end include: runtime_assertions.js
 var __ATPRERUN__  = []; // functions called before the runtime is initialized
 var __ATINIT__    = []; // functions called during startup
-var __ATMAIN__    = []; // functions called when main() is to be run
 var __ATEXIT__    = []; // functions called during shutdown
 var __ATPOSTRUN__ = []; // functions called after the main() is called
 
@@ -494,12 +491,6 @@ function initRuntime() {
   callRuntimeCallbacks(__ATINIT__);
 }
 
-function preMain() {
-  checkStackCookie();
-  
-  callRuntimeCallbacks(__ATMAIN__);
-}
-
 function postRun() {
   checkStackCookie();
 
@@ -519,10 +510,6 @@ function addOnPreRun(cb) {
 
 function addOnInit(cb) {
   __ATINIT__.unshift(cb);
-}
-
-function addOnPreMain(cb) {
-  __ATMAIN__.unshift(cb);
 }
 
 function addOnExit(cb) {
@@ -1066,65 +1053,67 @@ function redrawpbar() { let ctx = Module.canvas.getContext('2d'); let width = wi
       }
     };
 
-  /** @constructor */
-  function ExceptionInfo(excPtr) {
-      this.excPtr = excPtr;
-      this.ptr = excPtr - 24;
+  class ExceptionInfo {
+      // excPtr - Thrown object pointer to wrap. Metadata pointer is calculated from it.
+      constructor(excPtr) {
+        this.excPtr = excPtr;
+        this.ptr = excPtr - 24;
+      }
   
-      this.set_type = function(type) {
+      set_type(type) {
         HEAPU32[(((this.ptr)+(4))>>2)] = type;
-      };
+      }
   
-      this.get_type = function() {
+      get_type() {
         return HEAPU32[(((this.ptr)+(4))>>2)];
-      };
+      }
   
-      this.set_destructor = function(destructor) {
+      set_destructor(destructor) {
         HEAPU32[(((this.ptr)+(8))>>2)] = destructor;
-      };
+      }
   
-      this.get_destructor = function() {
+      get_destructor() {
         return HEAPU32[(((this.ptr)+(8))>>2)];
-      };
+      }
   
-      this.set_caught = function(caught) {
+      set_caught(caught) {
         caught = caught ? 1 : 0;
         HEAP8[(((this.ptr)+(12))>>0)] = caught;
-      };
+      }
   
-      this.get_caught = function() {
+      get_caught() {
         return HEAP8[(((this.ptr)+(12))>>0)] != 0;
-      };
+      }
   
-      this.set_rethrown = function(rethrown) {
+      set_rethrown(rethrown) {
         rethrown = rethrown ? 1 : 0;
         HEAP8[(((this.ptr)+(13))>>0)] = rethrown;
-      };
+      }
   
-      this.get_rethrown = function() {
+      get_rethrown() {
         return HEAP8[(((this.ptr)+(13))>>0)] != 0;
-      };
+      }
   
       // Initialize native structure fields. Should be called once after allocated.
-      this.init = function(type, destructor) {
+      init(type, destructor) {
         this.set_adjusted_ptr(0);
         this.set_type(type);
         this.set_destructor(destructor);
       }
   
-      this.set_adjusted_ptr = function(adjustedPtr) {
+      set_adjusted_ptr(adjustedPtr) {
         HEAPU32[(((this.ptr)+(16))>>2)] = adjustedPtr;
-      };
+      }
   
-      this.get_adjusted_ptr = function() {
+      get_adjusted_ptr() {
         return HEAPU32[(((this.ptr)+(16))>>2)];
-      };
+      }
   
       // Get pointer which is expected to be received by catch clause in C++ code. It may be adjusted
       // when the pointer is casted to some of the exception object base classes (e.g. when virtual
       // inheritance is used). When a pointer is thrown this method should return the thrown pointer
       // itself.
-      this.get_exception_ptr = function() {
+      get_exception_ptr() {
         // Work around a fastcomp bug, this code is still included for some reason in a build without
         // exceptions support.
         var isPointer = ___cxa_is_pointer_type(this.get_type());
@@ -1134,7 +1123,7 @@ function redrawpbar() { let ctx = Module.canvas.getContext('2d'); let width = wi
         var adjusted = this.get_adjusted_ptr();
         if (adjusted !== 0) return adjusted;
         return this.excPtr;
-      };
+      }
     }
   
   var exceptionLast = 0;
@@ -2138,6 +2127,7 @@ function redrawpbar() { let ctx = Module.canvas.getContext('2d'); let width = wi
       setMainLoop(browserIterationFunc, fps, simulateInfiniteLoop, arg);
     };
 
+  
   var withStackSave = (f) => {
       var stack = stackSave();
       var ret = f();
@@ -2145,20 +2135,13 @@ function redrawpbar() { let ctx = Module.canvas.getContext('2d'); let width = wi
       return ret;
     };
   var JSEvents = {
-  inEventHandler:0,
   removeAllEventListeners() {
-        for (var i = JSEvents.eventHandlers.length-1; i >= 0; --i) {
-          JSEvents._removeHandler(i);
+        while (JSEvents.eventHandlers.length) {
+          JSEvents._removeHandler(JSEvents.eventHandlers.length - 1);
         }
-        JSEvents.eventHandlers = [];
         JSEvents.deferredCalls = [];
       },
-  registerRemoveEventListeners() {
-        if (!JSEvents.removeEventListenersRegistered) {
-          __ATEXIT__.push(JSEvents.removeAllEventListeners);
-          JSEvents.removeEventListenersRegistered = true;
-        }
-      },
+  inEventHandler:0,
   deferredCalls:[],
   deferCall(targetFunction, precedence, argsList) {
         function arraysHaveEqualContent(arrA, arrB) {
@@ -2235,25 +2218,25 @@ function redrawpbar() { let ctx = Module.canvas.getContext('2d'); let width = wi
           console.dir(eventHandler);
           return -4;
         }
-        var jsEventHandler = function jsEventHandler(event) {
-          // Increment nesting count for the event handler.
-          ++JSEvents.inEventHandler;
-          JSEvents.currentEventHandler = eventHandler;
-          // Process any old deferred calls the user has placed.
-          JSEvents.runDeferredCalls();
-          // Process the actual event, calls back to user C code handler.
-          eventHandler.handlerFunc(event);
-          // Process any new deferred calls that were placed right now from this event handler.
-          JSEvents.runDeferredCalls();
-          // Out of event handler - restore nesting count.
-          --JSEvents.inEventHandler;
-        };
-  
         if (eventHandler.callbackfunc) {
-          eventHandler.eventListenerFunc = jsEventHandler;
-          eventHandler.target.addEventListener(eventHandler.eventTypeString, jsEventHandler, eventHandler.useCapture);
+          eventHandler.eventListenerFunc = function(event) {
+            // Increment nesting count for the event handler.
+            ++JSEvents.inEventHandler;
+            JSEvents.currentEventHandler = eventHandler;
+            // Process any old deferred calls the user has placed.
+            JSEvents.runDeferredCalls();
+            // Process the actual event, calls back to user C code handler.
+            eventHandler.handlerFunc(event);
+            // Process any new deferred calls that were placed right now from this event handler.
+            JSEvents.runDeferredCalls();
+            // Out of event handler - restore nesting count.
+            --JSEvents.inEventHandler;
+          };
+  
+          eventHandler.target.addEventListener(eventHandler.eventTypeString,
+                                               eventHandler.eventListenerFunc,
+                                               eventHandler.useCapture);
           JSEvents.eventHandlers.push(eventHandler);
-          JSEvents.registerRemoveEventListeners();
         } else {
           for (var i = 0; i < JSEvents.eventHandlers.length; ++i) {
             if (JSEvents.eventHandlers[i].target == eventHandler.target
@@ -2430,8 +2413,6 @@ function redrawpbar() { let ctx = Module.canvas.getContext('2d'); let width = wi
       return 0;
     };
 
-
-
       // exports
       Module["requestFullscreen"] = Browser.requestFullscreen;
       Module["requestFullScreen"] = Browser.requestFullScreen;
@@ -2488,8 +2469,7 @@ var _onForw = Module['_onForw'] = createExportWrapper('onForw');
 var _onLoad = Module['_onLoad'] = createExportWrapper('onLoad');
 var _onStart = Module['_onStart'] = createExportWrapper('onStart');
 var _main = createExportWrapper('main');
-var ___errno_location = createExportWrapper('__errno_location');
-var _fflush = Module['_fflush'] = createExportWrapper('fflush');
+var _fflush = createExportWrapper('fflush');
 var _malloc = createExportWrapper('malloc');
 var _emscripten_stack_init = () => (_emscripten_stack_init = wasmExports['emscripten_stack_init'])();
 var _emscripten_stack_get_free = () => (_emscripten_stack_get_free = wasmExports['emscripten_stack_get_free'])();
@@ -2523,14 +2503,12 @@ var missingLibrarySymbols = [
   'ydayFromDate',
   'arraySum',
   'addDays',
-  'setErrNo',
   'inetPton4',
   'inetNtop4',
   'inetPton6',
   'inetNtop6',
   'readSockaddr',
   'writeSockaddr',
-  'getHostByName',
   'initRandomFill',
   'randomFill',
   'getCallstack',
@@ -2538,7 +2516,6 @@ var missingLibrarySymbols = [
   'convertPCtoSourceLocation',
   'readEmAsmArgs',
   'jstoi_q',
-  'jstoi_s',
   'getExecutableName',
   'listenOnce',
   'autoResumeAudioContext',
@@ -2551,7 +2528,6 @@ var missingLibrarySymbols = [
   'asyncLoad',
   'alignMemory',
   'mmapAlloc',
-  'handleAllocatorInit',
   'HandleAllocator',
   'getNativeTypeSize',
   'STACK_SIZE',
@@ -2592,7 +2568,6 @@ var missingLibrarySymbols = [
   'stringToUTF8OnStack',
   'writeArrayToMemory',
   'registerKeyEventCallback',
-  'findCanvasEventTarget',
   'fillMouseEventData',
   'registerMouseEventCallback',
   'registerWheelEventCallback',
@@ -2623,7 +2598,6 @@ var missingLibrarySymbols = [
   'registerVisibilityChangeEventCallback',
   'fillGamepadEventData',
   'registerGamepadEventCallback',
-  'disableGamepadApiIfItThrows',
   'registerBeforeUnloadEventCallback',
   'fillBatteryEventData',
   'battery',
@@ -2686,6 +2660,7 @@ var missingLibrarySymbols = [
   'allocate',
   'writeStringToMemory',
   'writeAsciiToMemory',
+  'setErrNo',
 ];
 missingLibrarySymbols.forEach(missingLibrarySymbol)
 
@@ -2736,6 +2711,7 @@ var unexportedSymbols = [
   'warnOnce',
   'UNWIND_CACHE',
   'readEmAsmArgsArray',
+  'jstoi_s',
   'handleException',
   'keepRuntimeAlive',
   'callUserCallback',
@@ -2756,6 +2732,7 @@ var unexportedSymbols = [
   'specialHTMLTargets',
   'maybeCStringToJsString',
   'findEventTarget',
+  'findCanvasEventTarget',
   'getBoundingClientRect',
   'currentFullscreenStrategy',
   'restoreOldWindowedStyle',
@@ -2806,28 +2783,6 @@ dependenciesFulfilled = function runCaller() {
   if (!calledRun) dependenciesFulfilled = runCaller; // try this again later, after new deps are fulfilled
 };
 
-function callMain() {
-  assert(runDependencies == 0, 'cannot call main when async dependencies remain! (listen on Module["onRuntimeInitialized"])');
-  assert(__ATPRERUN__.length == 0, 'cannot call main when preRun functions remain to be called');
-
-  var entryFunction = _main;
-
-  var argc = 0;
-  var argv = 0;
-
-  try {
-
-    var ret = entryFunction(argc, argv);
-
-    // if we're not running an evented main loop, it's time to exit
-    exitJS(ret, /* implicit = */ true);
-    return ret;
-  }
-  catch (e) {
-    return handleException(e);
-  }
-}
-
 function stackCheckInit() {
   // This is normally called automatically during __wasm_call_ctors but need to
   // get these values before even running any of the ctors so we call it redundantly
@@ -2863,11 +2818,9 @@ function run() {
 
     initRuntime();
 
-    preMain();
-
     if (Module['onRuntimeInitialized']) Module['onRuntimeInitialized']();
 
-    if (shouldRunNow) callMain();
+    assert(!Module['_main'], 'compiled without a main, but one is present. if you added it from JS, use Module["onRuntimeInitialized"]');
 
     postRun();
   }
@@ -2922,11 +2875,6 @@ if (Module['preInit']) {
     Module['preInit'].pop()();
   }
 }
-
-// shouldRunNow refers to calling main(), not run().
-var shouldRunNow = true;
-
-if (Module['noInitialRun']) shouldRunNow = false;
 
 run();
 
