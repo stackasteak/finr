@@ -4,6 +4,7 @@
 #include "arma_g.h"
 #include <vector>
 
+/*
 struct valnet_t{
 
 float operator()(arma_g gbe){
@@ -16,6 +17,17 @@ struct polnet_t{
 
 std::vector<float> operator()(arma_g gbe){
   std::vector<float> ans(gbe.nx, 1.0/gbe.nx );
+  return ans;
+}
+
+};
+*/
+
+struct simple_valpol_t{
+
+std::vector<float> operator()(arma_g gbe){
+  std::vector<float> ans(gbe.nx+1, 1.0/gbe.nx );
+  ans[0] = 0.5;
   return ans;
 }
 
