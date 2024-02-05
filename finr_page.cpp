@@ -370,10 +370,8 @@ int main (){
 
   int nx=9;
   int ny=9;
-  
 
-  alert_float(1.0);
-/*
+
   float ss = redraw(nx,ny);
 
   alert_float(2.0);
@@ -389,7 +387,6 @@ int main (){
 
   emscripten_set_main_loop_arg(mainloop, static_cast<void*>(&as), 1, false);
   
-  */
   return 0;
 }
 
