@@ -368,7 +368,11 @@ int main (){
   int nx=9;
   int ny=9;
 
+  alert_float(1.0);
+
   float ss = redraw(nx,ny);
+
+  alert_float(2.0);
 
   ds.stonesize=ss;
   
