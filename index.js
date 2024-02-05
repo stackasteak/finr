@@ -1306,6 +1306,8 @@ var wasmImports = {
   /** @export */
   abort: _abort,
   /** @export */
+  alert_float: alert_float,
+  /** @export */
   drawmove: drawmove,
   /** @export */
   emscripten_memcpy_js: _emscripten_memcpy_js,
