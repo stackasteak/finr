@@ -199,9 +199,12 @@ drawingState ds(9,9);
 
 //engine
 
-using rT = runab<randrollout>;
-randrollout rro(5);
-rT rs(9,9,rro);
+//using rT = runab<randrollout>;
+//randrollout rro(5);
+//rT rs(9,9,rro);
+
+using rT = runrand1;
+rT rs(9,9);
 
 struct allState{
   drawingState * dsp;
