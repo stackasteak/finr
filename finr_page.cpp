@@ -374,8 +374,6 @@ int main (){
 
   float ss = redraw(nx,ny);
 
-  alert_float(2.0);
-
   ds.stonesize=ss;
   
   emscripten_set_touchend_callback(
