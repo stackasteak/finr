@@ -2431,6 +2431,8 @@ var wasmImports = {
   /** @export */
   abort: _abort,
   /** @export */
+  alert_float: alert_float,
+  /** @export */
   draw1p: draw1p,
   /** @export */
   drawmove: drawmove,
