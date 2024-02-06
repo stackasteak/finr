@@ -4,6 +4,9 @@
 #include "arma_g.h"
 #include <vector>
 #include <tuple>
+#include <string>
+
+#include <mlpack.h>
 
 /*
 struct valnet_t{
@@ -30,6 +33,18 @@ std::tuple<float, std::vector<float>> operator()(arma_g gbe){
   std::vector<float> pans(gbe.nx, 1.0/gbe.nx );
   auto ans = std::make_tuple(0.5, pans);
   return ans;
+}
+
+};
+
+struct testnet_valpol_t{
+
+testnet_valpol_t(){}
+
+testnet_valpol_t(std::string filename) {}
+
+std::tuple<float, std::vector<float>> operator()(arma_g gbe){
+
 }
 
 };
