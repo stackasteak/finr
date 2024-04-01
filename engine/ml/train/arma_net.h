@@ -37,6 +37,13 @@ std::tuple<float, std::vector<float>> operator()(arma_g gbe){
 
 };
 
+//////
+
+template<class MatType>
+struct testnet_lossfn(const MatType& prediction, const MatType& target){
+
+
+
 struct testnet_valpol_t{
 
 testnet_valpol_t(){}
