@@ -42,9 +42,10 @@ std::tuple<float, std::vector<float>> operator()(arma_g gbe){
 template<class MatType = arma::mat>
 struct Testnet_LossType{
 
-  bool internalVars;
+  float cg =1.5;
+  float cl2 = 1.0e-5;
 
-  Testnet_LossType(bool internalVars_) : internalVars(internalVars_) {};
+  Testnet_LossType() {};
 
   typename MatType::elem_type Forward(const MatType& prediction, const MatType& target){
 
