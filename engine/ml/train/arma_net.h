@@ -39,8 +39,21 @@ std::tuple<float, std::vector<float>> operator()(arma_g gbe){
 
 //////
 
-template<class MatType>
-struct testnet_lossfn(const MatType& prediction, const MatType& target){
+template<class MatType = arma::mat>
+struct Testnet_LossType{
+
+  bool internalVars;
+
+  Testnet_LossType(bool internalVars_) : internalVars(internalVars_) {};
+
+  typename MatType::elem_type Forward(const MatType& prediction, const MatType& target){
+
+  }
+
+  void Backward(const MatType& prediction, const MatType& target, MatType& loss){
+  }
+
+};
 
 
 
