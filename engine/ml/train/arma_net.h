@@ -48,7 +48,11 @@ struct Testnet_LossType{
   Testnet_LossType() {};
 
   typename MatType::elem_type Forward(const MatType& prediction, const MatType& target){
-
+    Row<float> oo(size(prediction), fill::ones);
+    for(int jj=0; jj<3; jj++){
+      oo(jj) = oo(jj)*cg;
+    }
+    return -1.0* accu(oo%target%log(prediction)) ;
   }
 
   void Backward(const MatType& prediction, const MatType& target, MatType& loss){
