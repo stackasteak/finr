@@ -64,9 +64,7 @@ function locateFile(path) {
 }
 
 // Hooks that are implemented differently in different runtime environments.
-var read_,
-    readAsync,
-    readBinary;
+var readAsync, readBinary;
 
 if (ENVIRONMENT_IS_NODE) {
   if (typeof process == 'undefined' || !process.release || process.release.name !== 'node') throw new Error('not compiled for this environment (did you build to HTML and try to run it not on the web, or set ENVIRONMENT to something - like node - and run it someplace else - like on the web?)');
@@ -87,28 +85,23 @@ if (ENVIRONMENT_IS_NODE) {
   scriptDirectory = __dirname + '/';
 
 // include: node_shell_read.js
-read_ = (filename, binary) => {
+readBinary = (filename) => {
   // We need to re-wrap `file://` strings to URLs. Normalizing isn't
   // necessary in that case, the path should already be absolute.
   filename = isFileURI(filename) ? new URL(filename) : nodePath.normalize(filename);
-  return fs.readFileSync(filename, binary ? undefined : 'utf8');
-};
-
-readBinary = (filename) => {
-  var ret = read_(filename, true);
-  if (!ret.buffer) {
-    ret = new Uint8Array(ret);
-  }
+  var ret = fs.readFileSync(filename);
   assert(ret.buffer);
   return ret;
 };
 
-readAsync = (filename, onload, onerror, binary = true) => {
-  // See the comment in the `read_` function.
+readAsync = (filename, binary = true) => {
+  // See the comment in the `readBinary` function.
   filename = isFileURI(filename) ? new URL(filename) : nodePath.normalize(filename);
-  fs.readFile(filename, binary ? undefined : 'utf8', (err, data) => {
-    if (err) onerror(err);
-    else onload(binary ? data.buffer : data);
+  return new Promise((resolve, reject) => {
+    fs.readFile(filename, binary ? undefined : 'utf8', (err, data) => {
+      if (err) reject(err);
+      else resolve(binary ? data.buffer : data);
+    });
   });
 };
 // end include: node_shell_read.js
@@ -166,14 +159,7 @@ if (ENVIRONMENT_IS_WEB || ENVIRONMENT_IS_WORKER) {
 
   {
 // include: web_or_worker_shell_read.js
-read_ = (url) => {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', url, false);
-    xhr.send(null);
-    return xhr.responseText;
-  }
-
-  if (ENVIRONMENT_IS_WORKER) {
+if (ENVIRONMENT_IS_WORKER) {
     readBinary = (url) => {
       var xhr = new XMLHttpRequest();
       xhr.open('GET', url, false);
@@ -183,34 +169,33 @@ read_ = (url) => {
     };
   }
 
-  readAsync = (url, onload, onerror) => {
+  readAsync = (url) => {
     // Fetch has some additional restrictions over XHR, like it can't be used on a file:// url.
     // See https://github.com/github/fetch/pull/92#issuecomment-140665932
     // Cordova or Electron apps are typically loaded from a file:// url.
     // So use XHR on webview if URL is a file URL.
     if (isFileURI(url)) {
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', url, true);
-      xhr.responseType = 'arraybuffer';
-      xhr.onload = () => {
-        if (xhr.status == 200 || (xhr.status == 0 && xhr.response)) { // file URLs can return 0
-          onload(xhr.response);
-          return;
-        }
-        onerror();
-      };
-      xhr.onerror = onerror;
-      xhr.send(null);
-      return;
+      return new Promise((reject, resolve) => {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.responseType = 'arraybuffer';
+        xhr.onload = () => {
+          if (xhr.status == 200 || (xhr.status == 0 && xhr.response)) { // file URLs can return 0
+            resolve(xhr.response);
+          }
+          reject(xhr.status);
+        };
+        xhr.onerror = reject;
+        xhr.send(null);
+      });
     }
-    fetch(url, { credentials: 'same-origin' })
-    .then((response) => {
-      if (response.ok) {
-        return response.arrayBuffer();
-      }
-      return Promise.reject(new Error(response.status + ' : ' + response.url));
-    })
-    .then(onload, onerror)
+    return fetch(url, { credentials: 'same-origin' })
+      .then((response) => {
+        if (response.ok) {
+          return response.arrayBuffer();
+        }
+        return Promise.reject(new Error(response.status + ' : ' + response.url));
+      })
   };
 // end include: web_or_worker_shell_read.js
   }
@@ -246,13 +231,12 @@ assert(typeof Module['memoryInitializerPrefixURL'] == 'undefined', 'Module.memor
 assert(typeof Module['pthreadMainPrefixURL'] == 'undefined', 'Module.pthreadMainPrefixURL option was removed, use Module.locateFile instead');
 assert(typeof Module['cdInitializerPrefixURL'] == 'undefined', 'Module.cdInitializerPrefixURL option was removed, use Module.locateFile instead');
 assert(typeof Module['filePackagePrefixURL'] == 'undefined', 'Module.filePackagePrefixURL option was removed, use Module.locateFile instead');
-assert(typeof Module['read'] == 'undefined', 'Module.read option was removed (modify read_ in JS)');
+assert(typeof Module['read'] == 'undefined', 'Module.read option was removed');
 assert(typeof Module['readAsync'] == 'undefined', 'Module.readAsync option was removed (modify readAsync in JS)');
 assert(typeof Module['readBinary'] == 'undefined', 'Module.readBinary option was removed (modify readBinary in JS)');
 assert(typeof Module['setWindowTitle'] == 'undefined', 'Module.setWindowTitle option was removed (modify emscripten_set_window_title in JS)');
 assert(typeof Module['TOTAL_MEMORY'] == 'undefined', 'Module.TOTAL_MEMORY has been renamed Module.INITIAL_MEMORY');
 legacyModuleProp('asm', 'wasmExports');
-legacyModuleProp('read', 'read_');
 legacyModuleProp('readAsync', 'readAsync');
 legacyModuleProp('readBinary', 'readBinary');
 legacyModuleProp('setWindowTitle', 'setWindowTitle');
@@ -679,15 +663,12 @@ function getBinaryPromise(binaryFile) {
   // If we don't have the binary yet, load it asynchronously using readAsync.
   if (!wasmBinary
       ) {
-    // Fetch the binary use readAsync
-    return new Promise((resolve, reject) => {
-      readAsync(binaryFile,
-        (response) => resolve(new Uint8Array(/** @type{!ArrayBuffer} */(response))),
-        (error) => {
-          try { resolve(getBinarySync(binaryFile)); }
-          catch (e) { reject(e); }
-        });
-    });
+    // Fetch the binary using readAsync
+    return readAsync(binaryFile).then(
+      (response) => new Uint8Array(/** @type{!ArrayBuffer} */(response)),
+      // Fall back to getBinarySync if readAsync fails
+      () => getBinarySync(binaryFile)
+    );
   }
 
   // Otherwise, getBinarySync should be able to get it synchronously
@@ -1011,7 +992,7 @@ function redrawpbar() { let ctx = Module.canvas.getContext('2d'); let width = wi
       }
     };
 
-  var UTF8Decoder = typeof TextDecoder != 'undefined' ? new TextDecoder('utf8') : undefined;
+  var UTF8Decoder = typeof TextDecoder != 'undefined' ? new TextDecoder() : undefined;
   
     /**
      * Given a pointer 'idx' to a null-terminated UTF8-encoded string in the given
@@ -1909,7 +1890,7 @@ function redrawpbar() { let ctx = Module.canvas.getContext('2d'); let width = wi
             Browser.setImmediate = /** @type{function(function(): ?, ...?): number} */(function Browser_emulated_setImmediate(func) {
               setImmediates.push(func);
               if (ENVIRONMENT_IS_WORKER) {
-                if (Module['setImmediates'] === undefined) Module['setImmediates'] = [];
+                Module['setImmediates'] ??= [];
                 Module['setImmediates'].push(func);
                 postMessage({target: emscriptenMainLoopMessageId}); // In --proxy-to-worker, route the message via proxyClient.js
               } else postMessage(emscriptenMainLoopMessageId, "*"); // On the main thread, can just send the message to itself.
@@ -2213,7 +2194,7 @@ function redrawpbar() { let ctx = Module.canvas.getContext('2d'); let width = wi
   
   
   var registerTouchEventCallback = (target, userData, useCapture, callbackfunc, eventTypeId, eventTypeString, targetThread) => {
-      if (!JSEvents.touchEvent) JSEvents.touchEvent = _malloc(1696);
+      if (!JSEvents.touchEvent) JSEvents.touchEvent = _malloc(1552);
   
       target = findEventTarget(target);
   
@@ -2245,11 +2226,11 @@ function redrawpbar() { let ctx = Module.canvas.getContext('2d'); let width = wi
         var touchEvent = JSEvents.touchEvent;
         HEAPF64[((touchEvent)>>3)] = e.timeStamp;
         var idx =((touchEvent)>>2);// Pre-shift the ptr to index to HEAP32 to save code size
-        HEAP32[idx + 3] = e.ctrlKey;
-        HEAP32[idx + 4] = e.shiftKey;
-        HEAP32[idx + 5] = e.altKey;
-        HEAP32[idx + 6] = e.metaKey;
-        idx += 7; // Advance to the start of the touch array.
+        HEAP8[idx + 12] = e.ctrlKey;
+        HEAP8[idx + 13] = e.shiftKey;
+        HEAP8[idx + 14] = e.altKey;
+        HEAP8[idx + 15] = e.metaKey;
+        idx += 4; // Advance to the start of the touch array.
         var targetRect = getBoundingClientRect(target);
         var numTouches = 0;
         for (var i in touches) {
@@ -2261,12 +2242,12 @@ function redrawpbar() { let ctx = Module.canvas.getContext('2d'); let width = wi
           HEAP32[idx + 4] = t.clientY;
           HEAP32[idx + 5] = t.pageX;
           HEAP32[idx + 6] = t.pageY;
-          HEAP32[idx + 7] = t.isChanged;
-          HEAP32[idx + 8] = t.onTarget;
-          HEAP32[idx + 9] = t.clientX - (targetRect.left | 0);
-          HEAP32[idx + 10] = t.clientY - (targetRect.top  | 0);
+          HEAP8[idx + 28] = t.isChanged;
+          HEAP8[idx + 29] = t.onTarget;
+          HEAP32[idx + 8] = t.clientX - (targetRect.left | 0);
+          HEAP32[idx + 9] = t.clientY - (targetRect.top  | 0);
   
-          idx += 13;
+          idx += 12;
   
           if (++numTouches > 31) {
             break;
@@ -2412,6 +2393,7 @@ var _onLoad = Module['_onLoad'] = createExportWrapper('onLoad', 0);
 var _onStart = Module['_onStart'] = createExportWrapper('onStart', 0);
 var _main = Module['_main'] = createExportWrapper('main', 2);
 var _fflush = createExportWrapper('fflush', 1);
+var _strerror = createExportWrapper('strerror', 1);
 var _malloc = createExportWrapper('malloc', 1);
 var _emscripten_stack_init = () => (_emscripten_stack_init = wasmExports['emscripten_stack_init'])();
 var _emscripten_stack_get_free = () => (_emscripten_stack_get_free = wasmExports['emscripten_stack_get_free'])();
@@ -2446,6 +2428,7 @@ var missingLibrarySymbols = [
   'ydayFromDate',
   'arraySum',
   'addDays',
+  'strError',
   'inetPton4',
   'inetNtop4',
   'inetPton6',
@@ -2632,7 +2615,6 @@ var unexportedSymbols = [
   'MONTH_DAYS_REGULAR_CUMULATIVE',
   'MONTH_DAYS_LEAP_CUMULATIVE',
   'ERRNO_CODES',
-  'ERRNO_MESSAGES',
   'DNS',
   'Protocols',
   'Sockets',
@@ -2777,7 +2759,7 @@ function run() {
 
     preMain();
 
-    if (Module['onRuntimeInitialized']) Module['onRuntimeInitialized']();
+    Module['onRuntimeInitialized']?.();
 
     if (shouldRunNow) callMain();
 
