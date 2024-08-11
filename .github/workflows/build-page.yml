@@ -1,6 +1,6 @@
 on: [push] 
 jobs: 
-  build-engine-job:
+  build-page-job:
     runs-on: ubuntu-latest
     steps:
       - uses: mymindstorm/setup-emsdk@v12
