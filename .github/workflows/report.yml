@@ -1,0 +1,18 @@
+jobs: 
+  report-job:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: mymindstorm/setup-emsdk@v12
+      - uses: actions/checkout@v2
+      - name: run emcc  
+        working-directory: ./report
+        run: emcc report.cpp -o index.html --shell-file index_template.html -std=c++20 -sEXPORTED_FUNCTIONS="['_main','_onClear','_onBack','_onForw','_onLoad','_onStart']" 
+      - name: commit and push
+        working-directory: ./
+        run: |
+          git config user.email "auto@auto.com"
+          git config user.name autoauto
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git add -A
+          git commit -m "automated report"
+          git push
