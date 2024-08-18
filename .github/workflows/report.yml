@@ -1,3 +1,6 @@
+on:
+  repository_dispatch:
+
 jobs: 
   report-job:
     runs-on: ubuntu-latest
