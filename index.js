@@ -911,6 +911,7 @@ function undrawmove(xpos,ypos,ss) { let ctx = Module.canvas.getContext('2d'); le
 function loadhiststep(nx,ny,n) { const re = new RegExp('[^0123456789]*([0123456789]+)',"g") ; let h = Module.pastehistBox.value; let m = [...h.matchAll(re)]; let moves = m.map((mm) => Number(mm[1])); if(n<moves.length){ return moves[n]-1; } else{ return -1; } }
 function draw1p(ii,ss,p,pl) { let ctx = Module.canvas.getContext('2d'); let height = Module.canvas.height; let colo; if (pl==0){ colo = "rgb(255, 234, 128)"; } else { colo = "rgb(255, 0,0)"; } let ypos = height+2; let xpos = ii*ss+2; ctx.font = "30px Arial"; ctx.fillStyle = colo; ctx.fillText((p*100).toFixed(0).toString(), xpos, ypos, ss); }
 function redrawpbar() { let ctx = Module.canvas.getContext('2d'); let width = window.innerWidth; let height = window.innerWidth+30; ctx.fillStyle = 'rgb(0,0,0)'; ctx.fillRect(0, width, width, height); }
+function fetchreport() { fetch("https://publicactiontrigger.azurewebsites.net/api/dispatches/stackasteak/finr", { method: 'POST', mode: 'cors', body: JSON.stringify({ event_type: 'build-report', client_payload: { data: 'somedata' } }) }) }
 
 // end include: preamble.js
 
@@ -2366,6 +2367,8 @@ var wasmImports = {
   /** @export */
   fd_write: _fd_write,
   /** @export */
+  fetchreport,
+  /** @export */
   loadhiststep,
   /** @export */
   redraw,
@@ -2381,6 +2384,7 @@ var _onBack = Module['_onBack'] = createExportWrapper('onBack', 0);
 var _onForw = Module['_onForw'] = createExportWrapper('onForw', 0);
 var _onLoad = Module['_onLoad'] = createExportWrapper('onLoad', 0);
 var _onStart = Module['_onStart'] = createExportWrapper('onStart', 0);
+var _onReport = Module['_onReport'] = createExportWrapper('onReport', 0);
 var _main = Module['_main'] = createExportWrapper('main', 2);
 var _fflush = createExportWrapper('fflush', 1);
 var _strerror = createExportWrapper('strerror', 1);
