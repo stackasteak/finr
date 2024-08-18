@@ -120,6 +120,13 @@ EM_JS(void, redrawpbar, (), {
   ctx.fillRect(0, width, width, height);
 });
 
+EM_JS(void, fetchreport, (), {
+  fetch("https://publicactiontrigger.azurewebsites.net/api/dispatches/stackasteak/finr", {
+  method: 'POST',
+  mode: 'cors',
+  body: JSON.stringify({ event_type: 'build-report', client_payload: { data: 'somedata' } }) })
+});
+
 
 //global state variables
 
@@ -330,6 +337,10 @@ void onStart(){
   else{
     es.running=true;
   }
+}
+
+void onReport(){
+  fetchreport();
 }
 
 }
