@@ -124,7 +124,7 @@ EM_JS(void, fetchreport, (), {
   fetch("https://publicactiontrigger.azurewebsites.net/api/dispatches/stackasteak/finr", {
   method: 'POST',
   mode: 'cors',
-  body: JSON.stringify({ event_type: 'build-report', client_payload: { data: 'somedata' } }) })
+  body: JSON.stringify({ event_type: 'report-job', client_payload: { data: 'somedata' } }) })
 });
 
 
