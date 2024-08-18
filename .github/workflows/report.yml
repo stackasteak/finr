@@ -9,7 +9,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: run emcc  
         working-directory: ./html
-        run: emcc report.cpp -o report.html --shell-file report_template.html -std=c++20 -sEXPORTED_FUNCTIONS="['_main','_onClear','_onBack','_onForw','_onLoad','_onStart']" 
+        run: emcc report_page.cpp -o report.html --shell-file report_template.html -std=c++20 -sEXPORTED_FUNCTIONS="[]" 
       - name: commit and push
         working-directory: ./html
         run: |
