@@ -15,7 +15,7 @@ jobs:
       - name: run report
         working-directory: ./report
         run: |
-          ./report.x
+          ./report.x ${{ github.event.client_payload.data }}
           bash sub_template.sh
       - name: run emcc  
         working-directory: ./html
