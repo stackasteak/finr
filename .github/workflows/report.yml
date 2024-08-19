@@ -7,6 +7,12 @@ jobs:
     steps:
       - uses: mymindstorm/setup-emsdk@v12
       - uses: actions/checkout@v2
+      - name: Set up GCC
+        uses: egor-tensin/setup-gcc@v1
+      - name: run report
+        working-directory: ./report
+        run: |
+          bash sub_template.sh
       - name: run emcc  
         working-directory: ./html
         run: emcc report_page.cpp -o report.html --shell-file report_template.html -std=c++20 -sEXPORTED_FUNCTIONS="[]" 
