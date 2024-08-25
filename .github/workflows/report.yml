@@ -1,5 +1,6 @@
 on:
   repository_dispatch:
+    types: [report-job]
 
 jobs: 
   report-job:
